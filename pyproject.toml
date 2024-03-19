@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fibermat"
+version = "1.0"
+authors = [
+  { name="François Mahé", email="francois.mahe@ens-rennes.fr" },
+]
+description = "A mechanical solver to simulate fiber packing and perform statistical analysis."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/fmahe/fibermat"
+Issues = "https://github.com/fmahe/fibermat/issues"

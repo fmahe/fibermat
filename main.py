@@ -1,18 +1,6 @@
-![header](images/header.png)
-
-[![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![François Mahé](https://img.shields.io/badge/Author-François%20Mahé-green)](https://img.shields.io/badge/francois.mahe@ens--rennes.fr-Univ%20Rennes,%20ENS%20Rennes,%20CNRS,%20IPR%20--%20UMR%206251,%20F--35000%20Rennes,%20France-blue)
-[![GitHub Badge](https://img.shields.io/badge/Github-fmahe-blue?logo=github)](https://github.com/fmahe/fibermat)
-[![Mail](https://img.shields.io/badge/Contact-francois.mahe@ens--rennes.fr-blue)](mailto:francois.mahe@ens-rennes.fr)
-
-<details>
-<summary>
-<b> License <b/> <a name="license" />
-
-</summary>
-
-```
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
                                         ██╖
 ████████╖  ████┐  ████╖       ██╖      ██╓╜
 ██╔═════╝  ██╔██ ██╔██║       ██║    ██████╖
@@ -69,71 +57,44 @@ Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
   application to the modeling of flow in SMC compression molding (Doctoral
   dissertation, École centrale de Nantes).
 
-```
-</details>
+"""
 
-**FiberMat** is a mechanical solver to simulate fiber packing and perform statistical analysis. It generate realistic 3D fiber mesostructures and computes internal forces and deformations.
 
-This code is the result of thesis work that can be found in :
-> [Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
-  application to the modeling of flow in SMC compression molding (Doctoral
-  dissertation, École centrale de Nantes).](https://theses.hal.science/tel-04189271/)
+import numpy as np
+from matplotlib import pyplot as plt
 
-## Installation
-
-### Install the package with Pip:
-
-Run the following command:
-```sh
-# Install FiberMat
-pip install fibermat
-
-# Try it out
-python -c "import fibermat"
-
-```
-
-### Install the package in an Anaconda environment:
-
-1. Create a conda environment:
-```sh
-conda create -n fibermat python=3.8
-# Activate the environment
-conda activate fibermat
-
-```
-
-2. Install FiberMat:
-```sh
-# Install FiberMat
-pip install fibermat
-
-# Try it out
-python -c "import fibermat"
-
-```
-
-### Directly from the sources:
-
-Clone this repository in your working directory and add to your Python script:
-```python
 from fibermat import *
 
-```
 
-### Build the sources:
+################################################################################
+# Main
+################################################################################
 
-Clone this repository and run the following command:
-```sh
-# Clone the repository
-git clone git@github.com:fmahe/fibermat.git
-cd ./fibermat
+if __name__ == "__main__":
 
-# Build sources
-python -m build
+    # Generate a set of fibers
+    mat = Mat(100, length=25, width=2, thickness=0.5, size=50, tensile=np.inf)
+    # Build the fiber network
+    net = Net(mat, periodic=True)
+    # Stack fibers
+    stack = Stack(mat, net, threshold=10)
+    # Create the fiber mesh
+    mesh = Mesh(stack)
 
-```
+    # Solve the mechanical packing problem
+    K, C, u, f, F, H, Z, rlambda, mask, err = solver(
+        mat, mesh, itermax=2000, interp_size=100, lmin=0.01, coupling=0.99
+    )
 
-## Documentation
+    _, _, _, du, dF = stiffness(mat, mesh)
+    _, _, _, df, dH = constraint(mat, mesh)
 
-See the tutorial in `jupyter-notebook.ipynb`.
+    fig, ax = plt.subplots(1, 2, figsize=(2 * 6.4, 4.8))
+    plot_system(K, u(0), F(0), du, dF, C, f(0), H(0), df, dH, ax=ax[0])
+    plot_system(K, u(1), F(1), du, dF, C, f(1), H(1), df, dH, ax=ax[1])
+    plt.show()
+
+    # Export as VTK
+    vtk_mesh(
+        mat, mesh, *u(1).reshape(-1, 2).T, *(f(1) @ C).reshape(-1, 2).T
+    ).plot()

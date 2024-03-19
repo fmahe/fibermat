@@ -1,18 +1,6 @@
-![header](images/header.png)
-
-[![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![François Mahé](https://img.shields.io/badge/Author-François%20Mahé-green)](https://img.shields.io/badge/francois.mahe@ens--rennes.fr-Univ%20Rennes,%20ENS%20Rennes,%20CNRS,%20IPR%20--%20UMR%206251,%20F--35000%20Rennes,%20France-blue)
-[![GitHub Badge](https://img.shields.io/badge/Github-fmahe-blue?logo=github)](https://github.com/fmahe/fibermat)
-[![Mail](https://img.shields.io/badge/Contact-francois.mahe@ens--rennes.fr-blue)](mailto:francois.mahe@ens-rennes.fr)
-
-<details>
-<summary>
-<b> License <b/> <a name="license" />
-
-</summary>
-
-```
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
                                         ██╖
 ████████╖  ████┐  ████╖       ██╖      ██╓╜
 ██╔═════╝  ██╔██ ██╔██║       ██║    ██████╖
@@ -69,71 +57,43 @@ Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
   application to the modeling of flow in SMC compression molding (Doctoral
   dissertation, École centrale de Nantes).
 
-```
-</details>
+"""
 
-**FiberMat** is a mechanical solver to simulate fiber packing and perform statistical analysis. It generate realistic 3D fiber mesostructures and computes internal forces and deformations.
+from fibermat.mat import *
+from fibermat.net import *
+from fibermat.mesh import *
+from fibermat.interpolation import *
+from fibermat.model import *
+from fibermat.solver import *
+from fibermat.render import *
 
-This code is the result of thesis work that can be found in :
-> [Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
-  application to the modeling of flow in SMC compression molding (Doctoral
-  dissertation, École centrale de Nantes).](https://theses.hal.science/tel-04189271/)
+__author__ = "François Mahé"
+__authors__ = ["François Mahé"]
+__contact__ = "francois.mahe@ens-rennes.fr"
+__copyright__ = "Copyright (c) 2024 François Mahé"
+__credits__ = ["François Mahé"]
+__date__ = "DD/MM/YYYY"
+__deprecated__ = False
+__email__ = "francois.mahe@ens-rennes.fr"
+__header__ = """
+████████╖██┐██╖                   ████┐  ████╖       ██╖
+██╔═════╝└─┘██║    ██████╖█╖████╖ ██╔██ ██╔██║       ██║
+█████─╖  ██╖██████╖██║ ██║██╔══█║ ██║ ███╓╜██║██████╖█████╖
+██╔═══╝  ██║██║ ██║██╟───╜██║  └╜ ██║ ╘══╝ ██║██║ ██║██╔══╝
+██║      ██║█████╓╜│█████╖██║     ██║      ██║███ ██║█████╖
+╚═╝      ╚═╝╚════╝ ╘═════╝╚═╝     ╚═╝      ╚═╝╚══╧══╝╚════╝
+ █████┐       █████┐       ██┐
+██╔══██┐     ██╓──██┐      └─┘       █╖████╖
+ ██╖ └─█████ └███ └─┘      ██╖██████╖██╔══█║
+██╔╝  ██╔══██   ███╖ ████╖ ██║██║ ██║██║  └╜
+│██████╓╜   ██████╓╜ ╚═══╝ ██║██████║██║
+╘══════╝    ╘═════╝        ╚═╝██╔═══╝╚═╝
+      Rennes                  ██║
+                              ╚═╝
+"""
+__license__ = "MIT"
+__maintainer__ = "François Mahé"
+__status__ = "Production"
+__version__ = "1.0"
 
-## Installation
-
-### Install the package with Pip:
-
-Run the following command:
-```sh
-# Install FiberMat
-pip install fibermat
-
-# Try it out
-python -c "import fibermat"
-
-```
-
-### Install the package in an Anaconda environment:
-
-1. Create a conda environment:
-```sh
-conda create -n fibermat python=3.8
-# Activate the environment
-conda activate fibermat
-
-```
-
-2. Install FiberMat:
-```sh
-# Install FiberMat
-pip install fibermat
-
-# Try it out
-python -c "import fibermat"
-
-```
-
-### Directly from the sources:
-
-Clone this repository in your working directory and add to your Python script:
-```python
-from fibermat import *
-
-```
-
-### Build the sources:
-
-Clone this repository and run the following command:
-```sh
-# Clone the repository
-git clone git@github.com:fmahe/fibermat.git
-cd ./fibermat
-
-# Build sources
-python -m build
-
-```
-
-## Documentation
-
-See the tutorial in `jupyter-notebook.ipynb`.
+print(__header__)
