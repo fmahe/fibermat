@@ -1,4 +1,8 @@
-![header](images/header.png)
+<p align="center">
+    <a href="https://github.com/3b1b/manim">
+        <img src=images/logo.png>
+    </a>
+</p>
 
 [![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
