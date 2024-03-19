@@ -156,7 +156,7 @@ class Mesh(pd.DataFrame):
                 .apply(lambda x: np.roll(x.index, -1), include_groups=False)
             )]
             # Reorder nodes
-            indices = np.argsort(mesh.index)
+            indices = np.argsort(mesh.index).astype(int)
             mesh.index = indices[mesh.index]
             mesh.beam = indices[mesh.beam]
             mesh.constraint = indices[mesh.constraint]
