@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/fmahe/fibermat">
-        <img src=images/logo.png>
+        <img src="https://github.com/fmahe/fibermat/raw/main/images/logo.png">
     </a>
 </p>
 
