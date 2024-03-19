@@ -137,7 +137,7 @@ Clone this repository and run the following command:
 git clone git@github.com:fmahe/fibermat.git
 cd ./fibermat
 
-# Build sources
+# Build the sources
 python -m build
 
 ```
