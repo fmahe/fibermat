@@ -98,6 +98,7 @@ python -c "import fibermat"
 1. Create a conda environment:
 ```sh
 conda create -n fibermat python=3.8
+
 # Activate the environment
 conda activate fibermat
 
