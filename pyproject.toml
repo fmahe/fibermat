@@ -4,13 +4,22 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fibermat"
-version = "1.0.4"
+version = "1.0.5"
 authors = [
   { name="François Mahé", email="francois.mahe@ens-rennes.fr" },
 ]
 description = "A mechanical solver to simulate fiber packing and perform statistical analysis."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pyvista",
+    "scipy",
+    "scikit-learn",
+    "tqdm",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

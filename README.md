@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/fmahe/fibermat">
-        <img src="https://github.com/fmahe/fibermat/raw/main/images/logo.png">
+        <img src="https://github.com/fmahe/fibermat/raw/main/images/banner.png">
     </a>
 </p>
 
@@ -102,7 +102,7 @@ python -c "import fibermat"
 1. Create a conda environment:
 ```sh
 # Create conda environment
-conda create -n fibermat python=3.8
+conda create -n fibermat python=3.11
 
 # Activate the environment
 conda activate fibermat
@@ -118,6 +118,8 @@ pip install fibermat
 python -c "import fibermat"
 
 ```
+
+3. To leave `fibermat` environment, run `conda deactivate`.
 
 ### Directly from the sources:
 

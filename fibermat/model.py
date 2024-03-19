@@ -297,7 +297,7 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
 ################################################################################
 
 if __name__ == "__main__":
-    from fibermat import Mesh, Stack
+    from fibermat import Net, Mesh, Stack
 
     # Linear
     mat = Mat(1, length=1, width=1, thickness=1, shear=1, tensile=np.inf)
