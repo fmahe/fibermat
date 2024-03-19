@@ -145,3 +145,29 @@ python -m build
 ## Documentation
 
 See the tutorial in `jupyter-notebook.ipynb`.
+
+## Example
+
+```python
+from fibermat import *
+
+# Generate a set of fibers
+mat = Mat(100, length=25, width=2, thickness=0.5, size=50, tensile=625)
+# Build the fiber network
+net = Net(mat, periodic=True)
+# Stack fibers
+stack = Stack(mat, net, threshold=10)
+# Create the fiber mesh
+mesh = Mesh(stack)
+
+# Solve the mechanical packing problem
+K, C, u, f, F, H, Z, rlambda, mask, err = solver(
+    mat, mesh, itermax=2000, interp_size=100, lmin=0.01, coupling=0.99
+)
+
+# Export as VTK
+vtk_mesh(
+    mat, mesh, *u(1).reshape(-1, 2).T, *(f(1) @ C).reshape(-1, 2).T
+).plot()
+    
+```
