@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://github.com/3b1b/manim">
+    <a href="https://github.com/fmahe/fibermat">
         <img src=images/logo.png>
     </a>
 </p>
