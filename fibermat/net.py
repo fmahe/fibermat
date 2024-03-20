@@ -498,7 +498,7 @@ class Stack(Net):
         if linsol:
             # Update DataFrames
             mat["z"] = linsol.x
-            net = Net(mat)
+            net = Net(mat, periodic=net.attrs["periodic"])
 
             # Remove nodes based on threshold distances between nodes
             mask = np.zeros(len(net))
