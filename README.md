@@ -89,7 +89,7 @@ This code is the result of thesis work that can be found in :
 
 Run the following command:
 ```sh
-# Install FiberMat
+# Install `FiberMat`
 pip install fibermat
 
 # Try it out
@@ -111,8 +111,8 @@ conda activate fibermat
 
 2. Install FiberMat:
 ```sh
-# Install FiberMat
-pip install fibermat
+# Install `FiberMat`
+pip install --upgrade fibermat
 
 # Try it out
 python -c "import fibermat"
@@ -123,6 +123,19 @@ python -c "import fibermat"
 
 ### Directly from the sources:
 
+Clone the repository and run `pip` command:
+```sh
+# Clone the repository
+git clone git@github.com:fmahe/fibermat.git
+cd ./fibermat
+
+# Install `FiberMat`
+pip install --upgrade .
+
+```
+
+### Use sources without installation:
+
 Clone this repository in your working directory and add to your Python script:
 ```python
 from fibermat import *
@@ -131,7 +144,7 @@ from fibermat import *
 
 ### Build the sources:
 
-Clone this repository and run the following command:
+Clone the repository and run `build` command:
 ```sh
 # Clone the repository
 git clone git@github.com:fmahe/fibermat.git
@@ -169,5 +182,5 @@ K, C, u, f, F, H, Z, rlambda, mask, err = solver(
 vtk_mesh(
     mat, mesh, *u(1).reshape(-1, 2).T, *(f(1) @ C).reshape(-1, 2).T
 ).plot()
-    
+
 ```
