@@ -251,10 +251,15 @@ class Mat(pd.DataFrame):
         Notes
         -----
         If `mat` is None, it returns an empty `Mat` object.
+        If a `skip_check` flag is True in `mat.attr`, the check is passed.
 
         """
         if mat is None:
             mat = Mat()
+
+        if "skip_check" in mat.attrs.keys() and mat.attrs["skip_check"]:
+            # Return the `Mat` object
+            return mat
 
         # Keys
         try:

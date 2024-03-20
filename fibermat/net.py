@@ -291,10 +291,15 @@ class Net(pd.DataFrame):
         Notes
         -----
         If `net` is None, it returns an empty `Net` object.
+        If a `skip_check` flag is True in `net.attr`, the check is passed.
 
         """
         if net is None:
             net = Net()
+
+        if "skip_check" in net.attrs.keys() and net.attrs["skip_check"]:
+            # Return the `Net` object
+            return net
 
         # Keys
         try:
@@ -550,6 +555,7 @@ class Stack(Net):
         Notes
         -----
         If `stack` is None, it returns an empty `Stack` object.
+        If a `skip_check` flag is True in `stack.attr`, the check is passed.
 
         """
         if stack is None:

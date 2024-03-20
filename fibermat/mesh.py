@@ -202,10 +202,15 @@ class Mesh(pd.DataFrame):
         Notes
         -----
         If `mesh` is None, it returns an empty `Mesh` object.
+        If a `skip_check` flag is True in `mesh.attr`, the check is passed.
 
         """
         if mesh is None:
             mesh = Mesh()
+
+        if "skip_check" in mesh.attrs.keys() and mesh.attrs["skip_check"]:
+            # Return the `Mesh` object
+            return mesh
 
         # Keys
         try:
