@@ -214,14 +214,14 @@ class Net(pd.DataFrame):
         # Prepare node data
         pairs = mat_.index.values[pairs]
         abscissa = R * np.array([[1], [-1]])
-        points = X + abscissa * U
+        # points = X + abscissa * U
 
         # Remove nodes that do not belong to finite lines
         radius = 0.5 * mat_.l.values[pairs].reshape(-1, 2, 1)
         mask = np.all(np.abs(abscissa) < radius, axis=1).ravel()
         mask |= np.equal(*pairs.T)  # for fiber end points
         pairs = pairs[mask]
-        points = points[mask]
+        # points = points[mask]
         abscissa = abscissa[mask]
 
         # Sort and remove repeated nodes (for periodicity)
@@ -229,7 +229,7 @@ class Net(pd.DataFrame):
         pairs = np.take_along_axis(pairs, indices, axis=1)
         abscissa = np.take_along_axis(abscissa[..., 0], indices, axis=1)
         df = (pd.DataFrame(np.c_[pairs, abscissa])
-              .sort_values([0, 1])
+              .sort_values(by=[0, 1])
               .drop_duplicates([0, 1]))
         pairs = df[[0, 1]].values.astype(int)
         abscissa = df[[2, 3]].values.reshape(-1, 2, 1)
@@ -312,7 +312,7 @@ class Net(pd.DataFrame):
 
         # Indices
         if not np.all(np.unique(net.index) == np.arange(len(net))):
-            raise IndexError("Row indices must be unique in [0,..., {}-1]."
+            raise IndexError("Row indices must be unique in [0,..., {}]."
                              .format(len(net) - 1))
         if not np.all(net.index == np.arange(len(net))):
             raise IndexError("Connection labels must be sorted.")
@@ -602,9 +602,9 @@ class Stack(Net):
 
         Parameters
         ----------
-        mat : Mat, optional
+        mat : pd.DataFrame, optional
             Set of fibers represented by a `Mat` object.
-        net : Net, optional
+        net : pd.DataFrame, optional
             Fiber network represented by a `Net` object.
 
         Returns
