@@ -109,7 +109,7 @@ conda activate fibermat
 
 ```
 
-2. Install FiberMat:
+2. Install **FiberMat**:
 ```sh
 # Install `FiberMat`
 pip install --upgrade fibermat
@@ -136,7 +136,15 @@ pip install --upgrade .
 
 ### Use sources without installation:
 
-Clone this repository in your working directory and add to your Python script:
+Clone the repository and go to the sources directory:
+```sh
+# Clone the repository
+git clone git@github.com:fmahe/fibermat.git
+cd ./fibermat/src
+
+```
+
+Include the `fibermat` package in your Python code:
 ```python
 from fibermat import *
 
@@ -165,7 +173,7 @@ See the tutorial in `jupyter-notebook.ipynb`.
 from fibermat import *
 
 # Generate a set of fibers
-mat = Mat(100, length=25, width=2, thickness=0.5, size=50, tensile=625)
+mat = Mat(100, length=25, width=1, thickness=0.5, tensile=2500)
 # Build the fiber network
 net = Net(mat, periodic=True)
 # Stack fibers
@@ -175,12 +183,15 @@ mesh = Mesh(stack)
 
 # Solve the mechanical packing problem
 K, C, u, f, F, H, Z, rlambda, mask, err = solver(
-    mat, mesh, itermax=2000, interp_size=100, lmin=0.01, coupling=0.99
+    mat, mesh,
+    packing=4, itermax=1000, interp_size=100, lmin=0.01, coupling=0.99
 )
 
 # Export as VTK
-vtk_mesh(
-    mat, mesh, *u(1).reshape(-1, 2).T, *(f(1) @ C).reshape(-1, 2).T
-).plot()
+vtk = vtk_mesh(mat, mesh,
+               *u(1).reshape(-1, 2).T,
+               *(f(1) @ C).reshape(-1, 2).T)
+vtk.plot(scalars="force", cmap=plt.cm.twilight_shifted)
+vtk.save("outputs/vtk.vtk")
 
 ```

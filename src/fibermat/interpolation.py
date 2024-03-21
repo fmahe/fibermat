@@ -12,6 +12,7 @@ Interpolation :
 """
 
 import numpy as np
+from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 
 
@@ -92,7 +93,6 @@ class Interpolation(interp1d):
 ################################################################################
 
 if __name__ == "__main__":
-    from matplotlib import pyplot as plt
 
     # Reference solution
     x = np.linspace(0, 10, 1001)

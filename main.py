@@ -73,29 +73,31 @@ from fibermat import *
 if __name__ == "__main__":
 
     # Generate a set of fibers
-    mat = Mat(100, length=25, width=2, thickness=0.5, size=50, tensile=2500)
+    mat = Mat(100, length=25, width=1, thickness=0.5, tensile=2500)
     # Build the fiber network
     net = Net(mat, periodic=True)
     # Stack fibers
-    stack = Stack(mat, net, threshold=20)
+    stack = Stack(mat, net, threshold=10)
     # Create the fiber mesh
     mesh = Mesh(stack)
 
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solver(
-        mat, mesh, itermax=2000, interp_size=100, lmin=0.01, coupling=0.99
+        mat, mesh,
+        packing=4, itermax=1000, interp_size=100, lmin=0.01, coupling=0.99
     )
 
-    _, _, _, du, dF = stiffness(mat, mesh)
-    _, _, _, df, dH = constraint(mat, mesh)
+    # _, _, _, du, dF = stiffness(mat, mesh)
+    # _, _, _, df, dH = constraint(mat, mesh)
 
-    fig, ax = plt.subplots(1, 2, figsize=(2 * 6.4, 4.8))
-    plot_system(K, u(0), F(0), du, dF, C, f(0), H(0), df, dH, ax=ax[0])
-    plot_system(K, u(1), F(1), du, dF, C, f(1), H(1), df, dH, ax=ax[1])
-    plt.show()
+    # fig, ax = plt.subplots(1, 2, figsize=(2 * 6.4, 4.8))
+    # plot_system(K, u(0), F(0), du, dF, C, f(0), H(0), df, dH, ax=ax[0])
+    # plot_system(K, u(1), F(1), du, dF, C, f(1), H(1), df, dH, ax=ax[1])
+    # plt.show()
 
     # Export as VTK
-    vtk = vtk_mesh(mat, mesh, *u(1).reshape(-1, 2).T,
+    vtk = vtk_mesh(mat, mesh,
+                   *u(1).reshape(-1, 2).T,
                    *(f(1) @ C).reshape(-1, 2).T)
-    vtk.plot()
+    vtk.plot(scalars="force", cmap=plt.cm.twilight_shifted)
     vtk.save("outputs/vtk.vtk")

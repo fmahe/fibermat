@@ -21,7 +21,7 @@ from scipy.interpolate import CubicHermiteSpline
 from sklearn.neighbors import KDTree
 from tqdm import tqdm
 
-from fibermat import Mat, Mesh
+from fibermat import Mat, Net, Stack, Mesh
 
 
 def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
@@ -277,7 +277,6 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
 ################################################################################
 
 if __name__ == "__main__":
-    from fibermat import Net, Stack
 
     # Generate a set of fibers
     mat = Mat(100)

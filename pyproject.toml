@@ -20,6 +20,7 @@ dependencies = [
     "scikit-learn",
     "tqdm",
 ]
+keywords = ["fiber", "mat", "mechanics", "mesostructure", "porous"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -29,3 +30,8 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/fmahe/fibermat"
 Issues = "https://github.com/fmahe/fibermat/issues"
+
+[tool.hatch.build.targets.wheel]
+where = [
+    "src/fibermat"
+]

@@ -72,7 +72,6 @@ __authors__ = ["François Mahé"]
 __contact__ = "francois.mahe@ens-rennes.fr"
 __copyright__ = "Copyright (c) 2024 François Mahé"
 __credits__ = ["François Mahé"]
-__date__ = "DD/MM/YYYY"
 __deprecated__ = False
 __email__ = "francois.mahe@ens-rennes.fr"
 __header__ = """

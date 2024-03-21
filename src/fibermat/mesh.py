@@ -13,8 +13,10 @@ Mesh :
 
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
+from tqdm import tqdm
 
-from fibermat import Net
+from fibermat import Mat, Net
 
 
 class Mesh(pd.DataFrame):
@@ -284,10 +286,6 @@ class Mesh(pd.DataFrame):
 ################################################################################
 
 if __name__ == "__main__":
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
-
-    from fibermat import Mat
 
     # Generate a set of fibers
     mat = Mat(10)

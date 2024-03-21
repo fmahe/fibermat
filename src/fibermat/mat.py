@@ -13,6 +13,8 @@ Mat :
 
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
+from tqdm import tqdm
 
 
 class Mat(pd.DataFrame):
@@ -309,8 +311,6 @@ class Mat(pd.DataFrame):
 ################################################################################
 
 if __name__ == "__main__":
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
 
     # Generate a set of fibers
     mat = Mat(10)

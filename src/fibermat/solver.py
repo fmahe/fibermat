@@ -16,7 +16,7 @@ import scipy as sp
 import warnings
 from tqdm import tqdm
 
-from fibermat import Mat, Mesh, stiffness, constraint, Interpolation
+from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolation
 
 
 def solver(mat, mesh, packing=5., solver=sp.sparse.linalg.spsolve,
@@ -89,6 +89,7 @@ def solver(mat, mesh, packing=5., solver=sp.sparse.linalg.spsolve,
 
     """
     # Assembly quadratic programming system
+    # TODO: pass a model as argument instead
     K, u, F, du, dF = stiffness(mat, mesh, **kwargs)
     C, f, H, df, dH = constraint(mat, mesh, **kwargs)
     P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
@@ -127,6 +128,7 @@ def solver(mat, mesh, packing=5., solver=sp.sparse.linalg.spsolve,
             # Calculate error
             err = np.linalg.norm(P[np.ix_(mask, mask)] @ dx[mask] - dq[mask])
             # Calculate evolution
+            # TODO: use P and q instead
             d = np.real(H - C @ u)
             v = np.real(dH - C @ du)
 
@@ -185,7 +187,6 @@ def solver(mat, mesh, packing=5., solver=sp.sparse.linalg.spsolve,
 ################################################################################
 
 if __name__ == "__main__":
-    from fibermat import Net, Stack
 
     # Generate a set of fibers
     mat = Mat(100, tensile=625)

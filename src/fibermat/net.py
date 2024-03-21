@@ -16,6 +16,9 @@ Stack :
 import numpy as np
 import pandas as pd
 import scipy as sp
+from matplotlib import pyplot as plt
+from scipy.interpolate import interp1d
+from tqdm import tqdm
 
 from fibermat import Mat
 
@@ -707,9 +710,6 @@ def _test_stack(n=100):
 ################################################################################
 
 if __name__ == "__main__":
-    from matplotlib import pyplot as plt
-    from scipy.interpolate import interp1d
-    from tqdm import tqdm
 
     # Generate a set of fibers
     mat = Mat(10)
