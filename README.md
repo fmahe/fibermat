@@ -85,6 +85,9 @@ This code is the result of thesis work that can be found in:
 
 ## Installation
 
+Requirements:
++ `python>=3.8`
+
 ### Install the package with Pip:
 
 Run the following command:

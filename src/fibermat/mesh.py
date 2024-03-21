@@ -71,7 +71,7 @@ class Mesh(pd.DataFrame):
         >>> net = Net(mat, **inputs)
         >>> # Create the fiber mesh
         >>> mesh = Mesh(net)
-        >>> display(mesh.groupby(by="fiber").apply(lambda x: x, include_groups=False))
+        >>> display(mesh.groupby(by="fiber").apply(lambda x: x))
 
     ```
 
@@ -153,10 +153,10 @@ class Mesh(pd.DataFrame):
             # Sort nodes along fibers
             mesh.sort_values(by=["fiber", "s"], inplace=True)
             # Intra-fiber elements
-            mesh.beam = np.r_[*(
+            mesh.beam = np.hstack(
                 mesh.groupby("fiber")
-                .apply(lambda x: np.roll(x.index, -1), include_groups=False)
-            )]
+                .apply(lambda x: np.roll(x.index, -1))
+            )
             # Reorder nodes
             indices = np.argsort(mesh.index).astype(int)
             mesh.index = indices[mesh.index]
@@ -259,19 +259,16 @@ class Mesh(pd.DataFrame):
             if not np.all(mesh.sort_values(by=["fiber", "s"]).index
                           == mesh.index):
                 raise ValueError("Nodes are not ordered along fibers.")
-            if not np.all(mesh.beam == np.r_[*(
-                    mesh.groupby("fiber").apply(lambda x: np.roll(x.index, -1),
-                                                include_groups=False)
-            )]):
+            if not np.all(mesh.beam == np.hstack(
+                    mesh.groupby("fiber").apply(lambda x: np.roll(x.index, -1))
+            )):
                 raise ValueError("Beams are not sorted.")
             if not np.all(mesh.constraint[mesh.constraint].values == mesh.index):
                 raise ValueError("Constraints are not reciprocal.")
             end1 = mesh.loc[(mesh.groupby("fiber")
-                             .apply(lambda x: x.index[0],
-                                    include_groups=False))]
+                             .apply(lambda x: x.index[0]))]
             end2 = mesh.loc[(mesh.groupby("fiber")
-                             .apply(lambda x: x.index[-1],
-                                    include_groups=False))]
+                             .apply(lambda x: x.index[-1]))]
             if (not np.all(end1.constraint == end1.index)
                     or not np.all(end2.constraint == end2.index)):
                 raise ValueError(

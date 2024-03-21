@@ -200,7 +200,7 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
     mesh = Mesh.check(mesh)
 
     fibers = []  # : list to store individual fiber meshes
-    by_fiber = mesh.groupby("fiber").apply(lambda x: x, include_groups=False)
+    by_fiber = mesh.groupby("fiber").apply(lambda x: x)
 
     for i in tqdm(mat.index, desc="Create VTK mat"):
         # Get fiber
