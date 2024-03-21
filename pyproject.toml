@@ -20,7 +20,9 @@ dependencies = [
     "scikit-learn",
     "tqdm",
 ]
-keywords = ["fiber", "mat", "mechanics", "mesostructure", "porous"]
+keywords = [
+    "fiber", "mat", "mechanics", "mesostructure", "porous", "Timoshenko"
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

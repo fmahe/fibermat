@@ -19,7 +19,7 @@ from tqdm import tqdm
 from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolation
 
 
-def solver(mat, mesh, packing=5., solver=sp.sparse.linalg.spsolve,
+def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
            itermax=1000, tol=1e-6, errtol=1e-6, interp_size=None,
            verbose=True, **kwargs):
     """
@@ -47,7 +47,7 @@ def solver(mat, mesh, packing=5., solver=sp.sparse.linalg.spsolve,
     mesh : pandas.DataFrame
         Fiber mesh represented by a `Mesh` object.
     packing : float
-        Targeted value of packing. Must be greater than 1.0.
+        Targeted value of packing. Must be greater than 1. Default is 1.0.
     solver : callable
         Sparse solver. Default is `scipy.sparse.linalg.spsolve`.
     itermax : int

@@ -78,7 +78,7 @@ Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
 
 **FiberMat** is a mechanical solver to simulate fiber packing and perform statistical analysis. It generate realistic 3D fiber mesostructures and computes internal forces and deformations.
 
-This code is the result of thesis work that can be found in :
+This code is the result of thesis work that can be found in:
 > [Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
   application to the modeling of flow in SMC compression molding (Doctoral
   dissertation, École centrale de Nantes).](https://theses.hal.science/tel-04189271/)

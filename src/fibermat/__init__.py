@@ -66,6 +66,7 @@ from fibermat.interpolation import *
 from fibermat.model import *
 from fibermat.solver import *
 from fibermat.render import *
+from fibermat.widgets import *
 
 __author__ = "François Mahé"
 __authors__ = ["François Mahé"]
@@ -94,5 +95,3 @@ __license__ = "MIT"
 __maintainer__ = "François Mahé"
 __status__ = "Production"
 __version__ = "1.0"
-
-print(__header__)
