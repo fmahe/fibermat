@@ -73,7 +73,7 @@ from fibermat import *
 if __name__ == "__main__":
 
     # Generate a set of fibers
-    mat = Mat(3000, length=4, width=0.2, thickness=0.1, size=40, tensile=400)
+    mat = Mat(3000, length=4, width=0.2, thickness=0.05, size=40, tensile=1600)
     # Build the fiber network
     net = Net(mat, periodic=True)
     # Stack fibers
