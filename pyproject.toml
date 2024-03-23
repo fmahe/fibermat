@@ -1,40 +1,41 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+    requires = ["hatchling"]
+    build-backend = "hatchling.build"
 
 [project]
-name = "fibermat"
-version = "1.0.8"
-authors = [
-  { name="François Mahé", email="francois.mahe@ens-rennes.fr" },
-]
-description = "A mechanical solver to simulate fiber packing and perform statistical analysis."
-readme = "README.md"
-requires-python = ">=3.8"
-dependencies = [
-    "ipywidgets",
-    "matplotlib",
-    "numpy",
-    "pandas",
-    "pyvista",
-    "scipy",
-    "scikit-learn",
-    "tqdm",
-]
-keywords = [
-    "fiber", "mat", "mechanics", "mesostructure", "porous", "Timoshenko"
-]
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
+    name = "fibermat"
+    version = "1.0.8"
+    authors = [
+      { name="François Mahé", email="francois.mahe@ens-rennes.fr" },
+    ]
+    description = "A mechanical solver to simulate fiber packing and perform statistical analysis."
+    readme = "README.md"
+    requires-python = ">=3.8"
+    dependencies = [
+        "ipython",
+        "ipywidgets",
+        "matplotlib",
+        "numpy",
+        "pandas",
+        "pyvista",
+        "scipy",
+        "scikit-learn",
+        "tqdm",
+    ]
+    keywords = [
+        "fiber", "mat", "mechanics", "mesostructure", "porous", "Timoshenko"
+    ]
+    classifiers = [
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ]
 
 [project.urls]
-Homepage = "https://github.com/fmahe/fibermat"
-Issues = "https://github.com/fmahe/fibermat/issues"
+    Homepage = "https://github.com/fmahe/fibermat"
+    Issues = "https://github.com/fmahe/fibermat/issues"
 
 [tool.hatch.build.targets.wheel]
-where = [
-    "src/fibermat"
-]
+    where = [
+        "src/fibermat"
+    ]

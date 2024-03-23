@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-🧵 Mat(erial)
--------------
-
-Classes
--------
-Mat :
-    A class to describe a material made up of a set of random straight fibers.
-
-"""
 
 import numpy as np
 import pandas as pd
@@ -19,11 +9,13 @@ from tqdm import tqdm
 
 class Mat(pd.DataFrame):
     """
-    A class to describe a material made up of a set of random straight fibers.
+    A class inherited from pandas.DataFrame_ to describe a material made up of a set of random straight fibers.
+
     It defines:
-        - the geometry of the fibers
-        - the material properties
-        - the initial configuration (positions and orientations)
+
+        - the geometry of the fibers.
+        - the initial configuration (positions and orientations).
+        - the material properties.
 
     Parameters
     ----------
@@ -47,67 +39,78 @@ class Mat(pd.DataFrame):
         Tensile modulus (MPa). Default is ∞ MPa.
     seed : int, optional
         Random seed for reproducibility. Default is 0.
-    **kwargs :
-        Additional keyword arguments ignored by the function.
+
+    .. note::
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+
+    .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+
+    :Use:
+
+        >>> # Generate a set of fibers
+        >>> mat = Mat(100)
+        >>> mat
+               l    b    h          x          y          z         u         v    w    G    E
+        0   25.0  1.0  1.0   2.440675   8.890827 -24.338157  0.289366  0.957218 -0.0  1.0  inf
+        1   25.0  1.0  1.0  10.759468 -11.499601 -24.178519  0.651721  0.758459  0.0  1.0  inf
+        2   25.0  1.0  1.0   5.138169  11.759701 -23.967450  0.865730 -0.500512 -0.0  1.0  inf
+        3   25.0  1.0  1.0   2.244159  23.109427 -23.766064  0.252040 -0.967717  0.0  1.0  inf
+        4   25.0  1.0  1.0  -3.817260 -12.562343 -23.716864  0.957840 -0.287303  0.0  1.0  inf
+        ..   ...  ...  ...        ...        ...        ...       ...       ...  ...  ...  ...
+        95  25.0  1.0  1.0 -15.840432  -0.477060  23.096819  0.128503  0.991709 -0.0  1.0  inf
+        96  25.0  1.0  1.0   4.325647 -13.629269  23.645974  0.898537 -0.438898 -0.0  1.0  inf
+        97  25.0  1.0  1.0 -23.994623 -12.282176  23.874757  0.900374 -0.435117 -0.0  1.0  inf
+        98  25.0  1.0  1.0  16.447001 -22.098542  24.091469  0.051275 -0.998685 -0.0  1.0  inf
+        99  25.0  1.0  1.0 -24.765226  -3.279169  24.516947  0.549633 -0.835406  0.0  1.0  inf
+        <BLANKLINE>
+        [100 rows x 11 columns]
+
+    Data
+    ----
+    + index : pandas.Index
+        Fiber label. Each label refers to a unique fiber.
+    + Fiber dimensions:
+        - l : pandas.Series
+            Fiber length (mm). By default, 25 mm long fibers are used.
+        - b : pandas.Series
+            Fiber width (mm). By default, 1 mm wide fibers are used.
+        - h : pandas.Series
+            Fiber thickness (mm). By default, 1 mm thick fibers are used.
+    + Fiber position:
+        - x : pandas.Series
+            X-coordinate (mm). By default, positions are randomly distributed with a uniform distribution between the positions X: [-25 mm ; 25 mm].
+        - y : pandas.Series
+            Y-coordinate (mm). By default, positions are randomly distributed with a uniform distribution between the positions Y: [-25 mm ; 25 mm].
+        - z : pandas.Series
+            Z-coordinate (mm). By default, positions are randomly distributed with a uniform distribution between the positions Z: [-25 mm ; 25 mm].
+    + Fiber orientation:
+        - u : pandas.Series
+            X-component. By default, orientations are randomly distributed with a uniform distribution in the half-unit circle θ: [-π / 2, π / 2].
+        - v : pandas.Series
+            Y-component. By default, orientations are randomly distributed with a uniform distribution in the half-unit circle θ: [-π / 2, π / 2].
+        - w : pandas.Series
+            Z-component. By default, orientations are in the plane, so the Z-component is zero.
+    + Material properties:
+        - G : pandas.Series
+            Shear modulus (MPa). By default, shear modulus is 1 MPa.
+        - E : pandas.Series
+            Tensile modulus (MPa). By default, tensile modulus is infinite, which corresponds to fibers that are infinitely rigid in tension and bending.
+
+    ----
 
     Attributes
     ----------
-    attrs : dictionary
-        Global attributes:
-            - n : int, Number of fibers.
-            - size : float, Box dimensions (mm).
-    index : pandas.Index
-        Fiber label.
-    l : pandas.Series
-        Fiber length (mm).
-    b : pandas.Series
-        Fiber width (mm).
-    h : pandas.Series
-        Fiber thickness (mm).
-    x : pandas.Series
-        Fiber position: X-coordinate (mm).
-    y : pandas.Series
-        Fiber position: Y-coordinate (mm).
-    z : pandas.Series
-        Fiber position: Z-coordinate (mm).
-    u : pandas.Series
-        Fiber orientation: X-component.
-    v : pandas.Series
-        Fiber orientation: Y-component.
-    w : pandas.Series
-        Fiber orientation: Z-component.
-    G : pandas.Series
-        Shear modulus (MPa).
-    E : pandas.Series
-        Tensile modulus (MPa).
+    :attr:`attrs` :
+        Global attributes of DataFrame.
 
     Methods
     -------
-    init()
+    :meth:`init` :
         Generate a set of random straight fibers.
-    check()
-        Check that `Mat` object is defined correctly.
+    :meth:`check` :
+        Check that a `Mat` object is defined correctly.
 
-    Properties
-    ----------
-    dimensions : pandas.DataFrame
-        Fiber dimensions. Size: (N x 3).
-    positions : pandas.DataFrame
-        Fiber positions. Size: (N x 3).
-    orientations : pandas.DataFrame
-        Fiber orientations. Size: (N x 3).
-
-    Examples
-    --------
-    ```python
-        >>> # Generate a set of fibers
-        >>> mat = Mat(**inputs)
-        >>> # Get fiber data
-        >>> dimensions = mat[[*"lbh"]]
-        >>> positions = mat[[*"xyz"]]
-        >>> orientations = mat[[*"uvw"]]
-
-    ```
+    ----
 
     """
 
@@ -117,15 +120,17 @@ class Mat(pd.DataFrame):
 
         Parameters
         ----------
-        *args :
+        args :
             Additional positional arguments passed to the constructor.
-        **kwargs :
+
+        Other Parameters
+        ----------------
+        kwargs :
             Additional keyword arguments passed to the constructor.
 
-        See also
+        See Also
         --------
-        Mat.init :
-            Generate a set of random straight fibers.
+        `Mat.init`.
 
         """
         if len(args) and isinstance(args[0], pd.DataFrame):
@@ -171,13 +176,16 @@ class Mat(pd.DataFrame):
             Tensile modulus (MPa). Default is ∞ MPa.
         seed : int, optional
             Random seed for reproducibility. Default is 0.
-        **kwargs :
-            Additional keyword arguments ignored by the function.
 
         Returns
         -------
         mat : pandas.DataFrame
             Initialized `Mat` object.
+
+        Other Parameters
+        ----------------
+        kwargs :
+            Additional keyword arguments ignored by the function.
 
         """
         # Random generation
@@ -216,12 +224,32 @@ class Mat(pd.DataFrame):
         # Return the `Mat` object
         return mat
 
+    # ~~~ Public properties ~~~ #
+
+    @property
+    def attrs(self):
+        """
+        Global attributes of DataFrame:
+            - n : int
+                Number of fibers. By default, it is empty (n = 0).
+            - size : float
+                Box dimensions (mm). By default, the domain is a 50 mm square cube.
+
+        """
+        return self._attrs
+
+    @attrs.setter
+    def attrs(self, attrs):
+        self._attrs = attrs
+
     # ~~~ Public methods ~~~ #
 
     @staticmethod
     def check(mat=None):
         """
-        Check that `Mat` object is defined correctly.
+        Check that a `Mat` object is defined correctly.
+
+        This method is automatically called by functions that use a `Mat` object as input.
 
         Parameters
         ----------
@@ -233,15 +261,15 @@ class Mat(pd.DataFrame):
         KeyError
             If any keys are missing from the columns of `Mat` object.
         AttributeError
-            If any attributes are missing from the dictionary `mat.attrs`.
+            If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
-            if row indices are incorrectly defined:
+            If row indices are incorrectly defined:
                 - Row indices are not unique in [0, ..., n-1] where n is the number of fibers.
                 - Fiber labels are not sorted.
         ValueError
             If any of the following conditions are not met:
                 - Dimensions are not positive.
-                - Positions are not within a box of size specified in `mat.attrs`.
+                - Positions are not within a box of size specified in :attr:`attrs`.
                 - Orientation vectors do not have unit lengths.
                 - Material properties are not positive.
 
@@ -250,10 +278,9 @@ class Mat(pd.DataFrame):
         mat : pandas.DataFrame
             Validated `Mat` object.
 
-        Notes
-        -----
-        If `mat` is None, it returns an empty `Mat` object.
-        If a `skip_check` flag is True in `mat.attr`, the check is passed.
+        .. note::
+            - If `mat` is None, it returns an empty `Mat` object.
+            - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
         if mat is None:
@@ -312,8 +339,23 @@ class Mat(pd.DataFrame):
 
 if __name__ == "__main__":
 
+    import numpy as np
+    from matplotlib import pyplot as plt
+    from tqdm import tqdm
+
+    from fibermat import *
+
     # Generate a set of fibers
-    mat = Mat(10)
+    mat = Mat(100)
+
+    # Get fiber data
+    dimensions = mat[[*"lbh"]]  # size: (n x 3)
+    positions = mat[[*"xyz"]]  # size: (n x 3)
+    orientations = mat[[*"uvw"]]  # size: (n x 3)
+
+    # Check data
+    Mat.check(mat)  # or `mat.check()`
+    # -> returns `mat` if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',
@@ -322,10 +364,13 @@ if __name__ == "__main__":
     if len(mat):
         # Draw fibers
         for i in tqdm(range(len(mat))):
+            # Get fiber data
             fiber = mat.iloc[i]
+            # Calculate fiber end points
             A = fiber[[*"xyz"]].values - 0.5 * fiber.l * fiber[[*"uvw"]].values
             B = fiber[[*"xyz"]].values + 0.5 * fiber.l * fiber[[*"uvw"]].values
             plt.plot(*np.c_[A, B])
+        # Set drawing box dimensions
         ax.set_xlim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
         ax.set_ylim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
     plt.show()

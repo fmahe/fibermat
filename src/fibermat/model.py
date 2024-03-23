@@ -35,14 +35,6 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
         Set of fibers represented by a `Mat` object.
     mesh : pandas.DataFrame
         Fiber mesh represented by a `Mesh` object.
-    lmin : float, optional
-        Lower bound used to rescale beam lengths (mm).
-    lmax : float, optional
-        Upper bound used to rescale beam lengths (mm).
-    coupling : float
-        Coupling numerical constant between zero and one. Default is 1.0.
-    **kwargs :
-        Additional keyword arguments ignored by the function.
 
     Returns
     -------
@@ -58,10 +50,21 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
         dF : numpy.ndarray
             Incremental load vector.
 
+    Other Parameters
+    ----------------
+    lmin : float, optional
+        Lower bound used to rescale beam lengths (mm).
+    lmax : float, optional
+        Upper bound used to rescale beam lengths (mm).
+    coupling : float
+        Coupling numerical constant between zero and one. Default is 1.0.
+    kwargs :
+        Additional keyword arguments ignored by the function.
+
     """
     # Optional
-    Mat.check(mat)
-    Mesh.check(mesh)
+    mat = Mat.check(mat)
+    mesh = Mesh.check(mesh)
 
     # Get mesh data
     mask = (mesh.index.values < mesh.beam.values)
@@ -139,7 +142,7 @@ def constraint(mat, mesh, **kwargs):
         Set of fibers represented by a `Mat` object.
     mesh : pandas.DataFrame
         Fiber mesh represented by a `Mesh` object.
-    **kwargs
+    kwargs :
         Additional keyword arguments ignored by the function.
 
     Returns
@@ -150,16 +153,16 @@ def constraint(mat, mesh, **kwargs):
         f : numpy.ndarray
             Force vector.
         H : numpy.ndarray
-            Upper bound vector.
+            Upper-bound vector.
         df : numpy.ndarray
             Incremental force vector.
         dH : numpy.ndarray
-            Incremental upper bound vector.
+            Incremental upper-bound vector.
 
     """
     # Optional
-    Mat.check(mat)
-    Mesh.check(mesh)
+    mat = Mat.check(mat)
+    mesh = Mesh.check(mesh)
 
     # Get mesh data
     mask = (mesh.index.values <= mesh.constraint.values)
@@ -228,20 +231,23 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
     f : numpy.ndarray
         Force vector.
     H : numpy.ndarray
-        Upper bound vector.
+        Upper-bound vector.
     df : numpy.ndarray
         Incremental force vector.
     dH : numpy.ndarray
-        Incremental upper bound vector.
-    ax : matplotlib.axes.Axes, optional
-        Matplotlib axes.
-    tol : float, optional
-        Tolerance used for contact detection (mm). Default is 1e-6 mm.
+        Incremental upper-bound vector.
 
     Returns
     -------
     ax : matplotlib.axes.Axes
         Matplotlib axes.
+
+    Other Parameters
+    ----------------
+    ax : matplotlib.axes.Axes, optional
+        Matplotlib axes.
+    tol : float, optional
+        Tolerance used for contact detection (mm). Default is 1e-6 mm.
 
     """
     # Assembly quadratic programming system

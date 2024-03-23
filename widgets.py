@@ -26,8 +26,13 @@ class PipButton(ipywidgets.Button):
 
     Parameters
     ----------
-    *packages : str,...
+    packages : str,...
         Names of Python packages to install.
+
+    Examples
+    --------
+    >>> pipButton = PipButton("matplotlib", "numpy", "pandas")
+    >>> pipButton()
 
     Methods
     -------
@@ -35,11 +40,6 @@ class PipButton(ipywidgets.Button):
         Initialize a `PipButton` button widget.
     __call__()
         Display widget.
-
-    Examples
-    --------
-    >>> pipButton = PipButton("matplotlib", "numpy", "pandas")
-    >>> pipButton()
 
     """
 
@@ -49,11 +49,11 @@ class PipButton(ipywidgets.Button):
 
         Parameters
         ----------
-        *packages : str,...
+        packages : str,...
             Names of Python packages to install.
         option : str, optional
             Additional options passed to `pip install` command.
-        **kwargs :
+        kwargs :
             Additional Python packages to install. The keys are passed to `pip install` and the values are used for `import`.
 
         """
@@ -127,18 +127,18 @@ class MatplotlibButton(ipywidgets.Button):
         - `%matplotlib qt`
     in Jupyter notebooks.
 
+    Examples
+    --------
+    >>> matplotlibButton = MatplotlibButton()
+    >>> if "matplotlibButton" not in globals():
+    >>>     matplotlibButton()
+
     Methods
     -------
     MatplotlibButton()
         Initialize a `MatplotlibButton` button widget.
     __call__()
         Display widget.
-
-    Examples
-    --------
-    >>> matplotlibButton = MatplotlibButton()
-    >>> if "matplotlibButton" not in globals():
-    >>>     matplotlibButton()
 
     """
 
@@ -148,7 +148,7 @@ class MatplotlibButton(ipywidgets.Button):
 
         Parameters
         ----------
-        **kwargs :
+        kwargs :
             Additional keyword arguments to pass to `Button` constructor.
 
         """

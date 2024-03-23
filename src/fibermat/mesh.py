@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-📐 Mesh
--------
-
-Classes
--------
-Mesh :
-    A class representing a mesh structure for a set of discontinuous fibers.
-
-"""
 
 import numpy as np
 import pandas as pd
@@ -21,59 +11,84 @@ from fibermat import Mat, Net
 
 class Mesh(pd.DataFrame):
     """
-    A class representing a mesh structure for a set of discontinuous fibers.
+    A class inherited from pandas.DataFrame_ representing a mesh structure for a set of discontinuous fibers.
+
     It defines:
-        - the intra-fiber elements (beam elements)
-        - the inter-fiber connections (constraint elements)
+
+        - the intra-fiber elements (**beam** elements).
+        - the inter-fiber connections (**constraint** elements).
 
     Parameters
     ----------
     net : pandas.DataFrame, optional
          Fiber network represented by a `Net` object.
 
+    .. note::
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+
+    .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+
+    :Use:
+
+        >>> # Generate a set of fibers
+        >>> mat = Mat(100)
+        >>> # Build the fiber network
+        >>> net = Net(mat)
+        >>> # Create the fiber mesh
+        >>> mesh = Mesh(net)
+        >>> mesh
+              fiber          s          x          y          z  beam  constraint
+        0         0 -12.500000  -1.176401  -3.074404 -24.338157     1           0
+        1         0 -11.222534  -0.806746  -1.851590 -24.338157     2         752
+        2         0 -10.466114  -0.587864  -1.127531 -24.338157     3         123
+        3         0 -10.009779  -0.455816  -0.690719 -24.338157     4        1519
+        4         0  -5.432013   0.868835   3.691203 -24.338157     5         706
+        ...     ...        ...        ...        ...        ...   ...         ...
+        1729     99   6.159453 -21.379789  -8.424815  24.516947  1730        1094
+        1730     99   6.740970 -21.060169  -8.910618  24.516947  1731         157
+        1731     99   7.284437 -20.761462  -9.364634  24.516947  1732        1294
+        1732     99  11.270660 -18.570503 -12.694751  24.516947  1733        1585
+        1733     99  12.500000 -17.894817 -13.721749  24.516947  1716        1733
+        <BLANKLINE>
+        [1734 rows x 7 columns]
+
+    Data
+    ----
+    + index : pandas.Index
+        Node label. Each label refers to a unique node.
+    + Node:
+        - fiber : pandas.Series
+            Label of the fiber to which the node belongs
+        - s : pandas.Series
+            Node curvilinear abscissa along the fiber (mm).
+    + Node position:
+        - x : pandas.Series
+            X-coordinate of the node (mm).
+        - y : pandas.Series
+            Y-coordinate of the node (mm).
+        - z : pandas.Series
+            Z-coordinate of the node (mm).
+    + Elements:
+        - constraint : pandas.Series
+            Index of the connected node. It defines a constraint on the relative node positions.
+        - beam : pandas.Series
+            Index of the next node along the fiber. It defines a beam elements with a mechanical stiffness.
+
+    ----
+
     Attributes
     ----------
-    attrs : dictionary
-        Global attributes:
-            - n : int, Number of fibers.
-            - size : float, Box dimensions (mm).
-            - periodic : bool, Periodicity.
-    index : pandas.Index
-        Node label.
-    fiber : pandas.Series
-        Fiber label.
-    x : pandas.Series
-        Node position: X-coordinate (mm).
-    y : pandas.Series
-        Node position: Y-coordinate (mm).
-    z : pandas.Series
-        Node position: Z-coordinate (mm).
-    s : pandas.Series
-        Node curvilinear abscissa (mm).
-    constraint : pandas.Series
-        Index of the connected node.
-    beam : pandas.Series
-        Index of the next node along the fiber.
+    :attr:`attrs` :
+        Global attributes of DataFrame.
 
     Methods
     -------
-    init()
+    :meth:`init` :
         Create a discontinuous fiber mesh.
-    check()
-        Check that `Mesh` object is defined correctly.
+    :meth:`check` :
+        Check that a `Mesh` object is defined correctly.
 
-    Examples
-    --------
-    ```python
-        >>> # Generate a set of fibers
-        >>> mat = Mat(**inputs)
-        >>> # Build the fiber network
-        >>> net = Net(mat, **inputs)
-        >>> # Create the fiber mesh
-        >>> mesh = Mesh(net)
-        >>> display(mesh.groupby(by="fiber").apply(lambda x: x))
-
-    ```
+    ----
 
     """
 
@@ -83,15 +98,14 @@ class Mesh(pd.DataFrame):
 
         Parameters
         ----------
-        *args :
+        args :
             Additional positional arguments passed to the constructor.
-        **kwargs :
+        kwargs :
             Additional keyword arguments passed to the constructor.
 
         See also
         --------
-        Mesh.init :
-            Create a discontinuous fiber mesh.
+        `Mesh.init`.
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
@@ -127,7 +141,7 @@ class Mesh(pd.DataFrame):
 
         """
         # Optional
-        net = Net.check(net)
+        net = Net(net)
 
         # Get network data
         pairs = net[[*"AB"]].values.ravel()
@@ -169,27 +183,49 @@ class Mesh(pd.DataFrame):
         # Return the `Mesh` object
         return mesh
 
+    # ~~~ Public properties ~~~ #
+
+    @property
+    def attrs(self):
+        """
+        Global attributes of DataFrame:
+            - n : int
+                Number of fibers. By default, it is empty (n = 0).
+            - size : float
+                Box dimensions (mm). By default, the domain is a 50 mm square cube.
+            - periodic : bool
+                Boundary periodicity. By default, the domain is periodic.
+
+        """
+        return self._attrs
+
+    @attrs.setter
+    def attrs(self, attrs):
+        self._attrs = attrs
+
     # ~~~ Public methods ~~~ #
 
     @staticmethod
     def check(mesh=None):
         """
-        Check that `Mesh` object is defined correctly.
+        Check that a `Mesh` object is defined correctly.
+
+        This method is automatically called by functions that use a `Mesh` object as input.
 
         Parameters
         ----------
         mesh : pandas.DataFrame, optional
-            Fiber mesh represented by a `Mesh` object. Default is None.
+            Fiber mesh represented by a `Mesh` object.
 
         Raises
         ------
         KeyError
             If any keys are missing from the columns of `Mesh` object.
         AttributeError
-            If any attributes are missing from the dictionary `mesh.attrs`.
+            If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
-            if row indices are incorrectly defined:
-                - Row indices are not unique in [0,..., n-1] where n is the number of nodes.
+            If row indices are incorrectly defined:
+                - Row indices are not unique in [0,..., m-1] where m is the number of nodes.
                 - Node labels are not sorted.
         TypeError
             If labels are not integers.
@@ -201,10 +237,9 @@ class Mesh(pd.DataFrame):
         mesh : pandas.DataFrame
             Validated `Mesh` object.
 
-        Notes
-        -----
-        If `mesh` is None, it returns an empty `Mesh` object.
-        If a `skip_check` flag is True in `mesh.attr`, the check is passed.
+        .. note::
+            - If `mesh` is None, it returns an empty `Mesh` object.
+            - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
         if mesh is None:
@@ -287,28 +322,36 @@ if __name__ == "__main__":
     # Generate a set of fibers
     mat = Mat(10)
     # Build the fiber network
-    net = Net(mat)
+    net = Net(mat, periodic=True)
     # Create the fiber mesh
     mesh = Mesh(net)
+
+    # Check data
+    Mesh.check(mesh)  # or `mesh.check()`
+    # -> returns `mesh` if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',
                                            xlabel="X", ylabel="Y", zlabel="Z"))
     ax.view_init(azim=45, elev=30, roll=0)
-    for i, j, k in tqdm(zip(mesh.index, mesh.beam, mesh.constraint),
-                        total=len(mesh)):
-        a, b, c = mesh.iloc[[i, j, k]][[*"xyz"]].values
-        if mesh.iloc[i].s < mesh.iloc[j].s:
-            # Draw intra-fiber connections
-            plt.plot(*np.c_[a, b],
-                     c=plt.cm.tab10(mesh.fiber.iloc[i] % 10))
-        if mesh.iloc[i].z < mesh.iloc[k].z:
-            # Draw inter-fiber connections
-            plt.plot(*np.c_[a, c], '--ok',
-                     lw=1, mfc='none', ms=3, alpha=0.2)
-        if mesh.iloc[i].fiber == mesh.iloc[k].fiber:
-            # Draw fiber end nodes
-            plt.plot(*np.c_[a, c], '+k', ms=3, alpha=0.2)
+    if len(mesh):
+        # Draw elements
+        for i, j, k in tqdm(zip(mesh.index, mesh.beam, mesh.constraint),
+                            total=len(mesh)):
+            # Get element data
+            a, b, c = mesh.iloc[[i, j, k]][[*"xyz"]].values
+            if mesh.iloc[i].s < mesh.iloc[j].s:
+                # Draw intra-fiber connection
+                plt.plot(*np.c_[a, b],
+                         c=plt.cm.tab10(mesh.fiber.iloc[i] % 10))
+            if mesh.iloc[i].z < mesh.iloc[k].z:
+                # Draw inter-fiber connection
+                plt.plot(*np.c_[a, c], '--ok',
+                         lw=1, mfc='none', ms=3, alpha=0.2)
+            if mesh.iloc[i].fiber == mesh.iloc[k].fiber:
+                # Draw fiber end nodes
+                plt.plot(*np.c_[a, c], '+k', ms=3, alpha=0.2)
+    # Set drawing box dimensions
     ax.set_xlim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
     ax.set_ylim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
     plt.show()

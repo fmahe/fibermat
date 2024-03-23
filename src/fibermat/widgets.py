@@ -14,7 +14,6 @@ Settings :
 import ipywidgets
 import numpy as np
 from IPython.display import display, HTML
-from IPython import get_ipython
 
 
 class Settings(dict):
@@ -41,13 +40,6 @@ class Settings(dict):
         Set the value of a given widget.
     __call__()
         Display widgets for setting parameters.
-
-    Examples
-    --------
-    >>> if "inputs" not in globals():
-    >>>     inputs = Settings()
-    >>> inputs(n=1)
-    >>> inputs()
 
     """
     def __init__(self, n=0, length=25., width=1., thickness=1., size=50.,
@@ -155,7 +147,7 @@ class Settings(dict):
 
     def __iter__(self):
         """
-        Iterate over widgets.
+        Iterate over widgets with syntax `*self`.
 
         Returns
         -------
@@ -166,16 +158,12 @@ class Settings(dict):
         -----
         Required for single star operator.
 
-        Examples
-        --------
-        >>> list(*self)
-
         """
         return iter(self.values())
 
     def __getitem__(self, name):
         """
-        Get the value of a given widget.
+        Get the value of a given widget with syntax `self[name]` and `**self`.
 
         Parameters
         ----------
@@ -185,11 +173,6 @@ class Settings(dict):
         Notes
         -----
         Required for bracket accessor and double star operator.
-
-        Examples
-        --------
-        >>> self[name]
-        >>> dict(**self)
 
         """
         if name == "theta":
@@ -210,7 +193,7 @@ class Settings(dict):
 
     def __setitem__(self, name, value):
         """
-        Set the value of a given widget.
+        Set the value of a given widget with syntax `self[name] = value`.
 
         Parameters
         ----------
@@ -222,10 +205,6 @@ class Settings(dict):
         Notes
         -----
         Required for bracket accessor and setting via `__call__` method.
-
-        Examples
-        --------
-        >>> self[name] = value
 
         """
         if name in ["shear", "tensile"]:
@@ -244,16 +223,12 @@ class Settings(dict):
 
     def __call__(self, **kwargs):
         """
-        Display widgets for setting parameters.
+        Display widgets for setting parameters with syntax `self(**kwargs)`.
 
         Parameters
         ----------
-        **kwargs
+        kwargs :
             Additional keyword arguments to set widget values.
-
-        Examples
-        --------
-        >>> self(**kwargs)
 
         """
         for name, value in kwargs.items():

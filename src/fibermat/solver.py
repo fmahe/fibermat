@@ -1,22 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-🧩 Solver
----------
-
-Functions
----------
-solver(mat, mesh) :
-    Mechanical fiber packing solver.
-
-"""
 
 import numpy as np
 import scipy as sp
 import warnings
 from tqdm import tqdm
 
-from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolation
+from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
 
 
 def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
@@ -48,6 +38,35 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
         Fiber mesh represented by a `Mesh` object.
     packing : float
         Targeted value of packing. Must be greater than 1. Default is 1.0.
+
+    Returns
+    -------
+        K : sparse matrix
+            Stiffness matrix (symmetric positive-semi definite).
+        C : sparse matrix
+            Constraint matrix.
+        u : Interpolate
+            Displacement vector.
+        f : Interpolate
+            Force vector.
+        F : Interpolate
+            Load vector.
+        H : Interpolate
+            Upper-bound vector.
+        Z : Interpolate
+            Upper-boundary position.
+        rlambda : Interpolate
+            Compaction.
+        mask : Interpolate
+            Active rows and columns in the system of equations.
+        err : Interpolate
+            Numerical error of the linear solver.
+
+        .. seealso::
+            :class:`~.interpolation.Interpolate`.
+
+    Other Parameters
+    ----------------
     solver : callable
         Sparse solver. Default is `scipy.sparse.linalg.spsolve`.
     itermax : int
@@ -60,32 +79,8 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
         Size of array used for interpolation. Default is None.
     verbose : bool
         If True, displays a progress bar during simulation. Default is True.
-    **kwargs
+    kwargs :
         Additional keyword arguments passed to matrix constructors.
-
-    Returns
-    -------
-    tuple
-        K : sparse matrix
-            Stiffness matrix (symmetric positive-semi definite).
-        C : sparse matrix
-            Constraint matrix.
-        u : Interpolation
-            Displacement vector.
-        f : Interpolation
-            Force vector.
-        F : Interpolation
-            Load vector.
-        H : Interpolation
-            Upper bound vector.
-        Z : Interpolation
-            Upper boundary position.
-        rlambda : Interpolation
-            Compaction.
-        mask : Interpolation
-            Active rows and columns in the system of equations.
-        err : Interpolation
-            Numerical error of the linear solver.
 
     """
     # Assembly quadratic programming system
@@ -169,14 +164,14 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
     with warnings.catch_warnings():
         # Ignore warning messages due to infinite values in 𝑯
         warnings.filterwarnings('ignore')
-        u = Interpolation(u_, size=interp_size)
-        f = Interpolation(f_, size=interp_size)
-        F = Interpolation(F_, size=interp_size)
-        H = Interpolation(H_, size=interp_size)
-        Z = Interpolation(Z_, size=interp_size)
-        rlambda = Interpolation(rlambda_)
-        mask = Interpolation(mask_, kind='previous')
-        err = Interpolation(err_, kind='previous')
+        u = Interpolate(u_, size=interp_size)
+        f = Interpolate(f_, size=interp_size)
+        F = Interpolate(F_, size=interp_size)
+        H = Interpolate(H_, size=interp_size)
+        Z = Interpolate(Z_, size=interp_size)
+        rlambda = Interpolate(rlambda_)
+        mask = Interpolate(mask_, kind='previous')
+        err = Interpolate(err_, kind='previous')
 
     # Return interpolated results
     return K, C, u, f, F, H, Z, rlambda, mask, err

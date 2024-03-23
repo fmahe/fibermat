@@ -1,5 +1,5 @@
-./tests
-./outputs
+*test*
+*outputs/*
 *.vtk
 
 # Byte-compiled / optimized / DLL files

@@ -6,7 +6,7 @@
 
 Class
 -----
-Interpolation :
+Interpolate :
     A class for interpolating array values with memory size reduction.
 
 """
@@ -16,29 +16,68 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 
 
-class Interpolation(interp1d):
+class Interpolate(interp1d):
     """
     A class for interpolating array values with memory size reduction.
 
     Parameters
     ----------
-    y : array_like
+    y : array-like
         Data to be interpolated.
-    size : int, optional
-        Size of array used for interpolation.
 
     Attributes
     ----------
-    x : array_like
+    x : array-like
         Interpolation parameter.
-    t : array_like
+    t : array-like
         Interpolation parameter between 0 and 1.
     dtype : type
-        Array type used by numpy.
+        Data type used for interpolation.
 
-    See also
+    Examples
     --------
-    scipy.interpolate.interp1d
+    Prepare data for interpolation:
+
+    .. code-block:: python
+
+        >>> # Reference solution
+        >>> x = np.linspace(0, 10, 1001)
+        >>> y = np.sin(x)
+
+        >>> # Interpolation nodes
+        >>> X = x[::100]
+        >>> Y = y[::100]
+
+    Create interpolation functions:
+
+    .. code-block:: python
+
+        >>> # Interpolated functions
+        >>> f_ = Interpolate(Y, size=11, kind='cubic')
+        >>> x_ = Interpolate(X, size=11)
+        >>> t = np.linspace(0, 1, 100)
+
+    Plot raw data and interpolated data:
+
+    .. code-block:: python
+
+        # Figure
+        plt.figure()
+        p, = plt.plot(x, y, label="Reference solution")
+        plt.plot(X, Y, 'o', color=p.get_color(), label="Interpolation nodes")
+        plt.plot(x_(t), f_(t), '--', label="Interpolated function")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.legend()
+        plt.show()
+
+    Notes
+    -----
+    .. seealso::
+        `scipy.interpolate.interp1d <https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html>`_
+
+    Methods
+    -------
 
     """
 
@@ -48,12 +87,15 @@ class Interpolation(interp1d):
 
         Parameters
         ----------
-        y : array_like
+        y : array-like
             Data to be interpolated.
+
+        Other Parameters
+        ----------------
         size : int, optional
-            Size of array used for interpolation.
-        **kwargs
-            Additional keyword arguments passed to interp1d constructor.
+            Number of points used for interpolation.
+        kwargs :
+            Additional keyword arguments passed to `interp1d` constructor.
 
         """
         t = np.linspace(0, 1, len(y))
@@ -74,12 +116,12 @@ class Interpolation(interp1d):
 
         Parameters
         ----------
-        t : array_like, optional
+        t : array-like, optional
             Interpolation parameter between 0 and 1.
 
         Returns
         -------
-        array_like
+        array-like
             Interpolated data.
 
         """
@@ -103,24 +145,24 @@ if __name__ == "__main__":
     Y = y[::100]
 
     # Interpolated functions
-    f = Interpolation(Y, size=11, kind='previous')
-    g = Interpolation(Y, size=11, kind='linear')
-    h = Interpolation(Y, size=11, kind='cubic')
-    x_ = Interpolation(X, size=11)
+    f_ = Interpolate(Y, size=11, kind='previous')
+    g_ = Interpolate(Y, size=11, kind='linear')
+    h_ = Interpolate(Y, size=11, kind='cubic')
+    x_ = Interpolate(X, size=11)
     t = np.linspace(0, 1, 100)
 
     # Figure
     plt.figure()
     p, = plt.plot(x, y, label="Reference solution")
     plt.plot(X, Y, 'o', color=p.get_color(), zorder=np.inf, label="Interpolation nodes")
-    p, = plt.plot(x_(t), f(t), '--')
-    plt.plot(x_(), f(), 'o', ms=10, mfc='none', c=p.get_color())
+    p, = plt.plot(x_(t), f_(t), '--')
+    plt.plot(x_(), f_(), 'o', ms=10, mfc='none', c=p.get_color())
     plt.plot([], [], 'o--', mfc='none', c=p.get_color(), label="Previous")
-    p, = plt.plot(x_(t), g(t), '--')
-    plt.plot(x_(), g(), 'o', ms=14, mfc='none', c=p.get_color())
+    p, = plt.plot(x_(t), g_(t), '--')
+    plt.plot(x_(), g_(), 'o', ms=14, mfc='none', c=p.get_color())
     plt.plot([], [], 'o--', mfc='none', c=p.get_color(), label="Linear")
-    p, = plt.plot(x_(t), h(t), '--')
-    plt.plot(x_(), h(), 'o', ms=18, mfc='none', c=p.get_color())
+    p, = plt.plot(x_(t), h_(t), '--')
+    plt.plot(x_(), h_(), 'o', ms=18, mfc='none', c=p.get_color())
     plt.plot([], [], 'o--', mfc='none', c=p.get_color(), label="Cubic")
     plt.xlabel("X")
     plt.ylabel("Y")

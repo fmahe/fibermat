@@ -30,6 +30,8 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
     """
     Export a fiber as VTK mesh.
 
+    Parameters
+    ----------
     length : float
         Fiber length (mm). Default is 25 mm.
     width : float
@@ -54,13 +56,21 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
         Tensile modulus (MPa). Default is ∞ MPa.
     index : int, optional
         Fiber label.
+
+    Returns
+    -------
+    pv.StructuredGrid
+        VTK mesh.
+
+    Other Parameters
+    ----------------
     r_resolution : int
         Number of elements along the radius of the fiber. Default is 1.
     theta_resolution : int
         Number of points on the circular face of the fiber. Default is 8.
     z_resolution : int
         Number of points along the length of the fiber. Default is 20.
-    **kwargs
+    kwargs :
         Additional keyword arguments ignored by the function.
 
     Notes
@@ -72,11 +82,6 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
         - "uvw" : fiber orientation vector
         - "G" : shear modulus (MPa)
         - "E" : tensile modulus (MPa)
-
-    Returns
-    -------
-    pv.StructuredGrid
-        VTK mesh.
 
     """
     # Create the VTK mesh (cylindrical structured grid)
@@ -113,7 +118,15 @@ def vtk_mat(mat=None, **kwargs):
     ----------
     mat : pandas.DataFrame, optional
         Set of fibers represented by a `Mat` object.
-    **kwargs
+
+    Returns
+    -------
+    pv.UnstructuredGrid
+        VTK mesh.
+
+    Other Parameters
+    ----------------
+    kwargs :
         Additional keyword arguments passed to `vtk_fiber` function.
 
     Notes
@@ -125,11 +138,6 @@ def vtk_mat(mat=None, **kwargs):
         - "uvw" : fiber orientation vector
         - "G" : shear modulus (MPa)
         - "E" : tensile modulus (MPa)
-
-    Returns
-    -------
-    pv.UnstructuredGrid
-        VTK mesh.
 
     """
     # Optional
@@ -162,6 +170,14 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
         Set of fibers represented by a `Mat` object.
     mesh : pandas.DataFrame, optional
         Fiber mesh represented by a `Mesh` object.
+
+    Returns
+    -------
+    pv.UnstructuredGrid
+        VTK mesh.
+
+    Other Parameters
+    ----------------
     displacement : numpy.ndarray, optional
         Displacement vector.
     rotation : numpy.ndarray, optional
@@ -170,7 +186,7 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
         Load vector.
     moment : numpy.ndarray, optional
         Torque vector.
-    **kwargs
+    kwargs :
         Additional keyword arguments passed to `vtk_fiber` function.
 
     Notes
@@ -188,11 +204,6 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
         - "curvature" : curvature field (1 / mm)
     If `force` is not None:
         - "force" : force field (N)
-
-    Returns
-    -------
-    pv.UnstructuredGrid
-        VTK mesh.
 
     """
     # Optional

@@ -1,8 +1,6 @@
-<p align="center">
-    <a href="https://github.com/fmahe/fibermat">
-        <img src="https://github.com/fmahe/fibermat/raw/main/images/banner.png">
-    </a>
-</p>
+<a href="https://github.com/fmahe/fibermat">
+    <img alt="banner" src="https://github.com/fmahe/fibermat/raw/main/images/banner.png">
+</a>
 
 [![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -12,7 +10,7 @@
 
 <details>
 <summary>
-<b> License <b/> <a name="license" />
+<b> License </b> <a id="license"></a>
 
 </summary>
 
@@ -76,7 +74,7 @@ Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
 ```
 </details>
 
-**FiberMat** is a mechanical solver to simulate fiber packing and perform statistical analysis. It generate realistic 3D fiber mesostructures and computes internal forces and deformations.
+**FiberMat** is a mechanical solver to simulate fiber packing and perform statistical analysis. It generates realistic 3D fiber mesostructures and computes internal forces and deformations.
 
 This code is the result of thesis work that can be found in:
 > [Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
@@ -104,26 +102,29 @@ python -c "import fibermat"
 ### Install the package in an Anaconda environment:
 
 1. Create a conda environment:
-```sh
-# Create conda environment
-conda create -n fibermat python=3.11
-
-# Activate the environment
-conda activate fibermat
-
-```
+    ```sh
+    # Create conda environment
+    conda create -n fibermat python=3.11
+    
+    # Activate the environment
+    conda activate fibermat
+    
+    # Optional
+    pip install jupyter
+    
+    ```
 
 2. Install **FiberMat**:
-```sh
-# Install `FiberMat`
-pip install --upgrade fibermat
+    ```sh
+    # Install `FiberMat`
+    pip install --upgrade fibermat
+    
+    # Try it out
+    python -c "import fibermat"
+    
+    ```
 
-# Try it out
-python -c "import fibermat"
-
-```
-
-3. To leave `fibermat` environment, run `conda deactivate`.
+3. To leave `fibermat` environment, run ``conda deactivate``.
 
 ### Directly from the sources:
 
@@ -135,22 +136,6 @@ cd ./fibermat
 
 # Install `FiberMat`
 pip install --upgrade .
-
-```
-
-### Use sources without installation:
-
-Clone the repository and go to the sources directory:
-```sh
-# Clone the repository
-git clone git@github.com:fmahe/fibermat.git
-cd ./fibermat/src
-
-```
-
-Include the `fibermat` package in your Python code:
-```python
-from fibermat import *
 
 ```
 

@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-🕸️ Net(work)
-------------
-
-Classes
--------
-Net :
-    A class to build a fiber network.
-Stack :
-    A class to stack a set of fibers.
-
-"""
 
 import numpy as np
 import pandas as pd
@@ -25,77 +13,88 @@ from fibermat import Mat
 
 class Net(pd.DataFrame):
     """
-    A class to build a fiber network.
-    It describes nodes and connections within a `Mat` object.
+    A class inherited from pandas.DataFrame_ to build a fiber network.
+
+    It describes nodes and connections between fibers within a `Mat` object:
+
+        - **nodes** are defined as the *nearest points* between pairs of fibers.
+        - **connections** link *pairs of nodes* to define relative positions between fibers.
 
     Parameters
     ----------
     mat : pandas.DataFrame, optional
         Set of fibers represented by a `Mat` object.
-    pairs : numpy.ndarray, optional
-        Pairs of fiber indices used to find nearest points. Size: (M x 2).
-    periodic : bool
-        If True, duplicate fibers for periodicity. Default is True.
+
+    .. note::
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+
+    .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+
+    :Use:
+
+        >>> # Generate a set of fibers
+        >>> mat = Mat(100)
+        >>> # Build the fiber network
+        >>> net = Net(mat)
+        >>> net
+              A   B         sA         sB         xA         yA         zA         xB         yB         zB
+        0     0   0  12.500000 -12.500000   6.057752  20.856058 -24.338157  -1.176401  -3.074404 -24.338157
+        1     0   2   3.938063  -1.799582   3.580217  12.660413 -24.338157   3.580217  12.660413 -23.967450
+        2     0   3   6.509881   8.253676   4.324414  15.122205 -24.338157   4.324414  15.122205 -23.766064
+        3     0   5   0.269800  -7.165082   2.518746   9.149084 -24.338157   2.518746   9.149084 -21.802237
+        4     0   6 -10.466114   6.264470  -0.587864  -1.127531 -24.338157  -0.587864  -1.127531 -21.637518
+        ..   ..  ..        ...        ...        ...        ...        ...        ...        ...        ...
+        862  95  95  12.500000 -12.500000 -14.234141  11.919304  23.096819 -17.446723 -12.873423  23.096819
+        863  96  96  12.500000 -12.500000  15.557356 -19.115497  23.645974  -6.906063  -8.143040  23.645974
+        864  97  97  12.500000 -12.500000 -12.739951 -17.721142  23.874757 -35.249295  -6.843209  23.874757
+        865  98  98  12.500000 -12.500000  17.087939 -34.582099  24.091469  15.806064  -9.614985  24.091469
+        866  99  99  12.500000 -12.500000 -17.894817 -13.721749  24.516947 -31.635635   7.163412  24.516947
+        <BLANKLINE>
+        [867 rows x 10 columns]
+
+    Data
+    ----
+    + index : pandas.Index
+        Connection label. Each label refers to a unique connection.
+    + Pair of fibers:
+        - A : pandas.Series
+            First fiber label. It must satisfy `net.A` ≤ `net.B`.
+        - B : pandas.Series
+            Second fiber label. It must satisfy `net.A` ≤ `net.B`.
+    + Curvilinear abscissa:
+        - sA : pandas.Series
+            Curvilinear abscissa of node along the first fiber (mm).
+        - sB : pandas.Series
+            Curvilinear abscissa of node along the second fiber (mm).
+    + Relative node positions:
+        - xA : pandas.Series
+            X-coordinate of node along the first fiber (mm).
+        - yA : pandas.Series
+            Y-coordinate of node along the first fiber (mm).
+        - zA : pandas.Series
+            Z-coordinate of node along the first fiber (mm).
+        - xB : pandas.Series
+            X-coordinate of node along the second fiber (mm).
+        - yB : pandas.Series
+            Y-coordinate of node along the second fiber (mm).
+        - zB : pandas.Series
+            Z-coordinate of node along the second fiber (mm).
+
+    ----
 
     Attributes
     ----------
-    attrs : dictionary
-        Global attributes:
-            - n : int, Number of fibers.
-            - size : float, Box dimensions (mm).
-            - periodic : bool, Periodicity.
-    index : pandas.Index
-        Connection label.
-    A : pandas.Series
-        First fiber label.
-    B : pandas.Series
-        Second fiber label.
-    sA : pandas.Series
-        Curvilinear abscissa of node along the first fiber (mm).
-    sB : pandas.Series
-        Curvilinear abscissa of node along the second fiber (mm).
-    xA : pandas.Series
-        X-coordinate of node along the first fiber (mm).
-    yA : pandas.Series
-        Y-coordinate of node along the first fiber (mm).
-    zA : pandas.Series
-        Z-coordinate of node along the first fiber (mm).
-    xB : pandas.Series
-        X-coordinate of node along the second fiber (mm).
-    yB : pandas.Series
-        Y-coordinate of node along the second fiber (mm).
-    zB : pandas.Series
-        Z-coordinate of node along the second fiber (mm).
+    :attr:`attrs` :
+        Global attributes of DataFrame.
 
     Methods
     -------
-    init()
+    :meth:`init` :
         Build a fiber network.
-    check()
-        Check that `Net` object is defined correctly.
+    :meth:`check` :
+        Check that a `Net` object is defined correctly.
 
-    Properties
-    ----------
-    pairs : numpy.ndarray
-        Pairs of fiber labels representing connected nodes. Size: (M x 2).
-    points : numpy.ndarray
-        Node coordinates along each fiber. Size: (M x 2 x 3).
-    abscissa : numpy.ndarray
-        Curvilinear abscissa of nodes along each fiber. Size: (M x 2 x 1).
-
-    Examples
-    --------
-    ```python
-        >>> # Generate a set of fibers
-        >>> mat = Mat(**inputs)
-        >>> # Build the fiber network
-        >>> net = Net(mat, **inputs)
-        >>> # Get node data
-        >>> pairs = net[[*"AB"]].values
-        >>> abscissa = net[["sA", "sB"]].values.reshape(-1, 2, 1)
-        >>> points = net[["xA", "yA", "zA", "xB", "yB", "zB"]].values.reshape(-1, 2, 3)
-
-    ```
+    ----
 
     """
 
@@ -105,15 +104,14 @@ class Net(pd.DataFrame):
 
         Parameters
         ----------
-        *args :
+        args :
             Additional positional arguments passed to the constructor.
-        **kwargs :
+        kwargs :
             Additional keyword arguments passed to the constructor.
 
         See also
         --------
-        Net.init :
-            Build a fiber network.
+        `Net.init`.
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
@@ -133,7 +131,7 @@ class Net(pd.DataFrame):
     # ~~~ Constructor ~~~ #
 
     @staticmethod
-    def init(mat=None, pairs=None, periodic=True, **kwargs):
+    def init(mat=None, periodic=True, pairs=None, **kwargs):
         """
         Build a fiber network.
 
@@ -141,21 +139,24 @@ class Net(pd.DataFrame):
         ----------
         mat : pandas.DataFrame, optional
             Set of fibers represented by a `Mat` object.
-        pairs : numpy.ndarray, optional
-            Pairs of fiber indices used to find nearest points. Size: (M x 2).
-        periodic : bool
-            If True, duplicate fibers for periodicity. Default is True.
-        **kwargs
-            Additional keyword arguments ignored by the function.
 
         Returns
         -------
         net : pandas.DataFrame
             Initialized `Net` object.
 
+        Other Parameters
+        ----------------
+        periodic : bool
+            If True, duplicate fibers for periodicity. Default is True.
+        pairs : numpy.ndarray, optional
+            Pairs of fiber indices used to find nearest points. Size: (m x 2).
+        kwargs :
+            Additional keyword arguments ignored by the function.
+
         """
         # Optional
-        mat = Mat.check(mat)
+        mat = Mat(mat)
 
         # Periodic boundary conditions (optional)
         if periodic:
@@ -256,12 +257,34 @@ class Net(pd.DataFrame):
         # Return the `Net` object
         return net
 
+    # ~~~ Public properties ~~~ #
+
+    @property
+    def attrs(self):
+        """
+        Global attributes of DataFrame:
+            - n : int
+                Number of fibers. By default, it is empty (n = 0).
+            - size : float
+                Box dimensions (mm). By default, the domain is a 50 mm square cube.
+            - periodic : bool
+                Boundary periodicity. By default, the domain is periodic.
+
+        """
+        return self._attrs
+
+    @attrs.setter
+    def attrs(self, attrs):
+        self._attrs = attrs
+
     # ~~~ Public methods ~~~ #
 
     @staticmethod
     def check(net=None):
         """
-        Check that `Net` object is defined correctly.
+        Check that a `Net` object is defined correctly.
+
+        This method is automatically called by functions that use a `Net` object as input.
 
         Parameters
         ----------
@@ -273,10 +296,10 @@ class Net(pd.DataFrame):
         KeyError
             If any keys are missing from the columns of `Net` object.
         AttributeError
-            If any attributes are missing from the dictionary `net.attrs`.
+            If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
-            if row indices are incorrectly defined:
-                - Row indices are not unique in [0, ..., n-1] where n is the number of connections.
+            If row indices are incorrectly defined:
+                - Row indices are not unique in [0, ..., m-1] where m is the number of connections.
                 - Connection labels are not sorted.
         TypeError
             If fiber labels are not integers.
@@ -291,10 +314,9 @@ class Net(pd.DataFrame):
         net : pandas.DataFrame
             Validated `Net` object.
 
-        Notes
-        -----
-        If `net` is None, it returns an empty `Net` object.
-        If a `skip_check` flag is True in `net.attr`, the check is passed.
+        .. note::
+            - If `net` is None, it returns an empty `Net` object.
+            - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
         if net is None:
@@ -347,11 +369,26 @@ class Net(pd.DataFrame):
 
 class Stack(Net):
     """
-    A class to stack a set of fibers.
-    It solves the following linear programming system:
+    A class inherited from :class:`Net` to stack a set of fibers.
 
-        min_{𝒛}(-𝒇·𝒛) s.t. ℂ·𝒛 ≤ 𝑯 and 𝒛 ≥ ½𝐡
-            with 𝒇 = -𝐦g and 𝐡 > 0
+    It solves the following *linear programming system*:
+
+    .. math::
+        \min_{z} (-\mathbf{f} \cdot \mathbf{z}) \quad s.t. \quad \mathbb{C} \, \mathbf{z} \leq \mathbf{H} \quad and \quad \mathbf{z} \geq \mathbf{h} / 2
+    .. math::
+        with \quad \mathbf{f} = -\mathbf{m} \, g \quad and \quad \mathbf{h} > 0
+
+    where:
+        - :math:`\mathbf{f}` is the vector of fiber weights.
+        - :math:`\mathbf{z}` is the unknown vector of fiber vertical positions.
+        - :math:`\mathbf{h}` is the vector of fiber thicknesses.
+        - :math:`\mathbb{C}` is the matrix of inequality constraints that positions must satisfy to prevent the fibers from crossing each other.
+        - :math:`-\mathbf{H}` corresponds to the minimum distances between the pairs of fibers.
+
+    The *condition of non-penetration* between two fibers gives the expression of each condition found in the rows of :math:`\mathbb{C}` and :math:`\mathbf{H}`:
+
+    .. math::
+        z_B - z_A \geq (h_A + h_B) \, / \, 2 \quad \Leftrightarrow \quad z_A - z_B \leq - (h_A + h_B) \, / \, 2
 
     Parameters
     ----------
@@ -359,76 +396,83 @@ class Stack(Net):
         Set of fibers represented by a `Mat` object.
     net : pandas.DataFrame, optional
         Fiber network represented by a `Net` object.
-    threshold: float, optional
-        Threshold distance value for proximity detection (mm).
+
+    .. note::
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+
+    .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+
+        :Use:
+
+            >>> # Generate a set of fibers
+            >>> mat = Mat(100)
+            >>> # Build the fiber network
+            >>> net = Net(mat)
+            >>> # Stack fibers
+            >>> stack = Stack(mat, net)
+            >>> stack
+                  A   B         sA         sB         xA         yA    zA         xB         yB    zB
+            0     0   0  12.500000 -12.500000   6.057752  20.856058   0.5  -1.176401  -3.074404   0.5
+            1     0   2   3.938063  -1.799582   3.580217  12.660413   0.5   3.580217  12.660413   1.5
+            2     0   3   6.509881   8.253676   4.324414  15.122205   0.5   4.324414  15.122205   2.5
+            3     0   5   0.269800  -7.165082   2.518746   9.149084   0.5   2.518746   9.149084   1.5
+            4     0   6 -10.466114   6.264470  -0.587864  -1.127531   0.5  -0.587864  -1.127531   1.5
+            ..   ..  ..        ...        ...        ...        ...   ...        ...        ...   ...
+            862  95  95  12.500000 -12.500000 -14.234141  11.919304  27.5 -17.446723 -12.873423  27.5
+            863  96  96  12.500000 -12.500000  15.557356 -19.115497  27.5  -6.906063  -8.143040  27.5
+            864  97  97  12.500000 -12.500000 -12.739951 -17.721142  27.5 -35.249295  -6.843209  27.5
+            865  98  98  12.500000 -12.500000  17.087939 -34.582099  27.5  15.806064  -9.614985  27.5
+            866  99  99  12.500000 -12.500000 -17.894817 -13.721749  26.5 -31.635635   7.163412  26.5
+            <BLANKLINE>
+            [867 rows x 10 columns]
+
+    Data
+    ----
+    + index : pandas.Index
+        Connection label. Each label refers to a unique connection.
+    + Pair of fibers:
+        - A : pandas.Series
+            First fiber label. It must satisfy `net.A` ≤ `net.B`.
+        - B : pandas.Series
+            Second fiber label. It must satisfy `net.A` ≤ `net.B`.
+    + Curvilinear abscissa:
+        - sA : pandas.Series
+            Curvilinear abscissa of node along the first fiber (mm).
+        - sB : pandas.Series
+            Curvilinear abscissa of node along the second fiber (mm).
+    + Relative node positions:
+        - xA : pandas.Series
+            X-coordinate of node along the first fiber (mm).
+        - yA : pandas.Series
+            Y-coordinate of node along the first fiber (mm).
+        - zA : pandas.Series
+            Z-coordinate of node along the first fiber (mm).
+        - xB : pandas.Series
+            X-coordinate of node along the second fiber (mm).
+        - yB : pandas.Series
+            Y-coordinate of node along the second fiber (mm).
+        - zB : pandas.Series
+            Z-coordinate of node along the second fiber (mm).
+
+    ----
 
     Attributes
     ----------
-    attrs : dictionary
-        Global attributes:
-            - n : int, Number of fibers.
-            - size : float, Box dimensions (mm).
-            - periodic : bool, Periodicity.
-    index : pandas.Index
-        Connection label.
-    A : pandas.Series
-        First fiber label.
-    B : pandas.Series
-        Second fiber label.
-    sA : pandas.Series
-        Curvilinear abscissa of node along the first fiber (mm).
-    sB : pandas.Series
-        Curvilinear abscissa of node along the second fiber (mm).
-    xA : pandas.Series
-        X-coordinate of node along the first fiber (mm).
-    yA : pandas.Series
-        Y-coordinate of node along the first fiber (mm).
-    zA : pandas.Series
-        Z-coordinate of node along the first fiber (mm).
-    xB : pandas.Series
-        X-coordinate of node along the second fiber (mm).
-    yB : pandas.Series
-        Y-coordinate of node along the second fiber (mm).
-    zB : pandas.Series
-        Z-coordinate of node along the second fiber (mm).
+    :attr:`attrs` :
+        Global attributes of DataFrame.
 
     Methods
     -------
-    init()
+    :meth:`init` :
         Stack fibers under a gravity field.
-    check()
-        Check that `Stack` object is defined correctly.
-    solve()
+    :meth:`check` :
+        Check that a `Stack` object is defined correctly.
+    :meth:`solve` :
         Linear programming solver for the stacking problem.
-    constraint()
+    :meth:`constraint` :
         Assembly linear system to be minimized.
 
-    Properties
-    ----------
-    force : numpy.ndarray
-        Contact force. Size: (M).
-    load : numpy.ndarray
-        Resulting force. Size: (N).
-
-    Examples
-    --------
-    ```python
-        >>> # Generate a set of fibers
-        >>> mat = Mat(**inputs)
-        >>> # Build the fiber network
-        >>> net = Net(mat, **inputs)
-        >>> # Stack fibers
-        >>> stack = Stack(mat, net, **inputs)
-        >>> # Get the linear system
-        >>> C, f, H, h = Stack.constraint(mat, net)
-        >>> linsol = Stack.solve(mat, net)
-        >>> # Contact force
-        >>> force = linsol.ineqlin.marginals
-        >>> # Resulting force
-        >>> load = 0.5 * force @ np.abs(C) + 0.5 * force @ C
-
-
-    ```
+    ----
 
     """
 
@@ -438,15 +482,14 @@ class Stack(Net):
 
         Parameters
         ----------
-        *args :
+        args :
             Additional positional arguments passed to the constructor.
-        **kwargs :
+        kwargs :
             Additional keyword arguments passed to the constructor.
 
         See also
         --------
-        Stack.init :
-            Stack fibers under a gravity field.
+        `Stack.init`.
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
@@ -476,19 +519,21 @@ class Stack(Net):
             Set of fibers represented by a `Mat` object.
         net : pandas.DataFrame, optional
             Fiber network represented by a `Net` object.
-        threshold: float, optional
-            Threshold distance value for proximity detection (mm).
-        **kwargs :
-            Additional keyword arguments ignored by the function.
 
         Returns
         -------
         stack : pandas.DataFrame
             Initialized `Stack` object.
 
-        Notes
-        -----
-        `Mat` object is modified during execution.
+        Other Parameters
+        ----------------
+        threshold : float, optional
+            Threshold distance value for proximity detection (mm).
+        kwargs :
+            Additional keyword arguments ignored by the function.
+
+        .. warning::
+            `Mat` object is modified during execution.
 
         """
         # Optional
@@ -500,7 +545,7 @@ class Stack(Net):
 
         if linsol:
             # Update DataFrames
-            mat["z"] = linsol.x
+            mat.z = linsol.x
             net = Net(mat, periodic=net.attrs["periodic"])
 
             # Remove nodes based on threshold distances between nodes
@@ -520,12 +565,34 @@ class Stack(Net):
         # Return the `Stack` object
         return stack
 
+    # ~~~ Public properties ~~~ #
+
+    @property
+    def attrs(self):
+        """
+        Global attributes of DataFrame:
+            - n : int
+                Number of fibers. By default, it is empty (n = 0).
+            - size : float
+                Box dimensions (mm). By default, the domain is a 50 mm square cube.
+            - periodic : bool
+                Boundary periodicity. By default, the domain is periodic.
+
+        """
+        return self._attrs
+
+    @attrs.setter
+    def attrs(self, attrs):
+        self._attrs = attrs
+
     # ~~~ Public methods ~~~ #
 
     @staticmethod
     def check(stack=None):
         """
-        Check that `Stack` object is defined correctly.
+        Check that a `Stack` object is defined correctly.
+
+        This method is automatically called by functions that use a `Stack` object as input.
 
         Parameters
         ----------
@@ -537,10 +604,10 @@ class Stack(Net):
         KeyError
             If any keys are missing from the columns of `Stack` object.
         AttributeError
-            If any attributes are missing from the dictionary `stack.attrs`.
+            If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
-            if row indices are incorrectly defined:
-                - Row indices are not unique in [0, ..., n-1] where n is the number of connections.
+            If row indices are incorrectly defined:
+                - Row indices are not unique in [0, ..., m-1] where m is the number of connections.
                 - Connection labels are not sorted.
         TypeError
             If fiber labels are not integers.
@@ -555,10 +622,9 @@ class Stack(Net):
         stack : pandas.DataFrame
             Validated `Stack` object.
 
-        Notes
-        -----
-        If `stack` is None, it returns an empty `Stack` object.
-        If a `skip_check` flag is True in `stack.attr`, the check is passed.
+        .. note::
+            - If `stack` is None, it returns an empty `Stack` object.
+            - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
         if stack is None:
@@ -583,6 +649,11 @@ class Stack(Net):
         -------
         linsol : OptimizeResult
             Results of linear programming solver.
+
+        .. seealso::
+            scipy.optimize.linprog_
+
+        .. _scipy.optimize.linprog: https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html
 
         """
         # Optional
@@ -618,13 +689,12 @@ class Stack(Net):
 
         Returns
         -------
-        tuple
             C : sparse matrix
                 Constraint matrix.
             f : numpy.ndarray
                 Force vector.
             H : numpy.ndarray
-                Upper bound vector.
+                Upper-bound vector.
             h : numpy.ndarray
                 Thickness vector.
 
@@ -681,15 +751,17 @@ def _test_stack(n=100):
     bool
         Returns True if the test was successful.
 
+    Example
+    -------
+    >>> _test_stack()
+    True
+
     """
     mat = Mat(n, thickness=0.1, psi=0, seed=None)
     mat.l = np.random.normal(mat.l.mean(), 0.04 * mat.l.mean(), len(mat))
     mat.h = np.random.normal(mat.h.mean(), 0.1 * mat.h.mean(), len(mat))
     net = Net(mat)
-    stack = Stack(mat, net)
-
-    Mat.check(mat)
-    Stack.check(stack)
+    Stack(mat, net)
 
     # Get material data
     h = mat.h.values
@@ -711,46 +783,62 @@ def _test_stack(n=100):
 
 if __name__ == "__main__":
 
+    import numpy as np
+    from matplotlib import pyplot as plt
+    from scipy.interpolate import interp1d
+    from tqdm import tqdm
+
+    from fibermat import *
+
     # Generate a set of fibers
     mat = Mat(10)
     # Build the fiber network
-    net = Net(mat)
+    net = Net(mat, periodic=True)
     # Stack fibers
-    stack = Stack(mat, net, threshold=None)
+    stack = Stack(mat, net)
 
-    print(_test_stack())
-
+    # Get the linear system
     C, f, H, h = Stack.constraint(mat, net)
     linsol = Stack.solve(mat, net)
-
     # Contact force
     force = linsol.ineqlin.marginals
-    # Normalize by fiber weight
-    force /= np.pi / 4 * mat[[*"lbh"]].prod(axis=1).mean()
     # Resulting force
     load = 0.5 * force @ np.abs(C) + 0.5 * force @ C
-    color = interp1d([np.min(load), np.max(load)], [0, 1])
 
+    # Check data
+    Stack.check(stack)  # or `stack.check()`
+    # -> returns `stack` if correct, otherwise it raises an error.
+
+    # Normalize by fiber weight
+    load /= np.pi / 4 * mat[[*"lbh"]].prod(axis=1).mean()
+    # Get loaded nodes
     points = (stack[stack.A < stack.B][["xA", "yA", "zA", "xB", "yB", "zB"]]
               .values.reshape(-1, 2, 3))
+    # Prepare color scale
+    cmap = plt.cm.viridis
+    color = interp1d([np.min(load), np.max(load)], [0, 1])
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',
                                            xlabel="X", ylabel="Y", zlabel="Z"))
     ax.view_init(azim=45, elev=30, roll=0)
-    # Draw fibers
-    for i in tqdm(range(len(mat))):
-        fiber = mat.iloc[i]
-        A = fiber[[*"xyz"]].values - 0.5 * fiber.l * fiber[[*"uvw"]].values
-        B = fiber[[*"xyz"]].values + 0.5 * fiber.l * fiber[[*"uvw"]].values
-        plt.plot(*np.c_[A, B], c=plt.cm.viridis(color(load[i])))
-    # Draw contacts
-    for point in tqdm(points[~np.isclose(force, 0)]):
-        plt.plot(*point.T, '--ok', lw=1, mfc='none', ms=3, alpha=0.2)
+    if len(mat):
+        # Draw fibers
+        for i in tqdm(range(len(mat))):
+            # Get fiber data
+            fiber = mat.iloc[i]
+            # Calculate fiber end points
+            A = fiber[[*"xyz"]].values - 0.5 * fiber.l * fiber[[*"uvw"]].values
+            B = fiber[[*"xyz"]].values + 0.5 * fiber.l * fiber[[*"uvw"]].values
+            plt.plot(*np.c_[A, B], c=cmap(color(load[i])))
+    if len(points):
+        # Draw contacts
+        for point in tqdm(points[~np.isclose(force, 0)]):
+            plt.plot(*point.T, '--ok', lw=1, mfc='none', ms=3, alpha=0.2)
+    # Set drawing box dimensions
     ax.set_xlim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
     ax.set_ylim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
-    # Color bar
-    cmap = plt.cm.viridis
+    # Add a color bar
     norm = plt.Normalize(vmin=np.min(load), vmax=np.max(load))
     smap = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
     cbar = plt.colorbar(smap, ax=ax)
