@@ -11,7 +11,4 @@ dependencies:
     - pip
     - pip:
           - fibermat
-          - sphinx
-          - sphinx-copybutton
-          - myst-parser
-          - sphinx-rtd-theme
+          - -r ./docs/requirements.txt
