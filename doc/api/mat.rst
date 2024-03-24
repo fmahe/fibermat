@@ -7,7 +7,7 @@ Mat
 .. image:: ../../images/mat.png
     :width: 640
 
-.. autoclass:: fibermat.mat.Mat
+.. autoclass:: ../../src/fibermat.mat.Mat
     :members:
 
 Example
