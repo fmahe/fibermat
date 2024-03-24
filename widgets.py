@@ -51,6 +51,9 @@ class PipButton(ipywidgets.Button):
         ----------
         packages : str,...
             Names of Python packages to install.
+
+        Other Parameters
+        ----------------
         option : str, optional
             Additional options passed to `pip install` command.
         kwargs :

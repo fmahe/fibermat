@@ -12,13 +12,11 @@ from fibermat import Mat
 
 
 class Net(pd.DataFrame):
-    """
-    A class inherited from pandas.DataFrame_ to build a fiber network.
+    r"""
+    A class inherited from pandas.DataFrame_ to **build a fiber network**. It describes nodes and connections between fibers within a `Mat` object:
 
-    It describes nodes and connections between fibers within a `Mat` object:
-
-        - **nodes** are defined as the *nearest points* between pairs of fibers.
-        - **connections** link *pairs of nodes* to define relative positions between fibers.
+        - **nodes** are defined as the nearest points between pairs of fibers.
+        - **connections** link pairs of nodes to define relative positions between fibers.
 
     Parameters
     ----------
@@ -26,7 +24,7 @@ class Net(pd.DataFrame):
         Set of fibers represented by a `Mat` object.
 
     .. note::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -147,7 +145,7 @@ class Net(pd.DataFrame):
 
         Other Parameters
         ----------------
-        periodic : bool
+        periodic : bool, optional
             If True, duplicate fibers for periodicity. Default is True.
         pairs : numpy.ndarray, optional
             Pairs of fiber indices used to find nearest points. Size: (m x 2).
@@ -302,7 +300,7 @@ class Net(pd.DataFrame):
                 - Row indices are not unique in [0, ..., m-1] where m is the number of connections.
                 - Connection labels are not sorted.
         TypeError
-            If fiber labels are not integers.
+            If labels are not integers.
         ValueError
             If any of the following conditions are not met:
                 - Fiber labels are incorrect.
@@ -314,7 +312,7 @@ class Net(pd.DataFrame):
         net : pandas.DataFrame
             Validated `Net` object.
 
-        .. note::
+        .. hint::
             - If `net` is None, it returns an empty `Net` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
@@ -369,9 +367,7 @@ class Net(pd.DataFrame):
 
 class Stack(Net):
     """
-    A class inherited from :class:`Net` to stack a set of fibers.
-
-    It solves the following *linear programming system*:
+    A class inherited from :class:`Net` to **stack a set of fibers**. It solves the *linear programming system*:
 
     .. math::
         \min_{z} (-\mathbf{f} \cdot \mathbf{z}) \quad s.t. \quad \mathbb{C} \, \mathbf{z} \leq \mathbf{H} \quad and \quad \mathbf{z} \geq \mathbf{h} / 2
@@ -379,13 +375,13 @@ class Stack(Net):
         with \quad \mathbf{f} = -\mathbf{m} \, g \quad and \quad \mathbf{h} > 0
 
     where:
-        - :math:`\mathbf{f}` is the vector of fiber weights.
+        - :math:`\mathbf{f}` is the vector of fiber weights (with :math:`\mathbf{m}` fiber masses, :math:`g`: gravity).
         - :math:`\mathbf{z}` is the unknown vector of fiber vertical positions.
         - :math:`\mathbf{h}` is the vector of fiber thicknesses.
         - :math:`\mathbb{C}` is the matrix of inequality constraints that positions must satisfy to prevent the fibers from crossing each other.
         - :math:`-\mathbf{H}` corresponds to the minimum distances between the pairs of fibers.
 
-    The *condition of non-penetration* between two fibers gives the expression of each condition found in the rows of :math:`\mathbb{C}` and :math:`\mathbf{H}`:
+    *Non-penetration conditions* between two fibers give the expressions of rows of :math:`\mathbb{C}` and :math:`\mathbf{H}`:
 
     .. math::
         z_B - z_A \geq (h_A + h_B) \, / \, 2 \quad \Leftrightarrow \quad z_A - z_B \leq - (h_A + h_B) \, / \, 2
@@ -398,7 +394,7 @@ class Stack(Net):
         Fiber network represented by a `Net` object.
 
     .. note::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -464,13 +460,13 @@ class Stack(Net):
     Methods
     -------
     :meth:`init` :
-        Stack fibers under a gravity field.
+        Stack fibers by gravity.
     :meth:`check` :
         Check that a `Stack` object is defined correctly.
     :meth:`solve` :
-        Linear programming solver for the stacking problem.
+        Solve the stacking problem.
     :meth:`constraint` :
-        Assembly linear system to be minimized.
+        Assemble the linear system.
 
     ----
 
@@ -511,7 +507,7 @@ class Stack(Net):
     @staticmethod
     def init(mat=None, net=None, threshold=None, **kwargs):
         """
-        Stack fibers under a gravity field.
+        Stack fibers by gravity.
 
         Parameters
         ----------
@@ -610,7 +606,7 @@ class Stack(Net):
                 - Row indices are not unique in [0, ..., m-1] where m is the number of connections.
                 - Connection labels are not sorted.
         TypeError
-            If fiber labels are not integers.
+            If labels are not integers.
         ValueError
             If any of the following conditions are not met:
                 - Fiber labels are incorrect.
@@ -622,7 +618,7 @@ class Stack(Net):
         stack : pandas.DataFrame
             Validated `Stack` object.
 
-        .. note::
+        .. hint::
             - If `stack` is None, it returns an empty `Stack` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
@@ -636,7 +632,7 @@ class Stack(Net):
     @staticmethod
     def solve(mat=None, net=None):
         """
-        Linear programming solver for the stacking problem.
+        Solve the stacking problem.
 
         Parameters
         ----------
@@ -651,7 +647,7 @@ class Stack(Net):
             Results of linear programming solver.
 
         .. seealso::
-            scipy.optimize.linprog_
+            The solver is based on scipy.optimize.linprog_.
 
         .. _scipy.optimize.linprog: https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html
 
@@ -660,7 +656,7 @@ class Stack(Net):
         mat = Mat.check(mat)
         net = Net.check(net)
 
-        # Assembly linear programming system
+        # Assemble the linear programming system
         C, f, H, h = Stack.constraint(mat, net)
 
         if len(mat):
@@ -675,10 +671,12 @@ class Stack(Net):
     @staticmethod
     def constraint(mat=None, net=None):
         """
-        Assembly linear system to be minimized:
+        Assemble the linear system:
 
-            min_{z}(-𝒇·z) s.t. ℂ·z ≤ 𝑯 and z ≥ ½𝐡
-                with 𝒇 = -𝐦g and 𝐡 > 0
+        .. math::
+            \min_{z} (-\mathbf{f} \cdot \mathbf{z}) \quad s.t. \quad \mathbb{C} \, \mathbf{z} \leq \mathbf{H} \quad and \quad \mathbf{z} \geq \mathbf{h} / 2
+        .. math::
+            with \quad \mathbf{f} = -\mathbf{m} \, g \quad and \quad \mathbf{h} > 0
 
         Parameters
         ----------
@@ -738,7 +736,7 @@ def _test_stack(n=100):
 
     Parameters
     ----------
-    n : int
+    n : int, optional
         Number of fibers. Default is 100.
 
     Raises

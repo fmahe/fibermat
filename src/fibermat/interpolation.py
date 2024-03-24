@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-📈 Interpolation
----------------
-
-Class
------
-Interpolate :
-    A class for interpolating array values with memory size reduction.
-
-"""
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -18,7 +8,7 @@ from scipy.interpolate import interp1d
 
 class Interpolate(interp1d):
     """
-    A class for interpolating array values with memory size reduction.
+    A class for interpolating array values inherited from `scipy.interpolate.interp1d <https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html>`_.
 
     Parameters
     ----------
@@ -34,50 +24,12 @@ class Interpolate(interp1d):
     dtype : type
         Data type used for interpolation.
 
-    Examples
-    --------
-    Prepare data for interpolation:
-
-    .. code-block:: python
-
-        >>> # Reference solution
-        >>> x = np.linspace(0, 10, 1001)
-        >>> y = np.sin(x)
-
-        >>> # Interpolation nodes
-        >>> X = x[::100]
-        >>> Y = y[::100]
-
-    Create interpolation functions:
-
-    .. code-block:: python
-
-        >>> # Interpolated functions
-        >>> f_ = Interpolate(Y, size=11, kind='cubic')
-        >>> x_ = Interpolate(X, size=11)
-        >>> t = np.linspace(0, 1, 100)
-
-    Plot raw data and interpolated data:
-
-    .. code-block:: python
-
-        # Figure
-        plt.figure()
-        p, = plt.plot(x, y, label="Reference solution")
-        plt.plot(X, Y, 'o', color=p.get_color(), label="Interpolation nodes")
-        plt.plot(x_(t), f_(t), '--', label="Interpolated function")
-        plt.xlabel("X")
-        plt.ylabel("Y")
-        plt.legend()
-        plt.show()
-
-    Notes
-    -----
-    .. seealso::
-        `scipy.interpolate.interp1d <https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html>`_
-
     Methods
     -------
+    :meth:`__call__` :
+        Return interpolated data.
+
+    ----
 
     """
 
@@ -136,6 +88,9 @@ class Interpolate(interp1d):
 
 if __name__ == "__main__":
 
+    import numpy as np
+    from matplotlib import pyplot as plt
+
     # Reference solution
     x = np.linspace(0, 10, 1001)
     y = np.sin(x)
@@ -167,5 +122,5 @@ if __name__ == "__main__":
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.legend()
-    plt.title("Interpolation with memory size reduction")
+    plt.title("Interpolations")
     plt.show()

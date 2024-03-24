@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-🔧 Model
---------
-
-Functions
----------
-stiffness(mat, mesh) :
-    Assembly quadratic system to be minimized.
-constraint(mat, mesh) :
-    Assembly linear constraints.
-plot_system(K, u, F, du, dF, C, f, H, df, dH) :
-    Visualize the system of equations.
-
-"""
 
 import numpy as np
 import scipy as sp
@@ -24,10 +10,41 @@ from fibermat import Mat, Net, Stack, Mesh
 
 
 def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
-    """
-    Assembly quadratic system to be minimized:
+    r"""
+    Assemble the quadratic system to be minimized.
 
-        𝕂·𝒖 = 𝑭
+    The mechanical model is built using a **Timoshenko beam law** [1]_:
+
+    .. math::
+        \mathbb{K}_e = \frac{Gbh}{l_e} \cdot \frac{\pi / 4}{1 + \frac{G}{E} \left( \frac{l_e}{h} \right)^2}
+            \left[\begin{matrix}
+                1  &  l_e / 2  &  -1  &  l_e / 2  \\
+                l_e / 2  &  {l_e}^2 / 3 + \frac{E}{G} h^2  &  -l_e / 2  &  {l_e}^2 / 6 - \frac{E}{G} h^2  \\
+               -1  &  -l_e / 2  &  1  &  -l_e / 2  \\
+                l_e / 2  &  {l_e}^2 / 6 - \frac{E}{G} h^2  &  -l_e / 2  &  {l_e}^2 / 3 + \frac{E}{G} h^2  \\
+            \end{matrix}\right]
+            \ , \quad \mathbf{F}_e =
+            \left(\begin{matrix}
+                0 \\
+                0 \\
+                0 \\
+                0 \\
+            \end{matrix}\right)
+
+    where:
+        - :math:`l_e` is the *length of the beam* element.
+        - :math:`E` is the tensile modulus.
+        - :math:`G` is the shear modulus.
+        - :math:`b` and :math:`h` are the width and thickness of the fiber.
+
+    The displacement vector :math:`\mathbf{u} = (\dots, u_i, \theta_i, \dots)` (with :math:`u_i` being the vertical displacement and :math:`\theta_i` the rotation of the cross-section of the :math:`i^{th}` node) satisfies **mechanical equilibrium**:
+
+    .. math::
+        \mathbb{K} \, \mathbf{u} = \mathbf{F}
+
+    .. rubric:: Footnotes
+
+    .. [1] `Timoshenko–Ehrenfest beam theory, Wikipedia <https://en.wikipedia.org/wiki/Timoshenko%E2%80%93Ehrenfest_beam_theory>`_.
 
     Parameters
     ----------
@@ -56,10 +73,45 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
         Lower bound used to rescale beam lengths (mm).
     lmax : float, optional
         Upper bound used to rescale beam lengths (mm).
-    coupling : float
-        Coupling numerical constant between zero and one. Default is 1.0.
+    coupling : float, optional
+        Coupling numerical constant between 0 and 1. Default is 1.0.
     kwargs :
         Additional keyword arguments ignored by the function.
+
+    :Use:
+
+        >>> # Linear model (Ψ² ≫ 1)
+        >>> mat = Mat(1, length=1, width=1, thickness=1, shear=1, tensile=np.inf)
+        >>> net = Net(mat)
+        >>> mesh = Mesh(net)
+        >>> # print("Linear (Ψ² ≫ 1) =")
+        >>> print(4 / np.pi * stiffness(mat, mesh, coupling=1)[0].todense())
+        [[ 1.   0.5 -1.   0.5]
+         [ 0.5  inf -0.5 -inf]
+         [-1.  -0.5  1.  -0.5]
+         [ 0.5 -inf -0.5  inf]]
+
+        >>> # Timoshenko model (Ψ² = 1)
+        >>> mat = Mat(1, length=1, width=1, thickness=1, shear=2, tensile=2)
+        >>> net = Net(mat)
+        >>> mesh = Mesh(net)
+        >>> # print("Timoshenko (Ψ² = 1) = 1 / 2 *")
+        >>> print(4 / np.pi * stiffness(mat, mesh, coupling=1)[0].todense())
+        [[ 1.          0.5        -1.          0.5       ]
+         [ 0.5         1.33333333 -0.5        -0.83333333]
+         [-1.         -0.5         1.         -0.5       ]
+         [ 0.5        -0.83333333 -0.5         1.33333333]]
+
+        >>> # Euler model (Ψ² ≪ 1)
+        >>> mat = Mat(1, length=1, width=1, thickness=1, shear=1e12, tensile=12)
+        >>> net = Net(mat)
+        >>> mesh = Mesh(net)
+        >>> # print("Euler (Ψ² ≪ 1) = 1 / 12 *")
+        >>> print(4 / np.pi * stiffness(mat, mesh, coupling=1)[0].todense())
+        [[ 12.   6. -12.   6.]
+         [  6.   4.  -6.   2.]
+         [-12.  -6.  12.  -6.]
+         [  6.   2.  -6.   4.]]
 
     """
     # Optional
@@ -127,14 +179,39 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
 
 
 def constraint(mat, mesh, **kwargs):
-    """
-    Assembly linear constraints:
+    r"""
+    Assemble the linear constraints.
 
-        ℂ·𝒖 ≤ 𝑯, 𝒖 ≤ 0
+    The contact model is built using **normal non-penetration conditions** [2]_:
 
-    with Lagrangian multipliers:
+    .. math::
+        \mathbb{C}_e =
+            \left[\begin{array}{rrrr}
+                 -1  &  0  &  0  &  0  \\
+                  1  &  0  & -1  &  0  \\
+                  0  &  0  &  1  &  0  \\
+            \end{array}\right]
+            \ , \quad \mathbf{H}_e =
+            \left(\begin{matrix}
+                z_A - \frac{1}{2} \, h_A \\
+                z_B - z_A - \frac{1}{2} \, (h_A + h_B) \\
+                Z - z_B - \frac{1}{2} \, h_B \\
+            \end{matrix}\right)
 
-        𝒇 ≥ 0 and 𝒇·(𝑯 - ℂ·𝒖) = 0
+    where:
+        - :math:`z_A` and :math:`z_B` are the vertical positions of nodes A and B.
+        - :math:`h_A` and :math:`h_B` are the fiber thicknesses at nodes A and B.
+
+    The vector :math:`f` is the vector of Lagrangian multipliers that corresponds to contact forces. It satisfies **KKT conditions**:
+
+    .. math::
+        \mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
+        \quad \mathbf{f} \geq 0
+        \quad and \quad \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) = 0
+
+    .. rubric:: Footnotes
+
+    .. [2] `Karush–Kuhn–Tucker conditions, Wikipedia <https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions>`_.
 
     Parameters
     ----------
@@ -142,8 +219,6 @@ def constraint(mat, mesh, **kwargs):
         Set of fibers represented by a `Mat` object.
     mesh : pandas.DataFrame
         Fiber mesh represented by a `Mesh` object.
-    kwargs :
-        Additional keyword arguments ignored by the function.
 
     Returns
     -------
@@ -158,6 +233,11 @@ def constraint(mat, mesh, **kwargs):
             Incremental force vector.
         dH : numpy.ndarray
             Incremental upper-bound vector.
+
+    Other Parameters
+    ----------------
+    kwargs :
+        Additional keyword arguments ignored by the function.
 
     """
     # Optional
@@ -250,7 +330,7 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
         Tolerance used for contact detection (mm). Default is 1e-6 mm.
 
     """
-    # Assembly quadratic programming system
+    # Assemble the quadratic programming system
     P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
     x = np.r_[u, f]
     q = np.r_[F, H]
@@ -304,7 +384,12 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
 
 if __name__ == "__main__":
 
-    # Linear
+    import numpy as np
+    from matplotlib import pyplot as plt
+
+    from fibermat import *
+
+    # Linear model (Ψ² ≫ 1)
     mat = Mat(1, length=1, width=1, thickness=1, shear=1, tensile=np.inf)
     net = Net(mat)
     mesh = Mesh(net)
@@ -312,7 +397,7 @@ if __name__ == "__main__":
     print(4 / np.pi * stiffness(mat, mesh, coupling=1)[0].todense())
     print()
 
-    # Timoshenko
+    # Timoshenko model (Ψ² = 1)
     mat = Mat(1, length=1, width=1, thickness=1, shear=2, tensile=2)
     net = Net(mat)
     mesh = Mesh(net)
@@ -320,7 +405,7 @@ if __name__ == "__main__":
     print(4 / np.pi * stiffness(mat, mesh, coupling=1)[0].todense())
     print()
 
-    # Euler
+    # Euler model (Ψ² ≪ 1)
     mat = Mat(1, length=1, width=1, thickness=1, shear=1e12, tensile=12)
     net = Net(mat)
     mesh = Mesh(net)
@@ -329,7 +414,7 @@ if __name__ == "__main__":
     print()
 
     # Generate a set of fibers
-    mat = Mat(100)
+    mat = Mat(10)
     # Build the fiber network
     net = Net(mat)
     # Stack fibers
@@ -337,7 +422,7 @@ if __name__ == "__main__":
     # Create the fiber mesh
     mesh = Mesh(stack)
 
-    # Assembly quadratic programming system
+    # Assemble the quadratic programming system
     K, u, F, du, dF = stiffness(mat, mesh)
     C, f, H, df, dH = constraint(mat, mesh)
     plot_system(K, u, F, du, dF, C, f, H, df, dH)

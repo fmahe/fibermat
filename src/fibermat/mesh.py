@@ -11,12 +11,10 @@ from fibermat import Mat, Net
 
 class Mesh(pd.DataFrame):
     """
-    A class inherited from pandas.DataFrame_ representing a mesh structure for a set of discontinuous fibers.
+    A class inherited from pandas.DataFrame_ to **represent a mesh structure** for a set of discontinuous fibers. It defines:
 
-    It defines:
-
-        - the intra-fiber elements (**beam** elements).
-        - the inter-fiber connections (**constraint** elements).
+        - the **beam** elements (intra-fiber connections).
+        - the **constraint** elements (inter-fiber connections).
 
     Parameters
     ----------
@@ -24,7 +22,7 @@ class Mesh(pd.DataFrame):
          Fiber network represented by a `Net` object.
 
     .. note::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -72,7 +70,7 @@ class Mesh(pd.DataFrame):
         - constraint : pandas.Series
             Index of the connected node. It defines a constraint on the relative node positions.
         - beam : pandas.Series
-            Index of the next node along the fiber. It defines a beam elements with a mechanical stiffness.
+            Index of the next node along the fiber. It defines a mechanical beam element.
 
     ----
 
@@ -230,14 +228,14 @@ class Mesh(pd.DataFrame):
         TypeError
             If labels are not integers.
         ValueError
-            If fibers, beams or constraints are ill-defined or not sorted.
+            If fibers, beams or constraints are ill-defined, improperly connected or not sorted.
 
         Returns
         -------
         mesh : pandas.DataFrame
             Validated `Mesh` object.
 
-        .. note::
+        .. hint::
             - If `mesh` is None, it returns an empty `Mesh` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
@@ -318,6 +316,12 @@ class Mesh(pd.DataFrame):
 ################################################################################
 
 if __name__ == "__main__":
+
+    import numpy as np
+    from matplotlib import pyplot as plt
+    from tqdm import tqdm
+
+    from fibermat import *
 
     # Generate a set of fibers
     mat = Mat(10)

@@ -15,6 +15,12 @@ Example
 
 .. code-block:: python
 
+    import numpy as np
+    from matplotlib import pyplot as plt
+    from tqdm import tqdm
+
+    from fibermat import *
+
     # Generate a set of fibers
     mat = Mat(100)
     # Build the fiber network

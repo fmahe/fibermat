@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-🗹 Widgets
-----------
-
-Classes
--------
-Settings :
-    Display widgets for setting parameters in Jupyter notebooks.
-
-"""
 
 import ipywidgets
 import numpy as np
@@ -20,26 +10,18 @@ class Settings(dict):
     """
     A class for setting parameters in Jupyter notebooks.
 
-    Parameters
-    ----------
-    TODO: Complete documentation.
-
-    Attributes
-    ----------
-    TODO: Complete documentation.
-
     Methods
     -------
-    Inputs()
-        Initialize a `Settings` widget.
-    __iter__()
+    :meth:`__iter__`
         Iterate over widgets.
-    __getitem__(name)
+    :meth:`__getitem__`
         Get the value of a given widget.
-    __setitem__(name, value)
+    :meth:`__setitem__`
         Set the value of a given widget.
-    __call__()
+    :meth:`__call__`
         Display widgets for setting parameters.
+
+    ----
 
     """
     def __init__(self, n=0, length=25., width=1., thickness=1., size=50.,
@@ -225,8 +207,8 @@ class Settings(dict):
         """
         Display widgets for setting parameters with syntax `self(**kwargs)`.
 
-        Parameters
-        ----------
+        Other Parameters
+        ----------------
         kwargs :
             Additional keyword arguments to set widget values.
 

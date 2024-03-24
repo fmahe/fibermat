@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-🌐 Render
----------
-
-Functions
----------
-vtk_fiber() :
-    Export a fiber as VTK mesh.
-vtk_mat() :
-    Export a `Mat` object as VTK mesh.
-vtk_mesh() :
-    Export a `Mesh` object as VTK mesh.
-
-"""
 
 import numpy as np
 import pyvista as pv
@@ -28,60 +14,59 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
               u=1., v=0., w=0., shear=1., tensile=np.inf, index=None,
               r_resolution=1, theta_resolution=8, z_resolution=20, **kwargs):
     """
-    Export a fiber as VTK mesh.
+    Export a fiber as VTK mesh using `pyvista.CylinderStructured <https://docs.pyvista.org/version/stable/api/utilities/_autosummary/pyvista.CylinderStructured.html>`_.
 
     Parameters
     ----------
-    length : float
+    length : float, optional
         Fiber length (mm). Default is 25 mm.
-    width : float
+    width : float, optional
         Fiber width (mm). Default is 1 mm.
-    thickness : float
+    thickness : float, optional
         Fiber thickness (mm). Default is 1 mm.
-    x : float
+    x : float, optional
         Fiber position: X-coordinate (mm). Default is 0 mm.
-    y : float
+    y : float, optional
         Fiber position: Y-coordinate (mm). Default is 0 mm.
-    z : float
+    z : float, optional
         Fiber position: Z-coordinate (mm). Default is 0 mm.
-    u : float
+    u : float, optional
         Fiber orientation: X-component. Default is 1.
-    v : float
+    v : float, optional
         Fiber orientation: Y-component. Default is 0.
-    w : float
+    w : float, optional
         Fiber orientation: Z-component. Default is 0.
-    shear : float
+    shear : float, optional
         Shear modulus (MPa). Default is 1 MPa.
-    tensile : float
+    tensile : float, optional
         Tensile modulus (MPa). Default is ∞ MPa.
     index : int, optional
         Fiber label.
 
     Returns
     -------
-    pv.StructuredGrid
+    pyvista.StructuredGrid
         VTK mesh.
 
     Other Parameters
     ----------------
-    r_resolution : int
+    r_resolution : int, optional
         Number of elements along the radius of the fiber. Default is 1.
-    theta_resolution : int
+    theta_resolution : int, optional
         Number of points on the circular face of the fiber. Default is 8.
-    z_resolution : int
+    z_resolution : int, optional
         Number of points along the length of the fiber. Default is 20.
     kwargs :
         Additional keyword arguments ignored by the function.
 
-    Notes
-    -----
-    If `index` is not None, the following fields are added to the VTK mesh:
-        - "fiber" : fiber index
-        - "lbh" : fiber dimensions (mm)
-        - "xyz" : local fiber coordinates (mm)
-        - "uvw" : fiber orientation vector
-        - "G" : shear modulus (MPa)
-        - "E" : tensile modulus (MPa)
+    .. hint::
+        If `index` is not None, the following fields are added to the VTK mesh:
+            - :attr:`fiber` : fiber index
+            - :attr:`lbh` : fiber dimensions (mm)
+            - :attr:`xyz` : local fiber coordinates (mm)
+            - :attr:`uvw` : fiber orientation vector
+            - :attr:`G` : shear modulus (MPa)
+            - :attr:`E` : tensile modulus (MPa)
 
     """
     # Create the VTK mesh (cylindrical structured grid)
@@ -121,7 +106,7 @@ def vtk_mat(mat=None, **kwargs):
 
     Returns
     -------
-    pv.UnstructuredGrid
+    pyvista.UnstructuredGrid
         VTK mesh.
 
     Other Parameters
@@ -129,15 +114,14 @@ def vtk_mat(mat=None, **kwargs):
     kwargs :
         Additional keyword arguments passed to `vtk_fiber` function.
 
-    Notes
-    -----
-    The following fields are added to the VTK mesh:
-        - "fiber" : fiber index
-        - "lbh" : fiber dimensions (mm)
-        - "xyz" : local fiber coordinates (mm)
-        - "uvw" : fiber orientation vector
-        - "G" : shear modulus (MPa)
-        - "E" : tensile modulus (MPa)
+    .. hint::
+        The following fields are added to the VTK mesh:
+            - :attr:`fiber` : fiber index
+            - :attr:`lbh` : fiber dimensions (mm)
+            - :attr:`xyz` : local fiber coordinates (mm)
+            - :attr:`uvw` : fiber orientation vector
+            - :attr:`G` : shear modulus (MPa)
+            - :attr:`E` : tensile modulus (MPa)
 
     """
     # Optional
@@ -173,37 +157,36 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
 
     Returns
     -------
-    pv.UnstructuredGrid
+    pyvista.UnstructuredGrid
         VTK mesh.
 
     Other Parameters
     ----------------
     displacement : numpy.ndarray, optional
-        Displacement vector.
+        Displacement field.
     rotation : numpy.ndarray, optional
-        Rotation vector.
+        Rotation field.
     force : numpy.ndarray, optional
-        Load vector.
+        Load field.
     moment : numpy.ndarray, optional
-        Torque vector.
+        Torque field.
     kwargs :
         Additional keyword arguments passed to `vtk_fiber` function.
 
-    Notes
-    -----
-    The following fields are added to the VTK mesh:
-        - "fiber" : fiber index
-        - "lbh" : fiber dimensions (mm)
-        - "xyz" : local fiber coordinates (mm)
-        - "uvw" : fiber orientation vector
-        - "G" : shear modulus (MPa)
-        - "E" : tensile modulus (MPa)
-    If `displacement` is not None:
-        - "displacement" : displacement field (mm)
-        - "rotation" : rotation field (rad)
-        - "curvature" : curvature field (1 / mm)
-    If `force` is not None:
-        - "force" : force field (N)
+    .. hint::
+        The following fields are added to the VTK mesh:
+            - :attr:`fiber` : fiber index
+            - :attr:`lbh` : fiber dimensions (mm)
+            - :attr:`xyz` : local fiber coordinates (mm)
+            - :attr:`uvw` : fiber orientation vector
+            - :attr:`G` : shear modulus (MPa)
+            - :attr:`E` : tensile modulus (MPa)
+        If `displacement` is not None:
+            - :attr:`displacement` : displacement field (mm)
+            - :attr:`rotation` : rotation field (rad)
+            - :attr:`curvature` : curvature field (1 / mm)
+        If `force` is not None:
+            - :attr:`force` : force field (N)
 
     """
     # Optional
@@ -289,14 +272,35 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
 
 if __name__ == "__main__":
 
+    from matplotlib import pyplot as plt
+
+    from fibermat import *
+
+    # Create a VTK fiber
+    vtk_fiber().plot()
+
     # Generate a set of fibers
     mat = Mat(100)
     # Build the fiber network
-    net = Net(mat)
+    net = Net(mat, periodic=True)
     # Stack fibers
     stack = Stack(mat, net)
     # Create the fiber mesh
     mesh = Mesh(stack)
 
-    # Export as VTK
+    # Create a VTK mat
+    vtk_mat(mat).plot()
+
+    # Create a VTK mesh
     vtk_mesh(mat, mesh).plot()
+
+    # Solve the mechanical packing problem
+    K, C, u, f, F, H, Z, rlambda, mask, err = solver(
+        mat, mesh, packing=4, lmin=0.01, coupling=0.99
+    )
+
+    # Export as VTK
+    vtk = vtk_mesh(mat, mesh,
+                   *u(1).reshape(-1, 2).T,
+                   *(f(1) @ C).reshape(-1, 2).T)
+    vtk.plot(scalars="force", cmap=plt.cm.twilight_shifted)

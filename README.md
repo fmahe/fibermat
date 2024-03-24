@@ -141,14 +141,14 @@ pip install --upgrade .
 
 ### Build the sources:
 
-Clone the repository and run `build` command:
+Clone the repository and run `./make` script:
 ```sh
 # Clone the repository
 git clone git@github.com:fmahe/fibermat.git
 cd ./fibermat
 
 # Build the sources
-python -m build
+./make --all
 
 ```
 

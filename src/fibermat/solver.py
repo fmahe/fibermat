@@ -9,26 +9,42 @@ from tqdm import tqdm
 from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
 
 
-def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
+def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
            itermax=1000, tol=1e-6, errtol=1e-6, interp_size=None,
            verbose=True, **kwargs):
-    """
-    Mechanical fiber packing by solving the quadratic programming problem:
+    r"""An iterative mechanical solver for fiber packing problems. It solves the *quadratic programming problem*:
 
-        min_{𝒖}(½𝒖·𝕂·𝒖 - 𝑭·𝒖) s.t. ℂ·𝒖 ≤ 𝑯 and 𝒖 ≤ 0
+    .. math::
+        \min_{\mathbf{u}, \mathbf{f}} \left( \frac{1}{2} \, \mathbf{u} \, \mathbb{K} \, \mathbf{u} - \mathbf{F} \, \mathbf{u} - \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) \right)
+    .. math::
+        \quad s.t. \quad \mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
+        \quad \mathbf{u} \leq 0 \, ,
+        \quad \mathbf{f} \geq 0
+        \quad and \quad \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) = 0
 
-    Constraints are solved using Lagrangian multipliers :
+    where:
+        - :math:`\mathbf{u}` is the vector of generalized displacements (*unknowns of the problem*).
+        - :math:`\mathbf{f}` is the vector of generalized forces (*unknowns Lagrange multipliers*).
+        - :math:`\mathbb{K}` is the stiffness matrix of the fiber set.
+        - :math:`\mathbf{F}` is the vector of external efforts.
+        - :math:`\mathbb{C}` is the matrix of non-penetration constraints.
+        - :math:`\mathbf{H}` is the vector of minimal distances between fibers (minimal distances).
 
-        min_{𝒖, 𝒇}(½𝒖·𝕂·𝒖 - 𝑭·𝒖 - 𝒇·(𝑯 - ℂ·𝒖))
+    The *mechanical equilibrium* allows reformulating the problem as a system of inequalities:
 
-        s.t. ℂ·𝒖 ≤ 𝑯, 𝒖 ≤ 0, 𝒇 ≥ 0 and 𝒇·(𝑯 - ℂ·𝒖) = 0
+    .. math::
+        \Rightarrow \quad \left[\begin{matrix}
+            \mathbb{K} & \mathbb{C}^T \\
+            \mathbb{C} & 0
+        \end{matrix}\right] \binom{\mathbf{u}}{\mathbf{f}}
+            \leq \binom{\mathbf{F}}{\mathbf{H}}
 
-    which leads to solving the inequality system:
+    which is solved using an iterative *Updated Lagrangian Approach*.
 
-        ⎡ K  Cᵀ⎤⎡u⎤ ≤ ⎡F⎤
-        ⎣ C  0 ⎦⎣f⎦   ⎣H⎦
-
-    by an Updated Lagrangian Approach.
+    .. tip::
+        Models used to build the matrices are implemented in :ref:`🔧 Model`:
+            - 𝕂 and 𝑭 : :func:`~.model.stiffness`.
+            - ℂ and 𝑯 : :func:`~.model.constraint`.
 
     Parameters
     ----------
@@ -36,11 +52,12 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
         Set of fibers represented by a `Mat` object.
     mesh : pandas.DataFrame
         Fiber mesh represented by a `Mesh` object.
-    packing : float
+    packing : float, optional
         Targeted value of packing. Must be greater than 1. Default is 1.0.
 
     Returns
     -------
+    tuple
         K : sparse matrix
             Stiffness matrix (symmetric positive-semi definite).
         C : sparse matrix
@@ -58,32 +75,32 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
         rlambda : Interpolate
             Compaction.
         mask : Interpolate
-            Active rows and columns in the system of equations.
+            Active rows and columns in the system of inequations.
         err : Interpolate
             Numerical error of the linear solver.
 
-        .. seealso::
-            :class:`~.interpolation.Interpolate`.
+    .. seealso::
+        Simulation results are given as functions of a pseudo-time parameter (between 0 and 1) using :class:`~.interpolation.Interpolate` objects.
 
     Other Parameters
     ----------------
-    solver : callable
-        Sparse solver. Default is `scipy.sparse.linalg.spsolve`.
-    itermax : int
+    solve : callable, optional
+        Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝒃 and returns the solution 𝒙 of the linear system: 𝔸 𝒙 = 𝒃. Default is `scipy.sparse.linalg.spsolve`.
+    itermax : int, optional
         Maximum number of solver iterations. Default is 1000.
-    tol : float
+    tol : float, optional
         Tolerance used for contact detection (mm). Default is 1e-6 mm.
-    errtol : float
+    errtol : float, optional
         Tolerance for the numerical error. Default is 1e-6.
     interp_size : int, optional
         Size of array used for interpolation. Default is None.
-    verbose : bool
+    verbose : bool, optional
         If True, displays a progress bar during simulation. Default is True.
     kwargs :
         Additional keyword arguments passed to matrix constructors.
 
     """
-    # Assembly quadratic programming system
+    # Assemble the quadratic programming system
     # TODO: pass a model as argument instead
     K, u, F, du, dF = stiffness(mat, mesh, **kwargs)
     C, f, H, df, dH = constraint(mat, mesh, **kwargs)
@@ -118,7 +135,7 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
             mask = (np.real(q - P @ x) <= tol)
             mask &= np.array(np.sum(np.abs(np.real(P)), axis=0) > 0).ravel()
             # Solve linear problem
-            sol = solver(P[np.ix_(mask, mask)], dq[mask])
+            sol = solve(P[np.ix_(mask, mask)], dq[mask])
             dx[mask] += np.real(sol)
             # Calculate error
             err = np.linalg.norm(P[np.ix_(mask, mask)] @ dx[mask] - dq[mask])
@@ -183,8 +200,10 @@ def solver(mat, mesh, packing=1., solver=sp.sparse.linalg.spsolve,
 
 if __name__ == "__main__":
 
+    from fibermat import *
+
     # Generate a set of fibers
-    mat = Mat(100, tensile=625)
+    mat = Mat(100)
     # Build the fiber network
     net = Net(mat)
     # Stack fibers
@@ -196,3 +215,32 @@ if __name__ == "__main__":
     K, C, u, f, F, H, Z, rlambda, mask, err = solver(
         mat, mesh, packing=4, lmin=0.01, coupling=0.99
     )
+
+    # Deform the mesh
+    mesh.z += u(1)[::2]
+
+    # Figure
+    fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',
+                                           xlabel="X", ylabel="Y", zlabel="Z"))
+    ax.view_init(azim=45, elev=30, roll=0)
+    if len(mesh):
+        # Draw elements
+        for i, j, k in tqdm(zip(mesh.index, mesh.beam, mesh.constraint),
+                            total=len(mesh)):
+            # Get element data
+            a, b, c = mesh.iloc[[i, j, k]][[*"xyz"]].values
+            if mesh.iloc[i].s < mesh.iloc[j].s:
+                # Draw intra-fiber connection
+                plt.plot(*np.c_[a, b],
+                         c=plt.cm.tab10(mesh.fiber.iloc[i] % 10))
+            if mesh.iloc[i].z < mesh.iloc[k].z:
+                # Draw inter-fiber connection
+                plt.plot(*np.c_[a, c], '--ok',
+                         lw=1, mfc='none', ms=3, alpha=0.2)
+            if mesh.iloc[i].fiber == mesh.iloc[k].fiber:
+                # Draw fiber end nodes
+                plt.plot(*np.c_[a, c], '+k', ms=3, alpha=0.2)
+    # Set drawing box dimensions
+    ax.set_xlim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
+    ax.set_ylim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
+    plt.show()

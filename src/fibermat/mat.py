@@ -9,39 +9,37 @@ from tqdm import tqdm
 
 class Mat(pd.DataFrame):
     """
-    A class inherited from pandas.DataFrame_ to describe a material made up of a set of random straight fibers.
+    A class inherited from pandas.DataFrame_ to **describe a fibrous material** made up of a set of random fibers. It defines:
 
-    It defines:
-
-        - the geometry of the fibers.
+        - the geometry of the straight fibers.
         - the initial configuration (positions and orientations).
         - the material properties.
 
     Parameters
     ----------
-    n : int
+    n : int, optional
         Number of fibers. Default is 0.
-    length : float
+    length : float, optional
         Fiber length (mm). Default is 25 mm.
-    width : float
+    width : float, optional
         Fiber width (mm). Default is 1 mm.
-    thickness : float
+    thickness : float, optional
         Fiber thickness (mm). Default is 1 mm.
-    size : float
+    size : float, optional
         Box dimensions (mm). Default is 50 mm.
-    theta : float
+    theta : float, optional
         In plane angle (rad). Default is π rad.
-    psi : float
+    psi : float, optional
         Out-of-plane angle (rad). Default is 0 rad.
-    shear : float
+    shear : float, optional
         Shear modulus (MPa). Default is 1 MPa.
-    tensile : float
+    tensile : float, optional
         Tensile modulus (MPa). Default is ∞ MPa.
     seed : int, optional
         Random seed for reproducibility. Default is 0.
 
     .. note::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the default inherited pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -89,7 +87,7 @@ class Mat(pd.DataFrame):
         - v : pandas.Series
             Y-component. By default, orientations are randomly distributed with a uniform distribution in the half-unit circle θ: [-π / 2, π / 2].
         - w : pandas.Series
-            Z-component. By default, orientations are in the plane, so the Z-component is zero.
+            Z-component. By default, orientations are in the plane, so the Z-component is 0.
     + Material properties:
         - G : pandas.Series
             Shear modulus (MPa). By default, shear modulus is 1 MPa.
@@ -156,23 +154,23 @@ class Mat(pd.DataFrame):
 
         Parameters
         ----------
-        n : int
+        n : int, optional
             Number of fibers. Default is 0.
-        length : float
+        length : float, optional
             Fiber length (mm). Default is 25 mm.
-        width : float
+        width : float, optional
             Fiber width (mm). Default is 1 mm.
-        thickness : float
+        thickness : float, optional
             Fiber thickness (mm). Default is 1 mm.
-        size : float
+        size : float, optional
             Box dimensions (mm). Default is 50 mm.
-        theta : float
+        theta : float, optional
             In plane angle (rad). Default is π rad.
-        psi : float
+        psi : float, optional
             Out-of-plane angle (rad). Default is 0 rad.
-        shear : float
+        shear : float, optional
             Shear modulus (MPa). Default is 1 MPa.
-        tensile : float
+        tensile : float, optional
             Tensile modulus (MPa). Default is ∞ MPa.
         seed : int, optional
             Random seed for reproducibility. Default is 0.
@@ -278,7 +276,7 @@ class Mat(pd.DataFrame):
         mat : pandas.DataFrame
             Validated `Mat` object.
 
-        .. note::
+        .. hint::
             - If `mat` is None, it returns an empty `Mat` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
