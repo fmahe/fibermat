@@ -10,5 +10,4 @@ dependencies:
     - python>=3.8
     - pip
     - pip:
-          - fibermat
           - -r ./docs/requirements.txt

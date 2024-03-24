@@ -1,3 +1,4 @@
+fibermat
 sphinx
 sphinx-copybutton
 myst-parser
