@@ -186,7 +186,7 @@ class Settings(dict):
 
         Notes
         -----
-        Required for bracket accessor and setting via `__call__` method.
+        Required for bracket accessor and setting via :meth:`__call__` method.
 
         """
         if name in ["shear", "tensile"]:

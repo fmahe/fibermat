@@ -49,9 +49,9 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
     Parameters
     ----------
     mat : pandas.DataFrame
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
     mesh : pandas.DataFrame
-        Fiber mesh represented by a `Mesh` object.
+        Fiber mesh represented by a :class:`Mesh` object.
 
     Returns
     -------
@@ -216,9 +216,9 @@ def constraint(mat, mesh, **kwargs):
     Parameters
     ----------
     mat : pandas.DataFrame
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
     mesh : pandas.DataFrame
-        Fiber mesh represented by a `Mesh` object.
+        Fiber mesh represented by a :class:`Mesh` object.
 
     Returns
     -------

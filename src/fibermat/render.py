@@ -61,12 +61,12 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
 
     .. hint::
         If `index` is not None, the following fields are added to the VTK mesh:
-            - :attr:`fiber` : fiber index
-            - :attr:`lbh` : fiber dimensions (mm)
-            - :attr:`xyz` : local fiber coordinates (mm)
-            - :attr:`uvw` : fiber orientation vector
-            - :attr:`G` : shear modulus (MPa)
-            - :attr:`E` : tensile modulus (MPa)
+            - "fiber" : fiber index
+            - "lbh" : fiber dimensions (mm)
+            - "xyz" : local fiber coordinates (mm)
+            - "uvw" : fiber orientation vector
+            - "G" : shear modulus (MPa)
+            - "E" : tensile modulus (MPa)
 
     """
     # Create the VTK mesh (cylindrical structured grid)
@@ -97,12 +97,12 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
 
 def vtk_mat(mat=None, **kwargs):
     """
-    Export a `Mat` object as VTK mesh.
+    Export a :class:`Mat` object as VTK mesh.
 
     Parameters
     ----------
     mat : pandas.DataFrame, optional
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
 
     Returns
     -------
@@ -112,16 +112,16 @@ def vtk_mat(mat=None, **kwargs):
     Other Parameters
     ----------------
     kwargs :
-        Additional keyword arguments passed to `vtk_fiber` function.
+        Additional keyword arguments passed to :meth:`vtk_fiber` function.
 
     .. hint::
         The following fields are added to the VTK mesh:
-            - :attr:`fiber` : fiber index
-            - :attr:`lbh` : fiber dimensions (mm)
-            - :attr:`xyz` : local fiber coordinates (mm)
-            - :attr:`uvw` : fiber orientation vector
-            - :attr:`G` : shear modulus (MPa)
-            - :attr:`E` : tensile modulus (MPa)
+            - "fiber" : fiber index
+            - "lbh" : fiber dimensions (mm)
+            - "xyz" : local fiber coordinates (mm)
+            - "uvw" : fiber orientation vector
+            - "G" : shear modulus (MPa)
+            - "E" : tensile modulus (MPa)
 
     """
     # Optional
@@ -146,14 +146,14 @@ def vtk_mat(mat=None, **kwargs):
 def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
              force=None, moment=None, **kwargs):
     """
-    Export a `Mesh` object as VTK mesh.
+    Export a :class:`Mesh` object as VTK mesh.
 
     Parameters
     ----------
     mat : pandas.DataFrame, optional
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
     mesh : pandas.DataFrame, optional
-        Fiber mesh represented by a `Mesh` object.
+        Fiber mesh represented by a :class:`Mesh` object.
 
     Returns
     -------
@@ -171,22 +171,22 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
     moment : numpy.ndarray, optional
         Torque field.
     kwargs :
-        Additional keyword arguments passed to `vtk_fiber` function.
+        Additional keyword arguments passed to :meth:`vtk_fiber` function.
 
     .. hint::
         The following fields are added to the VTK mesh:
-            - :attr:`fiber` : fiber index
-            - :attr:`lbh` : fiber dimensions (mm)
-            - :attr:`xyz` : local fiber coordinates (mm)
-            - :attr:`uvw` : fiber orientation vector
-            - :attr:`G` : shear modulus (MPa)
-            - :attr:`E` : tensile modulus (MPa)
+            - "fiber" : fiber index
+            - "lbh" : fiber dimensions (mm)
+            - "xyz" : local fiber coordinates (mm)
+            - "uvw" : fiber orientation vector
+            - "G" : shear modulus (MPa)
+            - "E" : tensile modulus (MPa)
         If `displacement` is not None:
-            - :attr:`displacement` : displacement field (mm)
-            - :attr:`rotation` : rotation field (rad)
-            - :attr:`curvature` : curvature field (1 / mm)
+            - "displacement" : displacement field (mm)
+            - "rotation" : rotation field (rad)
+            - "curvature" : curvature field (1 / mm)
         If `force` is not None:
-            - :attr:`force` : force field (N)
+            - "force" : force field (N)
 
     """
     # Optional

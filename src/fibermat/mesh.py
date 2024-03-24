@@ -19,7 +19,7 @@ class Mesh(pd.DataFrame):
     Parameters
     ----------
     net : pandas.DataFrame, optional
-         Fiber network represented by a `Net` object.
+         Fiber network represented by a :class:`Net` object.
 
     .. note::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -84,7 +84,7 @@ class Mesh(pd.DataFrame):
     :meth:`init` :
         Create a discontinuous fiber mesh.
     :meth:`check` :
-        Check that a `Mesh` object is defined correctly.
+        Check that a :class:`Mesh` object is defined correctly.
 
     ----
 
@@ -92,7 +92,7 @@ class Mesh(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the `Mesh` object.
+        Initialize the :class:`Mesh` object.
 
         Parameters
         ----------
@@ -130,12 +130,12 @@ class Mesh(pd.DataFrame):
         Parameters
         ----------
         net : pandas.DataFrame, optional
-             Fiber network represented by a `Net` object.
+             Fiber network represented by a :class:`Net` object.
 
         Returns
         -------
         mesh : pandas.DataFrame
-            Initialized `Mesh` object.
+            Initialized :class:`Mesh` object.
 
         """
         # Optional
@@ -206,19 +206,19 @@ class Mesh(pd.DataFrame):
     @staticmethod
     def check(mesh=None):
         """
-        Check that a `Mesh` object is defined correctly.
+        Check that a :class:`Mesh` object is defined correctly.
 
-        This method is automatically called by functions that use a `Mesh` object as input.
+        This method is automatically called by functions that use a :class:`Mesh` object as input.
 
         Parameters
         ----------
         mesh : pandas.DataFrame, optional
-            Fiber mesh represented by a `Mesh` object.
+            Fiber mesh represented by a :class:`Mesh` object.
 
         Raises
         ------
         KeyError
-            If any keys are missing from the columns of `Mesh` object.
+            If any keys are missing from the columns of :class:`Mesh` object.
         AttributeError
             If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
@@ -233,10 +233,10 @@ class Mesh(pd.DataFrame):
         Returns
         -------
         mesh : pandas.DataFrame
-            Validated `Mesh` object.
+            Validated :class:`Mesh` object.
 
         .. hint::
-            - If `mesh` is None, it returns an empty `Mesh` object.
+            - If `mesh` is None, it returns an empty :class:`Mesh` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """

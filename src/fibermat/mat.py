@@ -106,7 +106,7 @@ class Mat(pd.DataFrame):
     :meth:`init` :
         Generate a set of random straight fibers.
     :meth:`check` :
-        Check that a `Mat` object is defined correctly.
+        Check that a :class:`Mat` object is defined correctly.
 
     ----
 
@@ -114,7 +114,7 @@ class Mat(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the `Mat` object.
+        Initialize the :class:`Mat` object.
 
         Parameters
         ----------
@@ -178,7 +178,7 @@ class Mat(pd.DataFrame):
         Returns
         -------
         mat : pandas.DataFrame
-            Initialized `Mat` object.
+            Initialized :class:`Mat` object.
 
         Other Parameters
         ----------------
@@ -245,19 +245,19 @@ class Mat(pd.DataFrame):
     @staticmethod
     def check(mat=None):
         """
-        Check that a `Mat` object is defined correctly.
+        Check that a :class:`Mat` object is defined correctly.
 
-        This method is automatically called by functions that use a `Mat` object as input.
+        This method is automatically called by functions that use a :class:`Mat` object as input.
 
         Parameters
         ----------
         mat : pandas.DataFrame, optional
-            Set of fibers represented by a `Mat` object.
+            Set of fibers represented by a :class:`Mat` object.
 
         Raises
         ------
         KeyError
-            If any keys are missing from the columns of `Mat` object.
+            If any keys are missing from the columns of :class:`Mat` object.
         AttributeError
             If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
@@ -274,10 +274,10 @@ class Mat(pd.DataFrame):
         Returns
         -------
         mat : pandas.DataFrame
-            Validated `Mat` object.
+            Validated :class:`Mat` object.
 
         .. hint::
-            - If `mat` is None, it returns an empty `Mat` object.
+            - If `mat` is None, it returns an empty :class:`Mat` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """

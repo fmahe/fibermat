@@ -72,8 +72,10 @@ from fibermat import *
 
 if __name__ == "__main__":
 
+    from fibermat import *
+
     # Generate a set of fibers
-    mat = Mat(100, length=25, width=1, thickness=0.5, tensile=2500)
+    mat = Mat(100, length=25, width=2, thickness=0.5, tensile=2500)
     # Build the fiber network
     net = Net(mat, periodic=True)
     # Stack fibers
@@ -87,8 +89,8 @@ if __name__ == "__main__":
         packing=4, itermax=1000, lmin=0.01, coupling=0.99, interp_size=100
     )
 
-    # _, _, _, du, dF = stiffness(mat, mesh)
-    # _, _, _, df, dH = constraint(mat, mesh)
+    # K, u, F, du, dF = stiffness(mat, mesh)
+    # C, f, H, df, dH = constraint(mat, mesh)
 
     # fig, ax = plt.subplots(1, 2, figsize=(2 * 6.4, 4.8))
     # plot_system(K, u(0), F(0), du, dF, C, f(0), H(0), df, dH, ax=ax[0])

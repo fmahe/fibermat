@@ -13,7 +13,7 @@ from fibermat import Mat
 
 class Net(pd.DataFrame):
     r"""
-    A class inherited from pandas.DataFrame_ to **build a fiber network**. It describes nodes and connections between fibers within a `Mat` object:
+    A class inherited from pandas.DataFrame_ to **build a fiber network**. It describes nodes and connections between fibers within a :class:`Mat` object:
 
         - **nodes** are defined as the nearest points between pairs of fibers.
         - **connections** link pairs of nodes to define relative positions between fibers.
@@ -21,7 +21,7 @@ class Net(pd.DataFrame):
     Parameters
     ----------
     mat : pandas.DataFrame, optional
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
 
     .. note::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -90,7 +90,7 @@ class Net(pd.DataFrame):
     :meth:`init` :
         Build a fiber network.
     :meth:`check` :
-        Check that a `Net` object is defined correctly.
+        Check that a :class:`Net` object is defined correctly.
 
     ----
 
@@ -98,7 +98,7 @@ class Net(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the `Net` object.
+        Initialize the :class:`Net` object.
 
         Parameters
         ----------
@@ -136,12 +136,12 @@ class Net(pd.DataFrame):
         Parameters
         ----------
         mat : pandas.DataFrame, optional
-            Set of fibers represented by a `Mat` object.
+            Set of fibers represented by a :class:`Mat` object.
 
         Returns
         -------
         net : pandas.DataFrame
-            Initialized `Net` object.
+            Initialized :class:`Net` object.
 
         Other Parameters
         ----------------
@@ -280,19 +280,19 @@ class Net(pd.DataFrame):
     @staticmethod
     def check(net=None):
         """
-        Check that a `Net` object is defined correctly.
+        Check that a :class:`Net` object is defined correctly.
 
-        This method is automatically called by functions that use a `Net` object as input.
+        This method is automatically called by functions that use a :class:`Net` object as input.
 
         Parameters
         ----------
         net : pandas.DataFrame, optional
-            Fiber network represented by a `Net` object.
+            Fiber network represented by a :class:`Net` object.
 
         Raises
         ------
         KeyError
-            If any keys are missing from the columns of `Net` object.
+            If any keys are missing from the columns of :class:`Net` object.
         AttributeError
             If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
@@ -310,10 +310,10 @@ class Net(pd.DataFrame):
         Returns
         -------
         net : pandas.DataFrame
-            Validated `Net` object.
+            Validated :class:`Net` object.
 
         .. hint::
-            - If `net` is None, it returns an empty `Net` object.
+            - If `net` is None, it returns an empty :class:`Net` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
@@ -389,9 +389,9 @@ class Stack(Net):
     Parameters
     ----------
     mat : pandas.DataFrame, optional
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
     net : pandas.DataFrame, optional
-        Fiber network represented by a `Net` object.
+        Fiber network represented by a :class:`Net` object.
 
     .. note::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -462,7 +462,7 @@ class Stack(Net):
     :meth:`init` :
         Stack fibers by gravity.
     :meth:`check` :
-        Check that a `Stack` object is defined correctly.
+        Check that a :class:`Stack` object is defined correctly.
     :meth:`solve` :
         Solve the stacking problem.
     :meth:`constraint` :
@@ -474,7 +474,7 @@ class Stack(Net):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the `Stack` object.
+        Initialize the :class:`Stack` object.
 
         Parameters
         ----------
@@ -512,14 +512,14 @@ class Stack(Net):
         Parameters
         ----------
         mat : pandas.DataFrame, optional
-            Set of fibers represented by a `Mat` object.
+            Set of fibers represented by a :class:`Mat` object.
         net : pandas.DataFrame, optional
-            Fiber network represented by a `Net` object.
+            Fiber network represented by a :class:`Net` object.
 
         Returns
         -------
         stack : pandas.DataFrame
-            Initialized `Stack` object.
+            Initialized :class:`Stack` object.
 
         Other Parameters
         ----------------
@@ -529,7 +529,7 @@ class Stack(Net):
             Additional keyword arguments ignored by the function.
 
         .. warning::
-            `Mat` object is modified during execution.
+            :class:`Mat` object is modified during execution.
 
         """
         # Optional
@@ -586,19 +586,19 @@ class Stack(Net):
     @staticmethod
     def check(stack=None):
         """
-        Check that a `Stack` object is defined correctly.
+        Check that a :class:`Stack` object is defined correctly.
 
-        This method is automatically called by functions that use a `Stack` object as input.
+        This method is automatically called by functions that use a :class:`Stack` object as input.
 
         Parameters
         ----------
         stack : pandas.DataFrame, optional
-            Fiber stack represented by a `Stack` object.
+            Fiber stack represented by a :class:`Stack` object.
 
         Raises
         ------
         KeyError
-            If any keys are missing from the columns of `Stack` object.
+            If any keys are missing from the columns of :class:`Stack` object.
         AttributeError
             If any attributes are missing from the dictionary :attr:`attrs`.
         IndexError
@@ -616,10 +616,10 @@ class Stack(Net):
         Returns
         -------
         stack : pandas.DataFrame
-            Validated `Stack` object.
+            Validated :class:`Stack` object.
 
         .. hint::
-            - If `stack` is None, it returns an empty `Stack` object.
+            - If `stack` is None, it returns an empty :class:`Stack` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
@@ -637,9 +637,9 @@ class Stack(Net):
         Parameters
         ----------
         mat : pandas.DataFrame, optional
-            Set of fibers represented by a `Mat` object.
+            Set of fibers represented by a :class:`Mat` object.
         net : pandas.DataFrame, optional
-            Fiber network represented by a `Net` object.
+            Fiber network represented by a :class:`Net` object.
 
         Returns
         -------
@@ -681,9 +681,9 @@ class Stack(Net):
         Parameters
         ----------
         mat : pd.DataFrame, optional
-            Set of fibers represented by a `Mat` object.
+            Set of fibers represented by a :class:`Mat` object.
         net : pd.DataFrame, optional
-            Fiber network represented by a `Net` object.
+            Fiber network represented by a :class:`Net` object.
 
         Returns
         -------

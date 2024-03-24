@@ -3,10 +3,10 @@
 </a>
 
 [![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
+[![GitHub Badge](https://img.shields.io/badge/Github-fibermat-blue?logo=github)](https://github.com/fmahe/fibermat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![François Mahé](https://img.shields.io/badge/Author-François%20Mahé-green)](https://img.shields.io/badge/francois.mahe@ens--rennes.fr-Univ%20Rennes,%20ENS%20Rennes,%20CNRS,%20IPR%20--%20UMR%206251,%20F--35000%20Rennes,%20France-blue)
-[![GitHub Badge](https://img.shields.io/badge/Github-fmahe-blue?logo=github)](https://github.com/fmahe/fibermat)
-[![Mail](https://img.shields.io/badge/Contact-francois.mahe@ens--rennes.fr-blue)](mailto:francois.mahe@ens-rennes.fr)
+[![François Mahé](https://img.shields.io/badge/Author-François%20Mahé-green)](https://img.shields.io/badge/francois.mahe@ens--rennes.fr-Univ%20Rennes,%20ENS%20Rennes,%20CNRS,%20IPR%20--%20UMR%206251,%20F--35000%20Rennes,%20France-royalblue)
+[![Mail](https://img.shields.io/badge/✉-francois.mahe@ens--rennes.fr-royalblue)](mailto:francois.mahe@ens-rennes.fr)
 
 <details>
 <summary>
@@ -162,7 +162,7 @@ See the tutorial in `jupyter-notebook.ipynb`.
 from fibermat import *
 
 # Generate a set of fibers
-mat = Mat(100, length=25, width=1, thickness=0.5, tensile=2500)
+mat = Mat(100, length=25, width=2, thickness=0.5, tensile=2500)
 # Build the fiber network
 net = Net(mat, periodic=True)
 # Stack fibers
@@ -173,7 +173,7 @@ mesh = Mesh(stack)
 # Solve the mechanical packing problem
 K, C, u, f, F, H, Z, rlambda, mask, err = solver(
     mat, mesh,
-    packing=4, itermax=1000, interp_size=100, lmin=0.01, coupling=0.99
+    packing=4, itermax=1000, lmin=0.01, coupling=0.99, interp_size=100
 )
 
 # Export as VTK
@@ -184,3 +184,5 @@ vtk.plot(scalars="force", cmap=plt.cm.twilight_shifted)
 vtk.save("outputs/vtk.vtk")
 
 ```
+
+![example](https://github.com/fmahe/fibermat/raw/main/images/example.png)

@@ -18,6 +18,8 @@ Example
     import numpy as np
     from matplotlib import pyplot as plt
 
+    from fibermat import *
+
     # Reference solution
     x = np.linspace(0, 10, 1001)
     y = np.sin(x)

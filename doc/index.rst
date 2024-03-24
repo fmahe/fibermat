@@ -1,6 +1,9 @@
 Welcome to FiberMat's documentation!
 ====================================
 
+.. include:: ../README.md
+   :parser: myst_parser.sphinx_
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents
@@ -8,12 +11,3 @@ Welcome to FiberMat's documentation!
     ./FiberMat.rst
     ./Tutorial.rst
     ./Reference.rst
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

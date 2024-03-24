@@ -16,8 +16,10 @@ release = '1.0'
 
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.autosectionlabel',
     'sphinx.ext.githubpages',
+    'sphinx.ext.autosectionlabel',
+    'sphinx_copybutton',
+    'myst_parser',
 ]
 
 templates_path = ['_templates']

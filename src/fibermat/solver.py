@@ -49,9 +49,9 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
     Parameters
     ----------
     mat : pandas.DataFrame
-        Set of fibers represented by a `Mat` object.
+        Set of fibers represented by a :class:`Mat` object.
     mesh : pandas.DataFrame
-        Fiber mesh represented by a `Mesh` object.
+        Fiber mesh represented by a :class:`Mesh` object.
     packing : float, optional
         Targeted value of packing. Must be greater than 1. Default is 1.0.
 
