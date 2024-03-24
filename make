@@ -67,14 +67,14 @@ do
     shift
 done
 
-if [ "$t" = true ]
-then
-    python -m doctest -v $f
-fi
-
 if [ "$p" = true ]
 then
     pip install --upgrade $here
+fi
+
+if [ "$t" = true ]
+then
+    python -m doctest -v $f
 fi
 
 if [ "$d" = true ]

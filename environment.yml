@@ -8,3 +8,10 @@ channels:
 
 dependencies:
     - python>=3.8
+    - pip
+    - pip:
+          - fibermat
+          - sphinx
+          - sphinx-copybutton
+          - myst-parser
+          - sphinx-rtd-theme

@@ -83,13 +83,13 @@ This code is the result of thesis work that can be found in:
 
 ## Installation
 
-Requirements:
+Requirements
 + `python>=3.8`
 + `jupyter`
 
-### Install the package with Pip:
+### Install the package with Pip
 
-Run the following command:
+Run the following commands:
 ```sh
 # Install `FiberMat`
 pip install fibermat
@@ -99,7 +99,7 @@ python -c "import fibermat"
 
 ```
 
-### Install the package in an Anaconda environment:
+### Install the package in an Anaconda environment
 
 1. Create a conda environment:
     ```sh
@@ -114,7 +114,7 @@ python -c "import fibermat"
     
     ```
 
-2. Install **FiberMat**:
+2. Install FiberMat:
     ```sh
     # Install `FiberMat`
     pip install --upgrade fibermat
@@ -126,7 +126,7 @@ python -c "import fibermat"
 
 3. To leave `fibermat` environment, run ``conda deactivate``.
 
-### Directly from the sources:
+### Directly from the sources
 
 Clone the repository and run `pip` command:
 ```sh
@@ -139,18 +139,45 @@ pip install --upgrade .
 
 ```
 
-### Build the sources:
+### Build the sources
 
-Clone the repository and run `./make` script:
-```sh
-# Clone the repository
-git clone git@github.com:fmahe/fibermat.git
-cd ./fibermat
+FiberMat's documentation is created using [Sphinx](https://www.sphinx-doc.org/en/master/) [<sup>[1]</sup>](#note-1).
 
-# Build the sources
-./make --all
+1. Clone the repository:
+    ```sh
+    # Clone the repository
+    git clone git@github.com:fmahe/fibermat.git
+    cd ./fibermat
+    
+    ```
 
-```
+2. Install dependencies required to compile documentation:
+
+    - Install with Pip:
+        ```sh
+        # Install dependencies
+        pip install sphinx sphinx-copybutton myst-parser sphinx-rtd-theme
+        
+        ```
+
+    - You can also create an environment that already satisfies requirements instead:
+        ```sh
+        # Create an environment from the `environment.yml` file
+        conda env create -n fibermat -f ./environment.yml
+
+        # Activate the environment
+        conda activate fibermat
+
+        ```
+
+3. Execute `./make` script:
+    ```sh
+    # Build the sources
+    ./make --all
+
+    ```
+
+<a id="note-1"> [1] </a> : Here a tutorial (fr) for Sphinx: [Introduction à Sphinx, un outil de documentation puissant](https://blog.flozz.fr/2020/09/07/introduction-a-sphinx-un-outil-de-documentation-puissant/).
 
 ## Documentation
 

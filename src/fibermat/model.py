@@ -15,7 +15,7 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
 
     The mechanical model is built using a **Timoshenko beam law** [1]_:
 
-    .. math::
+    .. MATH::
         \mathbb{K}_e = \frac{Gbh}{l_e} \cdot \frac{\pi / 4}{1 + \frac{G}{E} \left( \frac{l_e}{h} \right)^2}
             \left[\begin{matrix}
                 1  &  l_e / 2  &  -1  &  l_e / 2  \\
@@ -39,10 +39,10 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
 
     The displacement vector :math:`\mathbf{u} = (\dots, u_i, \theta_i, \dots)` (with :math:`u_i` being the vertical displacement and :math:`\theta_i` the rotation of the cross-section of the :math:`i^{th}` node) satisfies **mechanical equilibrium**:
 
-    .. math::
+    .. MATH::
         \mathbb{K} \, \mathbf{u} = \mathbf{F}
 
-    .. rubric:: Footnotes
+    .. RUBRIC:: Footnotes
 
     .. [1] `Timoshenko–Ehrenfest beam theory, Wikipedia <https://en.wikipedia.org/wiki/Timoshenko%E2%80%93Ehrenfest_beam_theory>`_.
 
@@ -184,7 +184,7 @@ def constraint(mat, mesh, **kwargs):
 
     The contact model is built using **normal non-penetration conditions** [2]_:
 
-    .. math::
+    .. MATH::
         \mathbb{C}_e =
             \left[\begin{array}{rrrr}
                  -1  &  0  &  0  &  0  \\
@@ -204,12 +204,12 @@ def constraint(mat, mesh, **kwargs):
 
     The vector :math:`f` is the vector of Lagrangian multipliers that corresponds to contact forces. It satisfies **KKT conditions**:
 
-    .. math::
+    .. MATH::
         \mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
         \quad \mathbf{f} \geq 0
         \quad and \quad \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) = 0
 
-    .. rubric:: Footnotes
+    .. RUBRIC:: Footnotes
 
     .. [2] `Karush–Kuhn–Tucker conditions, Wikipedia <https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions>`_.
 

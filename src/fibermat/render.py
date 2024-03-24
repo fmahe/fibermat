@@ -59,7 +59,7 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
     kwargs :
         Additional keyword arguments ignored by the function.
 
-    .. hint::
+    .. NOTE::
         If `index` is not None, the following fields are added to the VTK mesh:
             - "fiber" : fiber index
             - "lbh" : fiber dimensions (mm)
@@ -114,7 +114,7 @@ def vtk_mat(mat=None, **kwargs):
     kwargs :
         Additional keyword arguments passed to :meth:`vtk_fiber` function.
 
-    .. hint::
+    .. NOTE::
         The following fields are added to the VTK mesh:
             - "fiber" : fiber index
             - "lbh" : fiber dimensions (mm)
@@ -173,7 +173,7 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
     kwargs :
         Additional keyword arguments passed to :meth:`vtk_fiber` function.
 
-    .. hint::
+    .. HINT::
         The following fields are added to the VTK mesh:
             - "fiber" : fiber index
             - "lbh" : fiber dimensions (mm)

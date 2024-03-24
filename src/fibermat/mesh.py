@@ -21,7 +21,7 @@ class Mesh(pd.DataFrame):
     net : pandas.DataFrame, optional
          Fiber network represented by a :class:`Net` object.
 
-    .. note::
+    .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
@@ -235,7 +235,7 @@ class Mesh(pd.DataFrame):
         mesh : pandas.DataFrame
             Validated :class:`Mesh` object.
 
-        .. hint::
+        .. TIP::
             - If `mesh` is None, it returns an empty :class:`Mesh` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 

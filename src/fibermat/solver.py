@@ -14,9 +14,9 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
            verbose=True, **kwargs):
     r"""An iterative mechanical solver for fiber packing problems. It solves the *quadratic programming problem*:
 
-    .. math::
+    .. MATH::
         \min_{\mathbf{u}, \mathbf{f}} \left( \frac{1}{2} \, \mathbf{u} \, \mathbb{K} \, \mathbf{u} - \mathbf{F} \, \mathbf{u} - \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) \right)
-    .. math::
+    .. MATH::
         \quad s.t. \quad \mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
         \quad \mathbf{u} \leq 0 \, ,
         \quad \mathbf{f} \geq 0
@@ -32,7 +32,7 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
 
     The *mechanical equilibrium* allows reformulating the problem as a system of inequalities:
 
-    .. math::
+    .. MATH::
         \Rightarrow \quad \left[\begin{matrix}
             \mathbb{K} & \mathbb{C}^T \\
             \mathbb{C} & 0
@@ -41,7 +41,7 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
 
     which is solved using an iterative *Updated Lagrangian Approach*.
 
-    .. tip::
+    .. HINT::
         Models used to build the matrices are implemented in :ref:`🔧 Model`:
             - 𝕂 and 𝑭 : :func:`~.model.stiffness`.
             - ℂ and 𝑯 : :func:`~.model.constraint`.
@@ -79,7 +79,7 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
         err : Interpolate
             Numerical error of the linear solver.
 
-    .. seealso::
+    .. SEEALSO::
         Simulation results are given as functions of a pseudo-time parameter (between 0 and 1) using :class:`~.interpolation.Interpolate` objects.
 
     Other Parameters

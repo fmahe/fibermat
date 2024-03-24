@@ -38,7 +38,7 @@ class Mat(pd.DataFrame):
     seed : int, optional
         Random seed for reproducibility. Default is 0.
 
-    .. note::
+    .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
@@ -276,7 +276,7 @@ class Mat(pd.DataFrame):
         mat : pandas.DataFrame
             Validated :class:`Mat` object.
 
-        .. hint::
+        .. TIP::
             - If `mat` is None, it returns an empty :class:`Mat` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 

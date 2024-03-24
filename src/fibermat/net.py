@@ -23,7 +23,7 @@ class Net(pd.DataFrame):
     mat : pandas.DataFrame, optional
         Set of fibers represented by a :class:`Mat` object.
 
-    .. note::
+    .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
@@ -312,7 +312,7 @@ class Net(pd.DataFrame):
         net : pandas.DataFrame
             Validated :class:`Net` object.
 
-        .. hint::
+        .. TIP::
             - If `net` is None, it returns an empty :class:`Net` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
@@ -369,9 +369,9 @@ class Stack(Net):
     """
     A class inherited from :class:`Net` to **stack a set of fibers**. It solves the *linear programming system*:
 
-    .. math::
+    .. MATH::
         \min_{z} (-\mathbf{f} \cdot \mathbf{z}) \quad s.t. \quad \mathbb{C} \, \mathbf{z} \leq \mathbf{H} \quad and \quad \mathbf{z} \geq \mathbf{h} / 2
-    .. math::
+    .. MATH::
         with \quad \mathbf{f} = -\mathbf{m} \, g \quad and \quad \mathbf{h} > 0
 
     where:
@@ -383,7 +383,7 @@ class Stack(Net):
 
     *Non-penetration conditions* between two fibers give the expressions of rows of :math:`\mathbb{C}` and :math:`\mathbf{H}`:
 
-    .. math::
+    .. MATH::
         z_B - z_A \geq (h_A + h_B) \, / \, 2 \quad \Leftrightarrow \quad z_A - z_B \leq - (h_A + h_B) \, / \, 2
 
     Parameters
@@ -393,7 +393,7 @@ class Stack(Net):
     net : pandas.DataFrame, optional
         Fiber network represented by a :class:`Net` object.
 
-    .. note::
+    .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
@@ -528,7 +528,7 @@ class Stack(Net):
         kwargs :
             Additional keyword arguments ignored by the function.
 
-        .. warning::
+        .. WARNING::
             :class:`Mat` object is modified during execution.
 
         """
@@ -618,7 +618,7 @@ class Stack(Net):
         stack : pandas.DataFrame
             Validated :class:`Stack` object.
 
-        .. hint::
+        .. TIP::
             - If `stack` is None, it returns an empty :class:`Stack` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
@@ -646,7 +646,7 @@ class Stack(Net):
         linsol : OptimizeResult
             Results of linear programming solver.
 
-        .. seealso::
+        .. SEEALSO::
             The solver is based on scipy.optimize.linprog_.
 
         .. _scipy.optimize.linprog: https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html
@@ -673,9 +673,9 @@ class Stack(Net):
         """
         Assemble the linear system:
 
-        .. math::
+        .. MATH::
             \min_{z} (-\mathbf{f} \cdot \mathbf{z}) \quad s.t. \quad \mathbb{C} \, \mathbf{z} \leq \mathbf{H} \quad and \quad \mathbf{z} \geq \mathbf{h} / 2
-        .. math::
+        .. MATH::
             with \quad \mathbf{f} = -\mathbf{m} \, g \quad and \quad \mathbf{h} > 0
 
         Parameters
