@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔧 Model &mdash; FiberMat 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="🌐 Render" href="render.html" />
+    <link rel="prev" title="🧩 Solver" href="solver.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FiberMat
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../FiberMat.html">FiberMat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Reference.html">Reference API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mat.html">🧵 Mat(erial)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="net.html">🕸️ Net(work)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh.html">📐 Mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver.html">🧩 Solver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">🔧 Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stiffness">stiffness</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fibermat.model.stiffness"><code class="docutils literal notranslate"><span class="pre">stiffness()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint">constraint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fibermat.model.constraint"><code class="docutils literal notranslate"><span class="pre">constraint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-system">plot_system</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fibermat.model.plot_system"><code class="docutils literal notranslate"><span class="pre">plot_system()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="render.html">🌐 Render</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interpolation.html">📈 Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">🗹 Widgets</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FiberMat</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Reference.html">Reference API</a></li>
+      <li class="breadcrumb-item active">🔧 Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="model">
+<h1>🔧 Model<a class="headerlink" href="#model" title="Link to this heading"></a></h1>
+<section id="stiffness">
+<h2>stiffness<a class="headerlink" href="#stiffness" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="fibermat.model.stiffness">
+<span class="sig-prename descclassname"><span class="pre">fibermat.model.</span></span><span class="sig-name descname"><span class="pre">stiffness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coupling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fibermat.model.stiffness" title="Link to this definition"></a></dt>
+<dd><p>Assemble the quadratic system to be minimized.</p>
+<p>The mechanical model is built using a <strong>Timoshenko beam law</strong> <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbb{K}_e = \frac{Gbh}{l_e} \cdot \frac{\pi / 4}{1 + \frac{G}{E} \left( \frac{l_e}{h} \right)^2}
+    \left[\begin{matrix}
+        1  &amp;  l_e / 2  &amp;  -1  &amp;  l_e / 2  \\
+        l_e / 2  &amp;  {l_e}^2 / 3 + \frac{E}{G} h^2  &amp;  -l_e / 2  &amp;  {l_e}^2 / 6 - \frac{E}{G} h^2  \\
+       -1  &amp;  -l_e / 2  &amp;  1  &amp;  -l_e / 2  \\
+        l_e / 2  &amp;  {l_e}^2 / 6 - \frac{E}{G} h^2  &amp;  -l_e / 2  &amp;  {l_e}^2 / 3 + \frac{E}{G} h^2  \\
+    \end{matrix}\right]
+    \ , \quad \mathbf{F}_e =
+    \left(\begin{matrix}
+        0 \\
+        0 \\
+        0 \\
+        0 \\
+    \end{matrix}\right)\end{split}\]</div>
+<dl class="simple">
+<dt>where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(l_e\)</span> is the <em>length of the beam</em> element.</p></li>
+<li><p><span class="math notranslate nohighlight">\(E\)</span> is the tensile modulus.</p></li>
+<li><p><span class="math notranslate nohighlight">\(G\)</span> is the shear modulus.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(h\)</span> are the width and thickness of the fiber.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The displacement vector <span class="math notranslate nohighlight">\(\mathbf{u} = (\dots, u_i, \theta_i, \dots)\)</span> (with <span class="math notranslate nohighlight">\(u_i\)</span> being the vertical displacement and <span class="math notranslate nohighlight">\(\theta_i\)</span> the rotation of the cross-section of the <span class="math notranslate nohighlight">\(i^{th}\)</span> node) satisfies <strong>mechanical equilibrium</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{K} \, \mathbf{u} = \mathbf{F}\]</div>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Timoshenko%E2%80%93Ehrenfest_beam_theory">Timoshenko–Ehrenfest beam theory, Wikipedia</a>.</p>
+</aside>
+</aside>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>mat<span class="classifier">pandas.DataFrame</span></dt><dd><p>Set of fibers represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Mat</span></code> object.</p>
+</dd>
+<dt>mesh<span class="classifier">pandas.DataFrame</span></dt><dd><p>Fiber mesh represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code> object.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><dl class="simple">
+<dt>K<span class="classifier">sparse matrix</span></dt><dd><p>Stiffness matrix (symmetric positive-semi definite).</p>
+</dd>
+<dt>u<span class="classifier">numpy.ndarray</span></dt><dd><p>Displacement vector.</p>
+</dd>
+<dt>F<span class="classifier">numpy.ndarray</span></dt><dd><p>Load vector.</p>
+</dd>
+<dt>du<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental displacement vector.</p>
+</dd>
+<dt>dF<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental load vector.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="other-parameters">
+<h3>Other Parameters<a class="headerlink" href="#other-parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>lmin<span class="classifier">float, optional</span></dt><dd><p>Lower bound used to rescale beam lengths (mm).</p>
+</dd>
+<dt>lmax<span class="classifier">float, optional</span></dt><dd><p>Upper bound used to rescale beam lengths (mm).</p>
+</dd>
+<dt>coupling<span class="classifier">float, optional</span></dt><dd><p>Coupling numerical constant between 0 and 1. Default is 1.0.</p>
+</dd>
+<dt>kwargs :</dt><dd><p>Additional keyword arguments ignored by the function.</p>
+</dd>
+</dl>
+<dl class="field-list">
+<dt class="field-odd">Use<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Linear model (Ψ² ≫ 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tensile</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># print(&quot;Linear (Ψ² ≫ 1) =&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="go">[[ 1.   0.5 -1.   0.5]</span>
+<span class="go"> [ 0.5  inf -0.5 -inf]</span>
+<span class="go"> [-1.  -0.5  1.  -0.5]</span>
+<span class="go"> [ 0.5 -inf -0.5  inf]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Timoshenko model (Ψ² = 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tensile</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># print(&quot;Timoshenko (Ψ² = 1) = 1 / 2 *&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="go">[[ 1.          0.5        -1.          0.5       ]</span>
+<span class="go"> [ 0.5         1.33333333 -0.5        -0.83333333]</span>
+<span class="go"> [-1.         -0.5         1.         -0.5       ]</span>
+<span class="go"> [ 0.5        -0.83333333 -0.5         1.33333333]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Euler model (Ψ² ≪ 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="mf">1e12</span><span class="p">,</span> <span class="n">tensile</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># print(&quot;Euler (Ψ² ≪ 1) = 1 / 12 *&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="go">[[ 12.   6. -12.   6.]</span>
+<span class="go"> [  6.   4.  -6.   2.]</span>
+<span class="go"> [-12.  -6.  12.  -6.]</span>
+<span class="go"> [  6.   2.  -6.   4.]]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="constraint">
+<h2>constraint<a class="headerlink" href="#constraint" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="fibermat.model.constraint">
+<span class="sig-prename descclassname"><span class="pre">fibermat.model.</span></span><span class="sig-name descname"><span class="pre">constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fibermat.model.constraint" title="Link to this definition"></a></dt>
+<dd><p>Assemble the linear constraints.</p>
+<p>The contact model is built using <strong>normal non-penetration conditions</strong> <a class="footnote-reference brackets" href="#id4" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbb{C}_e =
+    \left[\begin{array}{rrrr}
+         -1  &amp;  0  &amp;  0  &amp;  0  \\
+          1  &amp;  0  &amp; -1  &amp;  0  \\
+          0  &amp;  0  &amp;  1  &amp;  0  \\
+    \end{array}\right]
+    \ , \quad \mathbf{H}_e =
+    \left(\begin{matrix}
+        z_A - \frac{1}{2} \, h_A \\
+        z_B - z_A - \frac{1}{2} \, (h_A + h_B) \\
+        Z - z_B - \frac{1}{2} \, h_B \\
+    \end{matrix}\right)\end{split}\]</div>
+<dl class="simple">
+<dt>where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(z_A\)</span> and <span class="math notranslate nohighlight">\(z_B\)</span> are the vertical positions of nodes A and B.</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_A\)</span> and <span class="math notranslate nohighlight">\(h_B\)</span> are the fiber thicknesses at nodes A and B.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The vector <span class="math notranslate nohighlight">\(f\)</span> is the vector of Lagrangian multipliers that corresponds to contact forces. It satisfies <strong>KKT conditions</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
+\quad \mathbf{f} \geq 0
+\quad and \quad \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) = 0\]</div>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions">Karush–Kuhn–Tucker conditions, Wikipedia</a>.</p>
+</aside>
+</aside>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>mat<span class="classifier">pandas.DataFrame</span></dt><dd><p>Set of fibers represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Mat</span></code> object.</p>
+</dd>
+<dt>mesh<span class="classifier">pandas.DataFrame</span></dt><dd><p>Fiber mesh represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code> object.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><dl class="simple">
+<dt>C<span class="classifier">sparse matrix</span></dt><dd><p>Constraint matrix.</p>
+</dd>
+<dt>f<span class="classifier">numpy.ndarray</span></dt><dd><p>Force vector.</p>
+</dd>
+<dt>H<span class="classifier">numpy.ndarray</span></dt><dd><p>Upper-bound vector.</p>
+</dd>
+<dt>df<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental force vector.</p>
+</dd>
+<dt>dH<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental upper-bound vector.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Other Parameters<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>kwargs :</dt><dd><p>Additional keyword arguments ignored by the function.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="plot-system">
+<h2>plot_system<a class="headerlink" href="#plot-system" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="fibermat.model.plot_system">
+<span class="sig-prename descclassname"><span class="pre">fibermat.model.</span></span><span class="sig-name descname"><span class="pre">plot_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fibermat.model.plot_system" title="Link to this definition"></a></dt>
+<dd><p>Visualize the system of equations and calculate the step error.</p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>K<span class="classifier">sparse matrix</span></dt><dd><p>Stiffness matrix (symmetric positive-semi definite).</p>
+</dd>
+<dt>u<span class="classifier">numpy.ndarray</span></dt><dd><p>Displacement vector.</p>
+</dd>
+<dt>F<span class="classifier">numpy.ndarray</span></dt><dd><p>Load vector.</p>
+</dd>
+<dt>du<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental displacement vector.</p>
+</dd>
+<dt>dF<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental load vector.</p>
+</dd>
+<dt>C<span class="classifier">sparse matrix</span></dt><dd><p>Constraint matrix.</p>
+</dd>
+<dt>f<span class="classifier">numpy.ndarray</span></dt><dd><p>Force vector.</p>
+</dd>
+<dt>H<span class="classifier">numpy.ndarray</span></dt><dd><p>Upper-bound vector.</p>
+</dd>
+<dt>df<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental force vector.</p>
+</dd>
+<dt>dH<span class="classifier">numpy.ndarray</span></dt><dd><p>Incremental upper-bound vector.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h3>Returns<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>ax<span class="classifier">matplotlib.axes.Axes</span></dt><dd><p>Matplotlib axes.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Other Parameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>ax<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Matplotlib axes.</p>
+</dd>
+<dt>tol<span class="classifier">float, optional</span></dt><dd><p>Tolerance used for contact detection (mm). Default is 1e-6 mm.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="kn">from</span> <span class="nn">fibermat</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Linear model (Ψ² ≫ 1)</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tensile</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Linear (Ψ² ≫ 1) =&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Timoshenko model (Ψ² = 1)</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tensile</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Timoshenko (Ψ² = 1) = 1 / 2 *&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Euler model (Ψ² ≪ 1)</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="mf">1e12</span><span class="p">,</span> <span class="n">tensile</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Euler (Ψ² ≪ 1) = 1 / 12 *&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Generate a set of fibers</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1"># Build the fiber network</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="c1"># Stack fibers</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="n">Stack</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+<span class="c1"># Create the fiber mesh</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+
+<span class="c1"># Assembly quadratic programming system</span>
+<span class="n">K</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">du</span><span class="p">,</span> <span class="n">dF</span> <span class="o">=</span> <span class="n">stiffness</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+<span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dH</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+<span class="n">plot_system</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">du</span><span class="p">,</span> <span class="n">dF</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dH</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Linear (Ψ² ≫ 1) =
+    [[ 1.   0.5 -1.   0.5]
+     [ 0.5  inf -0.5 -inf]
+     [-1.  -0.5  1.  -0.5]
+     [ 0.5 -inf -0.5  inf]]
+
+Timoshenko (Ψ² = 1) = 1 / 2 *
+    [[ 1.          0.5        -1.          0.5       ]
+     [ 0.5         1.33333333 -0.5        -0.83333333]
+     [-1.         -0.5         1.         -0.5       ]
+     [ 0.5        -0.83333333 -0.5         1.33333333]]
+
+Euler (Ψ² ≪ 1) = 1 / 12 *
+    [[ 12.   6. -12.   6.]
+     [  6.   4.  -6.   2.]
+     [-12.  -6.  12.  -6.]
+     [  6.   2.  -6.   4.]]
+
+2.888979232532619e-13
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/system.png"><img alt="../_images/system.png" src="../_images/system.png" style="width: 640px;" /></a>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="solver.html" class="btn btn-neutral float-left" title="🧩 Solver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="render.html" class="btn btn-neutral float-right" title="🌐 Render" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, François Mahé.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🧩 Solver &mdash; FiberMat 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="🔧 Model" href="model.html" />
+    <link rel="prev" title="📐 Mesh" href="mesh.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FiberMat
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../FiberMat.html">FiberMat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Reference.html">Reference API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mat.html">🧵 Mat(erial)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="net.html">🕸️ Net(work)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh.html">📐 Mesh</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">🧩 Solver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">solver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fibermat.solver.solver"><code class="docutils literal notranslate"><span class="pre">solver()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">🔧 Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render.html">🌐 Render</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interpolation.html">📈 Interpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="widgets.html">🗹 Widgets</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FiberMat</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Reference.html">Reference API</a></li>
+      <li class="breadcrumb-item active">🧩 Solver</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/solver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solver">
+<h1>🧩 Solver<a class="headerlink" href="#solver" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>solver<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/solver.png"><img alt="../_images/solver.png" src="../_images/solver.png" style="width: 640px;" /></a>
+<dl class="py function">
+<dt class="sig sig-object py" id="fibermat.solver.solver">
+<span class="sig-prename descclassname"><span class="pre">fibermat.solver.</span></span><span class="sig-name descname"><span class="pre">solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packing=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solve=&lt;function</span> <span class="pre">spsolve&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itermax=1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol=1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errtol=1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp_size=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fibermat.solver.solver" title="Link to this definition"></a></dt>
+<dd><p>An iterative mechanical solver for fiber packing problems. It solves the <em>quadratic programming problem</em>:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{u}, \mathbf{f}} \left( \frac{1}{2} \, \mathbf{u} \, \mathbb{K} \, \mathbf{u} - \mathbf{F} \, \mathbf{u} - \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\quad s.t. \quad \mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
+\quad \mathbf{u} \leq 0 \, ,
+\quad \mathbf{f} \geq 0
+\quad and \quad \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) = 0\]</div>
+<dl class="simple">
+<dt>where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is the vector of generalized displacements (<em>unknowns of the problem</em>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{f}\)</span> is the vector of generalized forces (<em>unknowns Lagrange multipliers</em>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{K}\)</span> is the stiffness matrix of the fiber set.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{F}\)</span> is the vector of external efforts.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{C}\)</span> is the matrix of non-penetration constraints.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{H}\)</span> is the vector of minimal distances between fibers (minimal distances).</p></li>
+</ul>
+</dd>
+</dl>
+<p>The <em>mechanical equilibrium</em> allows reformulating the problem as a system of inequalities:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Rightarrow \quad \left[\begin{matrix}
+    \mathbb{K} &amp; \mathbb{C}^T \\
+    \mathbb{C} &amp; 0
+\end{matrix}\right] \binom{\mathbf{u}}{\mathbf{f}}
+    \leq \binom{\mathbf{F}}{\mathbf{H}}\end{split}\]</div>
+<p>which is solved using an iterative <em>Updated Lagrangian Approach</em>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<dl class="simple">
+<dt>Models used to build the matrices are implemented in <a class="reference internal" href="model.html#model"><span class="std std-ref">🔧 Model</span></a>:</dt><dd><ul class="simple">
+<li><p>𝕂 and 𝑭 : <a class="reference internal" href="model.html#fibermat.model.stiffness" title="fibermat.model.stiffness"><code class="xref py py-func docutils literal notranslate"><span class="pre">stiffness()</span></code></a>.</p></li>
+<li><p>ℂ and 𝑯 : <a class="reference internal" href="model.html#fibermat.model.constraint" title="fibermat.model.constraint"><code class="xref py py-func docutils literal notranslate"><span class="pre">constraint()</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>mat<span class="classifier">pandas.DataFrame</span></dt><dd><p>Set of fibers represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Mat</span></code> object.</p>
+</dd>
+<dt>mesh<span class="classifier">pandas.DataFrame</span></dt><dd><p>Fiber mesh represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code> object.</p>
+</dd>
+<dt>packing<span class="classifier">float, optional</span></dt><dd><p>Targeted value of packing. Must be greater than 1. Default is 1.0.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><dl class="simple">
+<dt>K<span class="classifier">sparse matrix</span></dt><dd><p>Stiffness matrix (symmetric positive-semi definite).</p>
+</dd>
+<dt>C<span class="classifier">sparse matrix</span></dt><dd><p>Constraint matrix.</p>
+</dd>
+<dt>u<span class="classifier">Interpolate</span></dt><dd><p>Displacement vector.</p>
+</dd>
+<dt>f<span class="classifier">Interpolate</span></dt><dd><p>Force vector.</p>
+</dd>
+<dt>F<span class="classifier">Interpolate</span></dt><dd><p>Load vector.</p>
+</dd>
+<dt>H<span class="classifier">Interpolate</span></dt><dd><p>Upper-bound vector.</p>
+</dd>
+<dt>Z<span class="classifier">Interpolate</span></dt><dd><p>Upper-boundary position.</p>
+</dd>
+<dt>rlambda<span class="classifier">Interpolate</span></dt><dd><p>Compaction.</p>
+</dd>
+<dt>mask<span class="classifier">Interpolate</span></dt><dd><p>Active rows and columns in the system of inequations.</p>
+</dd>
+<dt>err<span class="classifier">Interpolate</span></dt><dd><p>Numerical error of the linear solver.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Simulation results are given as functions of a pseudo-time parameter (between 0 and 1) using <a class="reference internal" href="interpolation.html#fibermat.interpolation.Interpolate" title="fibermat.interpolation.Interpolate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interpolate</span></code></a> objects.</p>
+</div>
+</section>
+<section id="other-parameters">
+<h3>Other Parameters<a class="headerlink" href="#other-parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>solve<span class="classifier">callable, optional</span></dt><dd><p>Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝒃 and returns the solution 𝒙 of the linear system: 𝔸 𝒙 = 𝒃. Default is <cite>scipy.sparse.linalg.spsolve</cite>.</p>
+</dd>
+<dt>itermax<span class="classifier">int, optional</span></dt><dd><p>Maximum number of solver iterations. Default is 1000.</p>
+</dd>
+<dt>tol<span class="classifier">float, optional</span></dt><dd><p>Tolerance used for contact detection (mm). Default is 1e-6 mm.</p>
+</dd>
+<dt>errtol<span class="classifier">float, optional</span></dt><dd><p>Tolerance for the numerical error. Default is 1e-6.</p>
+</dd>
+<dt>interp_size<span class="classifier">int, optional</span></dt><dd><p>Size of array used for interpolation. Default is None.</p>
+</dd>
+<dt>verbose<span class="classifier">bool, optional</span></dt><dd><p>If True, displays a progress bar during simulation. Default is True.</p>
+</dd>
+<dt>kwargs :</dt><dd><p>Additional keyword arguments passed to matrix constructors.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fibermat</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Generate a set of fibers</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1"># Build the fiber network</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="c1"># Stack fibers</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="n">Stack</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+<span class="c1"># Create the fiber mesh</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+
+<span class="c1"># Solve the mechanical packing problem</span>
+<span class="n">K</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">rlambda</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">solver</span><span class="p">(</span>
+    <span class="n">mat</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">packing</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lmin</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">coupling</span><span class="o">=</span><span class="mf">0.99</span>
+<span class="p">)</span>
+
+<span class="c1"># Deform the mesh</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">z</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="mi">1</span><span class="p">)[::</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span>
+                                       <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">zlabel</span><span class="o">=</span><span class="s2">&quot;Z&quot;</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">azim</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">elev</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="p">):</span>
+    <span class="c1"># Draw elements</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">beam</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">constraint</span><span class="p">),</span>
+                        <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mesh</span><span class="p">)):</span>
+        <span class="c1"># Get element data</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]][[</span><span class="o">*</span><span class="s2">&quot;xyz&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">s</span><span class="p">:</span>
+            <span class="c1"># Draw intra-fiber connection</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span>
+                     <span class="n">c</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">tab10</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">fiber</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">&lt;</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">z</span><span class="p">:</span>
+            <span class="c1"># Draw inter-fiber connection</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="s1">&#39;--ok&#39;</span><span class="p">,</span>
+                     <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mfc</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">fiber</span> <span class="o">==</span> <span class="n">mesh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">fiber</span><span class="p">:</span>
+            <span class="c1"># Draw fiber end nodes</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="s1">&#39;+k&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="c1"># Set drawing box dimensions</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">],</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">],</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/solver.png"><img alt="../_images/solver.png" src="../_images/solver.png" style="width: 640px;" /></a>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mesh.html" class="btn btn-neutral float-left" title="📐 Mesh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model.html" class="btn btn-neutral float-right" title="🔧 Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, François Mahé.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
