@@ -130,8 +130,8 @@ Example
         for point in tqdm(points[~np.isclose(force, 0)]):
             plt.plot(*point.T, '--ok', lw=1, mfc='none', ms=3, alpha=0.2)
     # Set drawing box dimensions
-    ax.set_xlim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
-    ax.set_ylim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
+    ax.set_xlim(-0.5 * stack.attrs["size"], 0.5 * stack.attrs["size"])
+    ax.set_ylim(-0.5 * stack.attrs["size"], 0.5 * stack.attrs["size"])
     # Add a color bar
     norm = plt.Normalize(vmin=np.min(load), vmax=np.max(load))
     smap = plt.cm.ScalarMappable(cmap=cmap, norm=norm)

@@ -1,6 +1,10 @@
 fibermat
 build
 jupyter
+pyqt6
+trame
+trame-vtk
+trame-vuetify
 sphinx
 myst-parser
 sphinx-copybutton

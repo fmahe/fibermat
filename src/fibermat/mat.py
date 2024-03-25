@@ -3,6 +3,7 @@
 
 import numpy as np
 import pandas as pd
+import warnings
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
@@ -37,6 +38,11 @@ class Mat(pd.DataFrame):
         Tensile modulus (MPa). Default is ∞ MPa.
     seed : int, optional
         Random seed for reproducibility. Default is 0.
+
+    Other Parameters
+    ----------------
+    kwargs :
+        Additional keyword arguments ignored by the function.
 
     .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -287,6 +293,9 @@ class Mat(pd.DataFrame):
             mat = Mat()
 
         if "skip_check" in mat.attrs.keys() and mat.attrs["skip_check"]:
+            warnings.warn("{}.attrs['skip_check'] is active."
+                          "Delete it or set it to False.".format(mat.__class__),
+                          UserWarning)
             # Return the `Mat` object
             return mat
 

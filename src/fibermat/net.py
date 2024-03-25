@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 import scipy as sp
+import warnings
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 from tqdm import tqdm
@@ -22,6 +23,15 @@ class Net(pd.DataFrame):
     ----------
     mat : pandas.DataFrame, optional
         Set of fibers represented by a :class:`Mat` object.
+
+    Other Parameters
+    ----------------
+    periodic : bool, optional
+        If True, duplicate fibers for periodicity. Default is True.
+    pairs : numpy.ndarray, optional
+        Pairs of fiber indices used to find nearest points. Size: (m x 2).
+    kwargs :
+        Additional keyword arguments ignored by the function.
 
     .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -323,6 +333,9 @@ class Net(pd.DataFrame):
             net = Net()
 
         if "skip_check" in net.attrs.keys() and net.attrs["skip_check"]:
+            warnings.warn("{}.attrs['skip_check'] is active."
+                          " Delete it or set it to False.".format(net.__class__),
+                          UserWarning)
             # Return the `Net` object
             return net
 
@@ -416,6 +429,13 @@ class Stack(Net):
         Set of fibers represented by a :class:`Mat` object.
     net : pandas.DataFrame, optional
         Fiber network represented by a :class:`Net` object.
+
+    Other Parameters
+    ----------------
+    threshold : float, optional
+        Threshold distance value for proximity detection (mm).
+    kwargs :
+        Additional keyword arguments ignored by the function.
 
     .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -568,7 +588,7 @@ class Stack(Net):
         if linsol:
             # Update DataFrames
             mat.z = linsol.x
-            net = Net(mat, periodic=net.attrs["periodic"])
+            net = Net(mat, **net.attrs)
 
             # Remove nodes based on threshold distances between nodes
             mask = np.zeros(len(net))
@@ -878,8 +898,8 @@ if __name__ == "__main__":
         for point in tqdm(points[~np.isclose(force, 0)]):
             plt.plot(*point.T, '--ok', lw=1, mfc='none', ms=3, alpha=0.2)
     # Set drawing box dimensions
-    ax.set_xlim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
-    ax.set_ylim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
+    ax.set_xlim(-0.5 * stack.attrs["size"], 0.5 * stack.attrs["size"])
+    ax.set_ylim(-0.5 * stack.attrs["size"], 0.5 * stack.attrs["size"])
     # Add a color bar
     norm = plt.Normalize(vmin=np.min(load), vmax=np.max(load))
     smap = plt.cm.ScalarMappable(cmap=cmap, norm=norm)

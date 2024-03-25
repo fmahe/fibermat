@@ -145,7 +145,7 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
 
             try:
                 # Calculate the next step
-                dU = -min(d[(d > tol) & (v > tol)] / v[(d > tol) & (v > 0)])
+                dU = -min(d[(d > tol) & (v > 0)] / v[(d > tol) & (v > 0)])
                 # Stopping criteria
                 stop = False
                 if err > errtol:

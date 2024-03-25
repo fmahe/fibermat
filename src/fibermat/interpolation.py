@@ -15,6 +15,13 @@ class Interpolate(interp1d):
     y : array-like
         Data to be interpolated.
 
+    Other Parameters
+    ----------------
+    size : int, optional
+        Number of points used for interpolation.
+    kwargs :
+        Additional keyword arguments passed to `interp1d` constructor.
+
     Attributes
     ----------
     x : array-like

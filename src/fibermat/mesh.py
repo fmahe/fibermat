@@ -3,6 +3,7 @@
 
 import numpy as np
 import pandas as pd
+import warnings
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
@@ -20,6 +21,11 @@ class Mesh(pd.DataFrame):
     ----------
     net : pandas.DataFrame, optional
          Fiber network represented by a :class:`Net` object.
+
+    Other Parameters
+    ----------------
+    kwargs :
+        Additional keyword arguments ignored by the function.
 
     .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -125,7 +131,7 @@ class Mesh(pd.DataFrame):
     # ~~~ Constructor ~~~ #
 
     @staticmethod
-    def init(net=None):
+    def init(net=None, **kwargs):
         """
         Create a discontinuous fiber mesh.
 
@@ -138,6 +144,11 @@ class Mesh(pd.DataFrame):
         -------
         mesh : pandas.DataFrame
             Initialized :class:`Mesh` object.
+
+        Other Parameters
+        ----------------
+        kwargs :
+            Additional keyword arguments ignored by the function.
 
         """
         # Optional
@@ -246,6 +257,9 @@ class Mesh(pd.DataFrame):
             mesh = Mesh()
 
         if "skip_check" in mesh.attrs.keys() and mesh.attrs["skip_check"]:
+            warnings.warn("{}.attrs['skip_check'] is active."
+                          " Delete it or set it to False.".format(mesh.__class__),
+                          UserWarning)
             # Return the `Mesh` object
             return mesh
 
