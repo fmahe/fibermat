@@ -1,5 +1,6 @@
 fibermat
 build
+jupyter
 sphinx
 sphinx-copybutton
 myst-parser
