@@ -85,6 +85,8 @@ class Mesh(pd.DataFrame):
         Create a discontinuous fiber mesh.
     :meth:`check` :
         Check that a :class:`Mesh` object is defined correctly.
+    :meth:`isMesh` :
+        Check that an object can be instantiated as a :class:`Mesh`.
 
     ----
 
@@ -318,7 +320,7 @@ class Mesh(pd.DataFrame):
         Parameters
         ----------
         object : Any
-            DataFrame to be tested.
+            Object to be tested.
 
         Returns
         -------

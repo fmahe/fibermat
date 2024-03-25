@@ -38,8 +38,8 @@ do
         exit
         ;;
     -a|--all)
+        b=true
         t=true
-        p=true
         d=true
         ;;
     -b|--build)

@@ -107,6 +107,8 @@ class Mat(pd.DataFrame):
         Generate a set of random straight fibers.
     :meth:`check` :
         Check that a :class:`Mat` object is defined correctly.
+    :meth:`isMat` :
+        Check that an object can be instantiated as a :class:`Mat`.
 
     ----
 
@@ -338,7 +340,7 @@ class Mat(pd.DataFrame):
         Parameters
         ----------
         object : Any
-            DataFrame to be tested.
+            Object to be tested.
 
         Returns
         -------

@@ -91,6 +91,8 @@ class Net(pd.DataFrame):
         Build a fiber network.
     :meth:`check` :
         Check that a :class:`Net` object is defined correctly.
+    :meth:`isNet` :
+        Check that an object can be instantiated as a :class:`Net`.
 
     ----
 
@@ -372,7 +374,7 @@ class Net(pd.DataFrame):
         Parameters
         ----------
         object : Any
-            DataFrame to be tested.
+            Object to be tested.
 
         Returns
         -------
@@ -485,6 +487,8 @@ class Stack(Net):
         Stack fibers by gravity.
     :meth:`check` :
         Check that a :class:`Stack` object is defined correctly.
+    :meth:`isStack` :
+        Check that an object can be instantiated as a :class:`Stack`.
     :meth:`solve` :
         Solve the stacking problem.
     :meth:`constraint` :
@@ -659,7 +663,7 @@ class Stack(Net):
         Parameters
         ----------
         object : Any
-            DataFrame to be tested.
+            Object to be tested.
 
         Returns
         -------
