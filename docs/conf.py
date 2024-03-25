@@ -17,7 +17,7 @@ release = '1.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
-    # 'sphinx.ext.autosectionlabel',
+    'sphinx.ext.autosectionlabel',
     'sphinx_copybutton',
     'myst_parser',
 ]

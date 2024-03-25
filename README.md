@@ -93,7 +93,7 @@ Requirements
 ### Install the package with Pip
 
 Run the following commands:
-```sh
+```shell
 # Install `FiberMat`
 pip install fibermat
 
@@ -105,26 +105,26 @@ python -c "import fibermat"
 ### Install the package in an Anaconda environment
 
 1. Create a conda environment:
-    ```sh
+    ```shell
     # Create conda environment
     conda create -n fibermat python=3.11
-    
+
     # Activate the environment
     conda activate fibermat
-    
+
     # Optional
     pip install jupyter
-    
+
     ```
 
 2. Install FiberMat:
-    ```sh
+    ```shell
     # Install `FiberMat`
     pip install --upgrade fibermat
-    
+
     # Try it out
     python -c "import fibermat"
-    
+
     ```
 
 3. To leave `fibermat` environment, run ``conda deactivate``.
@@ -132,7 +132,7 @@ python -c "import fibermat"
 ### Directly from the sources
 
 Clone the repository and run `pip` command:
-```sh
+```shell
 # Clone the repository
 git clone git@github.com:fmahe/fibermat.git
 cd ./fibermat
@@ -147,24 +147,24 @@ pip install --upgrade .
 FiberMat's documentation is created using [Sphinx](https://www.sphinx-doc.org/en/master/) [<sup>[1]</sup>](#note-1).
 
 1. Clone the repository:
-    ```sh
+    ```shell
     # Clone the repository
     git clone git@github.com:fmahe/fibermat.git
     cd ./fibermat
-    
+
     ```
 
 2. Install dependencies required to compile documentation:
 
     - Install the packages listed in `requirements.txt` with Pip:
-        ```sh
+        ```shell
         # Install dependencies
         pip install -r requirements.txt
-        
+
         ```
 
     - You can also create an environment that already satisfies requirements instead:
-        ```sh
+        ```shell
         # Create an environment from the `environment.yml` file
         conda env create -n fibermat -f ./environment.yml
 
@@ -174,7 +174,7 @@ FiberMat's documentation is created using [Sphinx](https://www.sphinx-doc.org/en
         ```
 
 3. Execute `./make` script:
-    ```sh
+    ```shell
     # Build the sources
     ./make --all
 
