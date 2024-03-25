@@ -140,13 +140,12 @@ def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
             # Calculate error
             err = np.linalg.norm(P[np.ix_(mask, mask)] @ dx[mask] - dq[mask])
             # Calculate evolution
-            # TODO: use P and q instead
-            d = np.real(H - C @ u)
-            v = np.real(dH - C @ du)
+            d = np.real(q - P @ x)
+            v = np.real(dq - P @ dx)
 
             try:
                 # Calculate the next step
-                dU = -min(d[(d > 0) & (v > 0)] / v[(d > 0) & (v > 0)])
+                dU = -min(d[(d > tol) & (v > tol)] / v[(d > tol) & (v > 0)])
                 # Stopping criteria
                 stop = False
                 if err > errtol:
