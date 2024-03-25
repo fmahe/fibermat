@@ -713,7 +713,7 @@ class Stack(Net):
         Other Parameters
         ----------------
         kwargs :
-            Additional keyword arguments passed to the solver.
+            Additional keyword arguments ignored by the function.
 
         .. SEEALSO::
             The solver is based on scipy.optimize.linprog_.
@@ -731,7 +731,8 @@ class Stack(Net):
         if len(mat):
             # Linear programming solver
             bounds = np.c_[0.5 * h, np.full(len(h), np.inf)]
-            linsol = sp.optimize.linprog(f, C, H, bounds=bounds, **kwargs)
+            # TODO: pass a solver with options as argument instead
+            linsol = sp.optimize.linprog(f, C, H, bounds=bounds)
         else:
             linsol = None
 
