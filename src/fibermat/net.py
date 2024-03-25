@@ -364,6 +364,28 @@ class Net(pd.DataFrame):
         # Return the `Net` object
         return net
 
+    @staticmethod
+    def isNet(object):
+        """
+        Check that an object can be instantiated as a :class:`Net`.
+
+        Parameters
+        ----------
+        object : Any
+            DataFrame to be tested.
+
+        Returns
+        -------
+        bool
+            Returns the test answer indicating whether the object can be a instantiated as :class:`Net`.
+
+        """
+        try:
+            Net.check(object)
+            return True
+        except:
+            return False
+
 
 class Stack(Net):
     """
@@ -489,7 +511,7 @@ class Stack(Net):
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
-                and not isinstance(args[0], Mat)):
+                and not Mat.isMat(args[0])):
             # Initialize the DataFrame from argument
             super().__init__(*args, **kwargs)
             # Copy global attributes from argument
@@ -628,6 +650,24 @@ class Stack(Net):
 
         # Return the `Stack` object
         return Net.check(stack)
+
+    @staticmethod
+    def isStack(object):
+        """
+        Check that an object can be instantiated as a :class:`Stack`.
+
+        Parameters
+        ----------
+        object : Any
+            DataFrame to be tested.
+
+        Returns
+        -------
+        bool
+            Returns the test answer indicating whether the object can be a instantiated as :class:`Stack`.
+
+        """
+        return Net.isNet(object)
 
     @staticmethod
     def solve(mat=None, net=None):

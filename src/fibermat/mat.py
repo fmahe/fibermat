@@ -330,6 +330,28 @@ class Mat(pd.DataFrame):
         # Return the `Mat` object
         return mat
 
+    @staticmethod
+    def isMat(object):
+        """
+        Check that an object can be instantiated as a :class:`Mat`.
+
+        Parameters
+        ----------
+        object : Any
+            DataFrame to be tested.
+
+        Returns
+        -------
+        bool
+            Returns the test answer indicating whether the object can be a instantiated as :class:`Mat`.
+
+        """
+        try:
+            Mat.check(object)
+            return True
+        except:
+            return False
+
 
 ################################################################################
 # Main

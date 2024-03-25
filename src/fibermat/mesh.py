@@ -107,7 +107,7 @@ class Mesh(pd.DataFrame):
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
-                and not isinstance(args[0], Net)):
+                and not Net.isNet(args[0])):
             # Initialize the DataFrame from argument
             super().__init__(*args, **kwargs)
             # Copy global attributes from argument
@@ -309,6 +309,28 @@ class Mesh(pd.DataFrame):
 
         # Return the `Mesh` object
         return mesh
+
+    @staticmethod
+    def isMesh(object):
+        """
+        Check that an object can be instantiated as a :class:`Mesh`.
+
+        Parameters
+        ----------
+        object : Any
+            DataFrame to be tested.
+
+        Returns
+        -------
+        bool
+            Returns the test answer indicating whether the object can be a instantiated as :class:`Mesh`.
+
+        """
+        try:
+            Mesh.check(object)
+            return True
+        except:
+            return False
 
 
 ################################################################################
