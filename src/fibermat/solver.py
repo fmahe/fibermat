@@ -9,7 +9,7 @@ from tqdm import tqdm
 from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
 
 
-def solver(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
+def solve(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
            itermax=1000, tol=1e-6, errtol=1e-6, interp_size=None,
            verbose=True, **kwargs):
     r"""An iterative mechanical solver for fiber packing problems. It solves the *quadratic programming problem*:
@@ -211,7 +211,7 @@ if __name__ == "__main__":
     mesh = Mesh(stack)
 
     # Solve the mechanical packing problem
-    K, C, u, f, F, H, Z, rlambda, mask, err = solver(
+    K, C, u, f, F, H, Z, rlambda, mask, err = solve(
         mat, mesh, packing=4, lmin=0.01, coupling=0.99
     )
 
