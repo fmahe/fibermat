@@ -53,7 +53,7 @@ Example
     vtk_mesh(mat, mesh).plot()
 
     # Solve the mechanical packing problem
-    K, C, u, f, F, H, Z, rlambda, mask, err = solver(
+    K, C, u, f, F, H, Z, rlambda, mask, err = solve(
         mat, mesh, packing=4, lmin=0.01, coupling=0.99
     )
 

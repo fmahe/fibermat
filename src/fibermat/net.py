@@ -583,7 +583,7 @@ class Stack(Net):
         net = Net.check(net)
 
         # Solve the stacking problem
-        linsol = Stack.solve(mat, net)
+        linsol = Stack.solve(mat, net, **kwargs)
 
         if linsol:
             # Update DataFrames
