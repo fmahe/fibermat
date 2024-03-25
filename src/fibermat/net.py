@@ -435,7 +435,7 @@ class Stack(Net):
     threshold : float, optional
         Threshold distance value for proximity detection (mm).
     kwargs :
-        Additional keyword arguments ignored by the function.
+        Additional keyword arguments passed to the solver.
 
     .. NOTE::
         The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
@@ -572,7 +572,7 @@ class Stack(Net):
         threshold : float, optional
             Threshold distance value for proximity detection (mm).
         kwargs :
-            Additional keyword arguments ignored by the function.
+            Additional keyword arguments passed to the solver.
 
         .. WARNING::
             :class:`Mat` object is modified during execution.
@@ -694,7 +694,7 @@ class Stack(Net):
         return Net.isNet(object)
 
     @staticmethod
-    def solve(mat=None, net=None):
+    def solve(mat=None, net=None, **kwargs):
         """
         Solve the stacking problem.
 
@@ -709,6 +709,11 @@ class Stack(Net):
         -------
         linsol : OptimizeResult
             Results of linear programming solver.
+
+        Other Parameters
+        ----------------
+        kwargs :
+            Additional keyword arguments passed to the solver.
 
         .. SEEALSO::
             The solver is based on scipy.optimize.linprog_.
@@ -726,14 +731,14 @@ class Stack(Net):
         if len(mat):
             # Linear programming solver
             bounds = np.c_[0.5 * h, np.full(len(h), np.inf)]
-            linsol = sp.optimize.linprog(f, C, H, bounds=bounds)
+            linsol = sp.optimize.linprog(f, C, H, bounds=bounds, **kwargs)
         else:
             linsol = None
 
         return linsol
 
     @staticmethod
-    def constraint(mat=None, net=None):
+    def constraint(mat=None, net=None, **kwargs):
         """
         Assemble the linear system:
 
@@ -759,6 +764,11 @@ class Stack(Net):
                 Upper-bound vector.
             h : numpy.ndarray
                 Thickness vector.
+
+        Other Parameters
+        ----------------
+        kwargs :
+            Additional keyword arguments ignored by the function.
 
         """
         # Optional
