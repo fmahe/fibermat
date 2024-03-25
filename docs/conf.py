@@ -18,12 +18,15 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
     'sphinx.ext.autosectionlabel',
-    'sphinx_copybutton',
     'myst_parser',
+    'sphinx_copybutton',
 ]
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+# Disable some warnings (optional)
+suppress_warnings = ['autosectionlabel.*', 'myst.xref_missing']
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

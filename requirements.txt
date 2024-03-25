@@ -2,6 +2,6 @@ fibermat
 build
 jupyter
 sphinx
-sphinx-copybutton
 myst-parser
+sphinx-copybutton
 sphinx-rtd-theme
