@@ -342,13 +342,13 @@ class Mat(pd.DataFrame):
         return mat
 
     @staticmethod
-    def isMat(object):
+    def isMat(obj):
         """
         Check that an object can be instantiated as a :class:`Mat`.
 
         Parameters
         ----------
-        object : Any
+        obj : Any
             Object to be tested.
 
         Returns
@@ -358,7 +358,7 @@ class Mat(pd.DataFrame):
 
         """
         try:
-            Mat.check(object)
+            Mat.check(obj)
             return True
         except:
             return False

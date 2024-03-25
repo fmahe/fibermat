@@ -327,13 +327,13 @@ class Mesh(pd.DataFrame):
         return mesh
 
     @staticmethod
-    def isMesh(object):
+    def isMesh(obj):
         """
         Check that an object can be instantiated as a :class:`Mesh`.
 
         Parameters
         ----------
-        object : Any
+        obj : Any
             Object to be tested.
 
         Returns
@@ -343,7 +343,7 @@ class Mesh(pd.DataFrame):
 
         """
         try:
-            Mesh.check(object)
+            Mesh.check(obj)
             return True
         except:
             return False

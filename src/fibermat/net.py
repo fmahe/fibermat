@@ -380,13 +380,13 @@ class Net(pd.DataFrame):
         return net
 
     @staticmethod
-    def isNet(object):
+    def isNet(obj):
         """
         Check that an object can be instantiated as a :class:`Net`.
 
         Parameters
         ----------
-        object : Any
+        obj : Any
             Object to be tested.
 
         Returns
@@ -396,7 +396,7 @@ class Net(pd.DataFrame):
 
         """
         try:
-            Net.check(object)
+            Net.check(obj)
             return True
         except:
             return False
@@ -676,13 +676,13 @@ class Stack(Net):
         return Net.check(stack)
 
     @staticmethod
-    def isStack(object):
+    def isStack(obj):
         """
         Check that an object can be instantiated as a :class:`Stack`.
 
         Parameters
         ----------
-        object : Any
+        obj : Any
             Object to be tested.
 
         Returns
@@ -691,7 +691,7 @@ class Stack(Net):
             Returns the test answer indicating whether the object can be a instantiated as :class:`Stack`.
 
         """
-        return Net.isNet(object)
+        return Net.isNet(obj)
 
     @staticmethod
     def solve(mat=None, net=None, **kwargs):

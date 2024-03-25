@@ -1,4 +1,3 @@
-fibermat
 build
 jupyter
 pyqt6

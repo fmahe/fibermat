@@ -194,7 +194,7 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
     mesh = Mesh.check(mesh)
 
     fibers = []  # : list to store individual fiber meshes
-    by_fiber = mesh.groupby("fiber").apply(lambda x: x)
+    by_fiber = mesh.groupby("fiber")
 
     for i in tqdm(mat.index, desc="Create VTK mat"):
         # Get fiber
@@ -207,7 +207,7 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
         fibers.append(fiber_mesh)
 
         # Prepare interpolation data
-        fiber = by_fiber.loc[i]
+        fiber = by_fiber.get_group(i)
         s = fiber.s.values[:, None]
         x = fiber_mesh["xyz"][:, [0]] * 0.9999
         k = KDTree(s).query(x, return_distance=False).ravel()
