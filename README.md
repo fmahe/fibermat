@@ -6,7 +6,6 @@
 
 [![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
 [![GitHub Badge](https://img.shields.io/badge/Github-fibermat-blue?logo=github)](https://github.com/fmahe/fibermat)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fmahe/fibermat/gh-pages.yml)](https://fmahe.github.io/fibermat/)
 [![Read the Docs](https://img.shields.io/readthedocs/fibermat)](https://fibermat.readthedocs.io/en/latest/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![François Mahé](https://img.shields.io/badge/Author-François%20Mahé-green)](https://img.shields.io/badge/francois.mahe@ens--rennes.fr-Univ%20Rennes,%20ENS%20Rennes,%20CNRS,%20IPR%20--%20UMR%206251,%20F--35000%20Rennes,%20France-royalblue)
