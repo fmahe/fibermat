@@ -4,7 +4,7 @@
 
 [project]
     name = "fibermat"
-    version = "1.0.8"
+    version = "1.0.9"
     authors = [
       { name="François Mahé", email="francois.mahe@ens-rennes.fr" },
     ]
@@ -33,6 +33,7 @@
 
 [project.urls]
     Homepage = "https://github.com/fmahe/fibermat"
+    Documentation = "https://fibermat.readthedocs.io/en/latest/"
     Issues = "https://github.com/fmahe/fibermat/issues"
 
 [tool.hatch.build.targets.wheel]

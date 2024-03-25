@@ -6,13 +6,13 @@ Help()
    echo "Compile FiberMat files."
    echo "Basic use: make --all"
    echo
-   echo "Syntax: make [-h|-t|-p|-d|-a|-f]"
+   echo "Syntax: make [-h|-a|-p|-t|-d|-f]"
    echo "Options:"
    echo "    -h | --help                                Display help."
-   echo "    -t | --test | --doctest                    Run doctest."
+   echo "    -a | --all                                 Compile sources, run doctest and build documentation."
    echo "    -p | --pip                                 Compile sources."
+   echo "    -t | --test | --doctest                    Run doctest."
    echo "    -d | --doc                                 Build documentation."
-   echo "    -a | --all                                 Do all."
    echo "    -f | --file | --files  file [file, ...]    Run doctest on given files."
    echo
 }
@@ -70,6 +70,7 @@ done
 if [ "$p" = true ]
 then
     pip install --upgrade $here
+    python -m build
 fi
 
 if [ "$t" = true ]

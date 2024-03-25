@@ -1,11 +1,13 @@
+# Welcome to FiberMat’s documentation!
+
 <a href="https://github.com/fmahe/fibermat">
     <img alt="banner" src="https://github.com/fmahe/fibermat/raw/main/images/banner.png">
 </a>
 
 [![pypi version](https://img.shields.io/pypi/v/fibermat?logo=pypi)](https://pypi.org/project/fibermat/)
 [![GitHub Badge](https://img.shields.io/badge/Github-fibermat-blue?logo=github)](https://github.com/fmahe/fibermat)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fmahe/fibermat/gh-pages.yml)
-![Read the Docs](https://img.shields.io/readthedocs/fibermat)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fmahe/fibermat/gh-pages.yml)](https://fmahe.github.io/fibermat/)
+[![Read the Docs](https://img.shields.io/readthedocs/fibermat)](https://fibermat.readthedocs.io/en/latest/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![François Mahé](https://img.shields.io/badge/Author-François%20Mahé-green)](https://img.shields.io/badge/francois.mahe@ens--rennes.fr-Univ%20Rennes,%20ENS%20Rennes,%20CNRS,%20IPR%20--%20UMR%206251,%20F--35000%20Rennes,%20France-royalblue)
 [![Mail](https://img.shields.io/badge/✉-francois.mahe@ens--rennes.fr-royalblue)](mailto:francois.mahe@ens-rennes.fr)
@@ -155,10 +157,10 @@ FiberMat's documentation is created using [Sphinx](https://www.sphinx-doc.org/en
 
 2. Install dependencies required to compile documentation:
 
-    - Install with Pip:
+    - Install the packages listed in `requirements.txt` with Pip:
         ```sh
         # Install dependencies
-        pip install sphinx sphinx-copybutton myst-parser sphinx-rtd-theme
+        pip install -r requirements.txt
         
         ```
 
