@@ -163,7 +163,7 @@ FiberMat's documentation is created using [Sphinx](https://www.sphinx-doc.org/en
 
         ```
 
-    - You can also create an environment that already satisfies requirements instead:
+    - Alternatively, you can create a new environment that already meets the requirements:
         ```shell
         # Create an environment from the `environment.yml` file
         conda env create -n fibermat -f ./environment.yml
