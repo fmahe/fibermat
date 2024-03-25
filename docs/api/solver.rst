@@ -1,10 +1,10 @@
 🧩 Solver
 =========
 
-solver
-~~~~~~
+solve
+~~~~~
 
-.. image:: ../../images/solver.png
+.. image:: ../../images/solve.png
     :width: 640
 
 .. autofunction:: fibermat.solver.solve
@@ -59,5 +59,5 @@ Example
     ax.set_ylim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
     plt.show()
 
-.. image:: ../../images/solver.png
+.. image:: ../../images/solve.png
     :width: 640
