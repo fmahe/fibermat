@@ -15,11 +15,6 @@ Example
 
 .. code-block:: python
 
-    import numpy as np
-    # import pandas as pd
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
-
     from fibermat import *
 
     # Generate a set of fibers
@@ -54,7 +49,7 @@ Example
         # Set drawing box dimensions
         ax.set_xlim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
         ax.set_ylim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
-    plt.show()
+        plt.show()
 
 .. image:: ../../images/mat.png
     :width: 640

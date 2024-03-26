@@ -189,9 +189,6 @@ See the tutorial in `jupyter-notebook.ipynb`.
 ## Example
 
 ```python
-import numpy as np
-from matplotlib import pyplot as plt
-
 from fibermat import *
 
 # Generate a set of fibers

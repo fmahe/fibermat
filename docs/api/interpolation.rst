@@ -15,10 +15,6 @@ Example
 
 .. code-block:: python
 
-    import numpy as np
-    from matplotlib import pyplot as plt
-    # from scipy.interpolate import interp1d
-
     from fibermat import *
 
     # Reference solution

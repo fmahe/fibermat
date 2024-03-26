@@ -30,8 +30,6 @@ Example
 
 .. code-block:: python
 
-    from matplotlib import pyplot as plt
-
     from fibermat import *
 
     # Create a VTK fiber

@@ -15,11 +15,6 @@ Example
 
 .. code-block:: python
 
-    import numpy as np
-    # import pandas as pd
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
-
     from fibermat import *
 
     # Generate a set of fibers
@@ -77,12 +72,6 @@ Example
 ~~~~~~~
 
 .. code-block:: python
-
-    import numpy as np
-    # import pandas as pd
-    from matplotlib import pyplot as plt
-    from scipy.interpolate import interp1d
-    from tqdm import tqdm
 
     from fibermat import *
 

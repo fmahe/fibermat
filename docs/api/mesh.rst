@@ -15,11 +15,6 @@ Example
 
 .. code-block:: python
 
-    import numpy as np
-    # import pandas as pd
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
-
     from fibermat import *
 
     # Generate a set of fibers
@@ -54,10 +49,10 @@ Example
             if mesh.iloc[i].fiber == mesh.iloc[k].fiber:
                 # Draw fiber end nodes
                 plt.plot(*np.c_[a, c], '+k', ms=3, alpha=0.2)
-    # Set drawing box dimensions
-    ax.set_xlim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
-    ax.set_ylim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
-    plt.show()
+        # Set drawing box dimensions
+        ax.set_xlim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
+        ax.set_ylim(-0.5 * mesh.attrs["size"], 0.5 * mesh.attrs["size"])
+        plt.show()
 
 .. image:: ../../images/mesh.png
     :width: 640

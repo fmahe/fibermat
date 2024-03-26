@@ -14,11 +14,6 @@ Example
 
 .. code-block:: python
 
-    import numpy as np
-    import scipy as sp
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
-
     from fibermat import *
 
     # Generate a set of fibers
