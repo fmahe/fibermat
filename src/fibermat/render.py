@@ -3,11 +3,12 @@
 
 import numpy as np
 import pyvista as pv
+from matplotlib import pyplot as plt
 from scipy.interpolate import CubicHermiteSpline
 from sklearn.neighbors import KDTree
 from tqdm import tqdm
 
-from fibermat import Mat, Net, Stack, Mesh
+from fibermat import Mat, Net, Stack, Mesh, solve
 
 
 def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
@@ -274,9 +275,6 @@ def vtk_mesh(mat=None, mesh=None,
 
 if __name__ == "__main__":
 
-    # import pyvista as
-    from matplotlib import pyplot as plt
-
     # from fibermat import *
 
     # Create a VTK fiber
@@ -299,7 +297,7 @@ if __name__ == "__main__":
 
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solve(
-        mat, mesh, packing=4, lmin=0.01, coupling=0.99
+        mat, mesh, packing=4, lmin=0.01, coupling=0.99, interp_size=100
     )
 
     # Export as VTK

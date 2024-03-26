@@ -391,10 +391,6 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH,
 
 if __name__ == "__main__":
 
-    import numpy as np
-    import scipy as sp
-    from matplotlib import pyplot as plt
-
     # from fibermat import *
 
     # Linear model (Ψ² ≫ 1)
@@ -434,7 +430,8 @@ if __name__ == "__main__":
     K, u, F, du, dF = stiffness(mat, mesh)
     C, f, H, df, dH = constraint(mat, mesh)
     P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
+    # Permutation of indices
     perm = sp.sparse.csgraph.reverse_cuthill_mckee(P, symmetric_mode=True)
-
+    # Visualize the system
     plot_system(K, u, F, du, dF, C, f, H, df, dH, perm=perm)
     plt.show()

@@ -60,12 +60,6 @@ Mahé, F. (2023). Statistical mechanical framework for discontinuous composites:
 """
 
 
-import numpy as np
-from matplotlib import pyplot as plt
-
-from fibermat import *
-
-
 ################################################################################
 # Main
 ################################################################################
@@ -83,10 +77,23 @@ if __name__ == "__main__":
     # Create the fiber mesh
     mesh = Mesh(stack)
 
+    # Assemble the quadratic programming system
+    K, u, F, du, dF = stiffness(mat, mesh)
+    C, f, H, df, dH = constraint(mat, mesh)
+    P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
+    # Permutation of indices
+    perm = sp.sparse.csgraph.reverse_cuthill_mckee(P, symmetric_mode=True)
+    # Enhanced solver
+    spsolve = lambda A, b: sp.sparse.linalg.spsolve(A, b, use_umfpack=False)
+    # Visualize the system
+    plot_system(K, u, F, du, dF, C, f, H, df, dH, solve=spsolve, perm=perm)
+    plt.show()
+
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solve(
         mat, mesh,
-        packing=4, itermax=1000, lmin=0.01, coupling=0.99, interp_size=100
+        packing=4, itermax=1000, lmin=0.01, coupling=0.99, interp_size=100,
+        solve=spsolve, perm=perm
     )
 
     # K, u, F, du, dF = stiffness(mat, mesh)

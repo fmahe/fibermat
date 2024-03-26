@@ -4,6 +4,7 @@
 import numpy as np
 import scipy as sp
 import warnings
+from matplotlib import pyplot as plt
 from tqdm import tqdm
 
 from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
@@ -209,11 +210,6 @@ def solve(mat, mesh, packing=1.,
 
 if __name__ == "__main__":
 
-    import numpy as np
-    import scipy as sp
-    from matplotlib import pyplot as plt
-    from tqdm import tqdm
-
     # from fibermat import *
 
     # Generate a set of fibers
@@ -225,17 +221,9 @@ if __name__ == "__main__":
     # Create the fiber mesh
     mesh = Mesh(stack)
 
-    # Assemble the quadratic programming system
-    K, u, F, du, dF = stiffness(mat, mesh)
-    C, f, H, df, dH = constraint(mat, mesh)
-    P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
-    perm = sp.sparse.csgraph.reverse_cuthill_mckee(P, symmetric_mode=True)
-    spsolve = lambda A, b: sp.sparse.linalg.spsolve(A, b, use_umfpack=False)
-
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solve(
-        mat, mesh, packing=4, lmin=0.01, coupling=0.99,
-        solve=spsolve, perm=perm
+        mat, mesh, packing=4, lmin=0.01, coupling=0.99, interp_size=100
     )
 
     # Deform the mesh
