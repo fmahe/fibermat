@@ -290,7 +290,8 @@ def constraint(mat, mesh, **kwargs):
     return C, f, H, df, dH
 
 
-def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
+def plot_system(K, u, F, du, dF, C, f, H, df, dH,
+                solve=sp.sparse.linalg.spsolve, perm=None, ax=None, tol=1e-6):
     """
     Visualize the system of equations and calculate the step error.
 
@@ -324,6 +325,10 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
 
     Other Parameters
     ----------------
+    solve : callable, optional
+        Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝒃 and returns the solution 𝒙 of the linear system: 𝔸 𝒙 = 𝒃. Default is `scipy.sparse.linalg.spsolve`.
+    perm : numpy.ndarray, optional
+        Permutation of indices.
     ax : matplotlib.axes.Axes, optional
         Matplotlib axes.
     tol : float, optional
@@ -339,29 +344,26 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
 
     mask0 = np.array([True] * K.shape[0] + [False] * C.shape[0])
     D0 = sp.sparse.diags(mask0.astype(float))
-    mask1 = np.array([False] * K.shape[0] + [*(
-                np.isclose(C @ u, H) & np.tile([True, False, False],
-                                               C.shape[0] // 3))])
+    mask1 = np.array([False] * K.shape[0] + [*(np.isclose(C @ u, H) & np.tile([True, False, False], C.shape[0] // 3))])
     D1 = sp.sparse.diags(mask1.astype(float))
-    mask2 = np.array([False] * K.shape[0] + [*(
-                np.isclose(C @ u, H) & np.tile([False, True, False],
-                                               C.shape[0] // 3))])
+    mask2 = np.array([False] * K.shape[0] + [*(np.isclose(C @ u, H) & np.tile([False, True, False], C.shape[0] // 3))])
     D2 = sp.sparse.diags(mask2.astype(float))
-    mask3 = np.array([False] * K.shape[0] + [*(
-                np.isclose(C @ u, H) & np.tile([False, False, True],
-                                               C.shape[0] // 3))])
+    mask3 = np.array([False] * K.shape[0] + [*(np.isclose(C @ u, H) & np.tile([False, False, True], C.shape[0] // 3))])
     D3 = sp.sparse.diags(mask3.astype(float))
     mask4 = np.array([False] * K.shape[0] + [*(~np.isclose(C @ u, H))])
     D4 = sp.sparse.diags(mask4.astype(float))
 
+    if perm is None:
+        perm = np.arange(P.shape[0])
+
     # Figure
     if ax is None:
         fig, ax = plt.subplots()
-    ax.spy(D0 @ P @ D0, ms=3, color='black', alpha=0.5, label="stiffness")
-    ax.spy(D2 @ P + P @ D2, ms=3, color='tab:blue', alpha=0.25, label="inner")
-    ax.spy(D1 @ P + P @ D1, ms=3, color='tab:green', alpha=0.5, label="lower")
-    ax.spy(D3 @ P + P @ D3, ms=3, color='tab:red', alpha=0.5, label="upper")
-    ax.spy(D4 @ P + P @ D4, ms=1, color='gray', zorder=-1, alpha=0.1,
+    ax.spy((D0 @ P @ D0)[np.ix_(perm, perm)], ms=3, color='black', alpha=0.5, label="stiffness")
+    ax.spy((D2 @ P + P @ D2)[np.ix_(perm, perm)], ms=3, color='tab:blue', alpha=0.25, label="inner")
+    ax.spy((D1 @ P + P @ D1)[np.ix_(perm, perm)], ms=3, color='tab:green', alpha=0.5, label="lower")
+    ax.spy((D3 @ P + P @ D3)[np.ix_(perm, perm)], ms=3, color='tab:red', alpha=0.5, label="upper")
+    ax.spy((D4 @ P + P @ D4)[np.ix_(perm, perm)], ms=1, color='gray', zorder=-1, alpha=0.1,
            label="inactive")
     ax.legend()
 
@@ -369,10 +371,15 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
     mask &= np.array(np.sum(np.abs(np.real(P)), axis=0) > 0).ravel()
 
     # Solve linear problem
-    sol = sp.sparse.linalg.spsolve(P[np.ix_(mask, mask)], dq[mask])
-    dx[mask] += np.real(sol)
+    dx[perm[mask[perm]]] = np.real(
+        solve(
+            P[np.ix_(perm[mask[perm]], perm[mask[perm]])],
+            dq[perm[mask[perm]]]
+        )
+    )
+
     # Calculate error
-    err = np.linalg.norm(P[np.ix_(mask, mask)] @ sol - dq[mask])
+    err = np.linalg.norm(P[np.ix_(mask, mask)] @ dx[mask] - dq[mask])
     print(err)
 
     return ax
@@ -385,9 +392,10 @@ def plot_system(K, u, F, du, dF, C, f, H, df, dH, ax=None, tol=1e-6):
 if __name__ == "__main__":
 
     import numpy as np
+    import scipy as sp
     from matplotlib import pyplot as plt
 
-    from fibermat import *
+    # from fibermat import *
 
     # Linear model (Ψ² ≫ 1)
     mat = Mat(1, length=1, width=1, thickness=1, shear=1, tensile=np.inf)
@@ -414,16 +422,19 @@ if __name__ == "__main__":
     print()
 
     # Generate a set of fibers
-    mat = Mat(10)
+    mat = Mat(100)
     # Build the fiber network
-    net = Net(mat)
+    net = Net(mat, periodic=True)
     # Stack fibers
-    stack = Stack(mat, net)
+    stack = Stack(mat, net, threshold=10)
     # Create the fiber mesh
     mesh = Mesh(stack)
 
     # Assemble the quadratic programming system
     K, u, F, du, dF = stiffness(mat, mesh)
     C, f, H, df, dH = constraint(mat, mesh)
-    plot_system(K, u, F, du, dF, C, f, H, df, dH)
+    P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
+    perm = sp.sparse.csgraph.reverse_cuthill_mckee(P, symmetric_mode=True)
+
+    plot_system(K, u, F, du, dF, C, f, H, df, dH, perm=perm)
     plt.show()

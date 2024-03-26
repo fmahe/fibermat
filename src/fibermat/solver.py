@@ -9,9 +9,9 @@ from tqdm import tqdm
 from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
 
 
-def solve(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
-           itermax=1000, tol=1e-6, errtol=1e-6, interp_size=None,
-           verbose=True, **kwargs):
+def solve(mat, mesh, packing=1.,
+          solve=sp.sparse.linalg.spsolve, perm=None, itermax=1000, tol=1e-6,
+          errtol=1e-6, interp_size=None, verbose=True, **kwargs):
     r"""An iterative mechanical solver for fiber packing problems. It solves the *quadratic programming problem*:
 
     .. MATH::
@@ -86,6 +86,8 @@ def solve(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
     ----------------
     solve : callable, optional
         Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝒃 and returns the solution 𝒙 of the linear system: 𝔸 𝒙 = 𝒃. Default is `scipy.sparse.linalg.spsolve`.
+    perm : numpy.ndarray, optional
+        Permutation of indices.
     itermax : int, optional
         Maximum number of solver iterations. Default is 1000.
     tol : float, optional
@@ -109,6 +111,9 @@ def solve(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
     q = np.r_[F, H]
     dx = np.r_[du, df]
     dq = np.r_[dF, dH]
+
+    if perm is None:
+        perm = np.arange(P.shape[0])
 
     u, f = np.split(x, [K.shape[0]])  # Memory-shared
     F, H = np.split(q, [K.shape[0]])  # Memory-shared
@@ -135,8 +140,13 @@ def solve(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
             mask = (np.real(q - P @ x) <= tol)
             mask &= np.array(np.sum(np.abs(np.real(P)), axis=0) > 0).ravel()
             # Solve linear problem
-            sol = solve(P[np.ix_(mask, mask)], dq[mask])
-            dx[mask] += np.real(sol)
+            # dx[mask] += np.real(solve(P[np.ix_(mask, mask)], dq[mask]))
+            dx[perm[mask[perm]]] = np.real(
+                solve(
+                    P[np.ix_(perm[mask[perm]], perm[mask[perm]])],
+                    dq[perm[mask[perm]]]
+                )
+            )
             # Calculate error
             err = np.linalg.norm(P[np.ix_(mask, mask)] @ dx[mask] - dq[mask])
             # Calculate evolution
@@ -199,7 +209,12 @@ def solve(mat, mesh, packing=1., solve=sp.sparse.linalg.spsolve,
 
 if __name__ == "__main__":
 
-    from fibermat import *
+    import numpy as np
+    import scipy as sp
+    from matplotlib import pyplot as plt
+    from tqdm import tqdm
+
+    # from fibermat import *
 
     # Generate a set of fibers
     mat = Mat(100)
@@ -210,9 +225,17 @@ if __name__ == "__main__":
     # Create the fiber mesh
     mesh = Mesh(stack)
 
+    # Assemble the quadratic programming system
+    K, u, F, du, dF = stiffness(mat, mesh)
+    C, f, H, df, dH = constraint(mat, mesh)
+    P = sp.sparse.bmat([[K, C.T], [C, None]], format='csc')
+    perm = sp.sparse.csgraph.reverse_cuthill_mckee(P, symmetric_mode=True)
+    spsolve = lambda A, b: sp.sparse.linalg.spsolve(A, b, use_umfpack=False)
+
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solve(
-        mat, mesh, packing=4, lmin=0.01, coupling=0.99
+        mat, mesh, packing=4, lmin=0.01, coupling=0.99,
+        solve=spsolve, perm=perm
     )
 
     # Deform the mesh

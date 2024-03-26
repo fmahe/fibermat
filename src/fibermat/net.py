@@ -857,11 +857,12 @@ def _test_stack(n=100):
 if __name__ == "__main__":
 
     import numpy as np
+    # import pandas as pd
     from matplotlib import pyplot as plt
     from scipy.interpolate import interp1d
     from tqdm import tqdm
 
-    from fibermat import *
+    # from fibermat import *
 
     # Generate a set of fibers
     mat = Mat(10)

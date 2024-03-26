@@ -143,8 +143,10 @@ def vtk_mat(mat=None, **kwargs):
     return pv.MultiBlock(fibers).combine()
 
 
-def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
-             force=None, moment=None, **kwargs):
+def vtk_mesh(mat=None, mesh=None,
+             displacement=None, rotation=None,
+             force=None, moment=None,
+             **kwargs):
     """
     Export a :class:`Mesh` object as VTK mesh.
 
@@ -272,9 +274,10 @@ def vtk_mesh(mat=None, mesh=None, displacement=None, rotation=None,
 
 if __name__ == "__main__":
 
+    # import pyvista as
     from matplotlib import pyplot as plt
 
-    from fibermat import *
+    # from fibermat import *
 
     # Create a VTK fiber
     vtk_fiber().plot()

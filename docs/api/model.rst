@@ -22,6 +22,7 @@ Example
 .. code-block:: python
 
     import numpy as np
+    # import scipy as sp
     from matplotlib import pyplot as plt
 
     from fibermat import *
