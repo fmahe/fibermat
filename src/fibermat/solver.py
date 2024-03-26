@@ -10,8 +10,8 @@ from tqdm import tqdm
 from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
 
 
-def solve(mat, mesh, packing=1.,
-          solve=sp.sparse.linalg.spsolve, perm=None, itermax=1000, tol=1e-6,
+def solve(mat, mesh, packing=1., itermax=1000,
+          solve=sp.sparse.linalg.spsolve, perm=None, tol=1e-6,
           errtol=1e-6, interp_size=None, verbose=True, **kwargs):
     r"""An iterative mechanical solver for fiber packing problems. It solves the *quadratic programming problem*:
 
@@ -55,6 +55,8 @@ def solve(mat, mesh, packing=1.,
         Fiber mesh represented by a :class:`Mesh` object.
     packing : float, optional
         Targeted value of packing. Must be greater than 1. Default is 1.0.
+    itermax : int, optional
+        Maximum number of solver iterations. Default is 1000.
 
     Returns
     -------
@@ -89,8 +91,6 @@ def solve(mat, mesh, packing=1.,
         Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝒃 and returns the solution 𝒙 of the linear system: 𝔸 𝒙 = 𝒃. Default is `scipy.sparse.linalg.spsolve`.
     perm : numpy.ndarray, optional
         Permutation of indices.
-    itermax : int, optional
-        Maximum number of solver iterations. Default is 1000.
     tol : float, optional
         Tolerance used for contact detection (mm). Default is 1e-6 mm.
     errtol : float, optional
@@ -223,7 +223,8 @@ if __name__ == "__main__":
 
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solve(
-        mat, mesh, packing=4, lmin=0.01, coupling=0.99, interp_size=100
+        mat, mesh, packing=4, itermax=1000,
+        lmin=0.01, coupling=0.99, interp_size=100
     )
 
     # Deform the mesh

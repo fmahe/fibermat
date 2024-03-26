@@ -297,7 +297,8 @@ if __name__ == "__main__":
 
     # Solve the mechanical packing problem
     K, C, u, f, F, H, Z, rlambda, mask, err = solve(
-        mat, mesh, packing=4, lmin=0.01, coupling=0.99, interp_size=100
+        mat, mesh, packing=4, itermax=1000,
+        lmin=0.01, coupling=0.99, interp_size=100
     )
 
     # Export as VTK
