@@ -92,6 +92,7 @@ __header__ = """
       Rennes                  ██║
                               ╚═╝
 """
+__home__ = "https://github.com/fmahe/fibermat"
 __license__ = "MIT"
 __maintainer__ = "François Mahé"
 __status__ = "Production"
