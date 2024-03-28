@@ -71,7 +71,7 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
 
     """
     # Create the VTK mesh (cylindrical structured grid)
-    vtk = pv.CylinderStructured(radius=np.linspace(0.5, 0, r_resolution + 1),
+    msh = pv.CylinderStructured(radius=np.linspace(0.5, 0, r_resolution + 1),
                                 theta_resolution=theta_resolution,
                                 z_resolution=z_resolution)
 
@@ -79,24 +79,24 @@ def vtk_fiber(length=25., width=1., thickness=1., x=0., y=0., z=0.,
 
     # Add fields to mesh data
     if index is not None:
-        vtk["fiber"] = np.full(len(vtk.points), index)
-        vtk["lbh"] = np.tile([l, b, h], (len(vtk.points), 1))
-        vtk["xyz"] = vtk.points * np.array([[l, b, h]])
-        vtk["uvw"] = np.tile([u, v, w], (len(vtk.points), 1))
-        vtk["G"] = np.full(len(vtk.points), shear)
-        vtk["E"] = np.full(len(vtk.points), tensile)
+        msh["fiber"] = np.full(len(msh.points), index)
+        msh["lbh"] = np.tile([l, b, h], (len(msh.points), 1))
+        msh["xyz"] = msh.points * np.array([[l, b, h]])
+        msh["uvw"] = np.tile([u, v, w], (len(msh.points), 1))
+        msh["G"] = np.full(len(msh.points), shear)
+        msh["E"] = np.full(len(msh.points), tensile)
 
     # Transform the mesh (scale, rotate, and translate)
-    vtk.scale([l, b, h], inplace=True)
-    pv.translate(vtk,
+    msh.scale([l, b, h], inplace=True)
+    pv.translate(msh,
                  center=(x, y, z),
                  direction=(u, v, w))
 
     # Return VTK mesh
-    return vtk
+    return msh
 
 
-def vtk_mat(mat=None, **kwargs):
+def vtk_mat(mat=None, func=None, verbose=True, **kwargs):
     """
     Export a :class:`Mat` object as VTK mesh.
 
@@ -104,6 +104,8 @@ def vtk_mat(mat=None, **kwargs):
     ----------
     mat : pandas.DataFrame, optional
         Set of fibers represented by a :class:`Mat` object.
+    func : callable, optional
+        Function called for each fiber to modify the mesh or add fields. It takes as arguments the VTK mesh and the label of the fiber.
 
     Returns
     -------
@@ -112,6 +114,8 @@ def vtk_mat(mat=None, **kwargs):
 
     Other Parameters
     ----------------
+    verbose : bool, optional
+        If True, a progress bar is displayed. Default is True.
     kwargs :
         Additional keyword arguments passed to :meth:`vtk_fiber` function.
 
@@ -126,19 +130,25 @@ def vtk_mat(mat=None, **kwargs):
 
     """
     # Optional
-    mat = Mat.check(mat)
+    if mat is None:
+        mat = Mat()
+
+    assert Mat.check(mat)
 
     fibers = []  # : list to store individual fiber meshes
 
-    for i in tqdm(mat.index, desc="Create VTK mat"):
+    for i in tqdm(mat.index, desc="Create VTK mat", disable=not verbose):
         # Get fiber
         fiber = mat.loc[i].astype(float)
         # Create the VTK mesh (cylindrical structured grid)
-        fiber_mesh = vtk_fiber(*fiber[[*"lbhxyzuvwGE"]].values,
-                               index=i,
-                               **kwargs)
+        msh = vtk_fiber(*fiber[[*"lbhxyzuvwGE"]].values,
+                        index=i,
+                        **kwargs)
+        if func is not None:
+            # Create additional fields
+            func(msh, i)
         # Append fiber mesh to list
-        fibers.append(fiber_mesh)
+        fibers.append(msh)
 
     # Combine all individual fiber meshes into a single VTK mesh
     return pv.MultiBlock(fibers).combine()
@@ -147,7 +157,7 @@ def vtk_mat(mat=None, **kwargs):
 def vtk_mesh(mat=None, mesh=None,
              displacement=None, rotation=None,
              force=None, moment=None,
-             **kwargs):
+             verbose=True, **kwargs):
     """
     Export a :class:`Mesh` object as VTK mesh.
 
@@ -173,6 +183,8 @@ def vtk_mesh(mat=None, mesh=None,
         Load field.
     moment : numpy.ndarray, optional
         Torque field.
+    verbose : bool, optional
+        If True, a progress bar is displayed. Default is True.
     kwargs :
         Additional keyword arguments passed to :meth:`vtk_fiber` function.
 
@@ -193,26 +205,22 @@ def vtk_mesh(mat=None, mesh=None,
 
     """
     # Optional
-    mat = Mat.check(mat)
-    mesh = Mesh.check(mesh)
+    if mat is None:
+        mat = Mat()
+    if mesh is None:
+        mesh = Mesh()
 
-    fibers = []  # : list to store individual fiber meshes
+    assert Mat.check(mat)
+    assert Mesh.check(mesh)
+
+    # Group nodes by fiber
     by_fiber = mesh.groupby("fiber")
 
-    for i in tqdm(mat.index, desc="Create VTK mat"):
-        # Get fiber
-        fiber = mat.loc[i].astype(float)
-        # Create the VTK mesh (cylindrical structured grid)
-        fiber_mesh = vtk_fiber(*fiber[[*"lbhxyzuvwGE"]].values,
-                               index=i,
-                               **kwargs)
-        # Append fiber mesh to list
-        fibers.append(fiber_mesh)
-
+    def inteprolation_field(msh, i):
         # Prepare interpolation data
         fiber = by_fiber.get_group(i)
         s = fiber.s.values[:, None]
-        x = fiber_mesh["xyz"][:, [0]] * 0.9999
+        x = msh["xyz"][:, [0]] * 0.9999
         k = KDTree(s).query(x, return_distance=False).ravel()
         s, x = s.ravel(), x.ravel()
         # Correct indices (s_k <= x_i < s_{k+1}, k \in [-1, n])
@@ -224,49 +232,49 @@ def vtk_mesh(mat=None, mesh=None,
         j[j == np.inf] = 0
         # Add to vtk_fiber
         j += fiber.index[k]
-        fiber_mesh["node"] = j
+        msh["node"] = j
 
-    # Combine all individual fiber meshes into a single VTK mesh
-    vtk = pv.MultiBlock(fibers).combine()
+    # Create a VTK mesh with interpolation dataZ
+    msh = vtk_mat(mat, func=inteprolation_field, verbose=verbose)
 
     if len(mat):
         # Interpolate fields
         s = np.arange(len(mesh))
-        x = vtk["node"]
+        x = msh["node"]
         if displacement is not None:
             if rotation is None:
                 rotation = 0 * displacement
             displacement = CubicHermiteSpline(s, displacement, rotation)
-            vtk["displacement"] = np.zeros(vtk.points.shape)
-            vtk["displacement"][:, 2] = displacement(x)
-            vtk["rotation"] = displacement.derivative()(x)
-            vtk["curvature"] = displacement.derivative(2)(x)
-            vtk.points += vtk["displacement"]
+            msh["displacement"] = np.zeros(msh.points.shape)
+            msh["displacement"][:, 2] = displacement(x)
+            msh["rotation"] = displacement.derivative()(x)
+            msh["curvature"] = displacement.derivative(2)(x)
+            msh.points += msh["displacement"]
         if force is not None:
             if moment is None:
                 moment = 0 * force
             force = CubicHermiteSpline(s, force, moment)
-            vtk["force"] = force(x)
+            msh["force"] = force(x)
 
     # Periodic boundary conditions (optional)
     if len(mat) and mesh.attrs["periodic"]:
         X = Y = mat.attrs["size"]
-        Z1, Z2 = np.min(vtk.points), np.max(vtk.points)
+        Z1, Z2 = np.min(msh.points), np.max(msh.points)
         # Duplicate mesh for periodic conditions
-        vtk = pv.MultiBlock([
-            vtk,
-            vtk.copy().translate([-X, 0, 0]),
-            vtk.copy().translate([X, 0, 0]),
-            vtk.copy().translate([0, -Y, 0]),
-            vtk.copy().translate([0, Y, 0]),
-            vtk.copy().translate([-X, -Y, 0]),
-            vtk.copy().translate([-X, Y, 0]),
-            vtk.copy().translate([X, -Y, 0]),
-            vtk.copy().translate([X, Y, 0]),
+        msh = pv.MultiBlock([
+            msh,
+            msh.copy().translate([-X, 0, 0]),
+            msh.copy().translate([X, 0, 0]),
+            msh.copy().translate([0, -Y, 0]),
+            msh.copy().translate([0, Y, 0]),
+            msh.copy().translate([-X, -Y, 0]),
+            msh.copy().translate([-X, Y, 0]),
+            msh.copy().translate([X, -Y, 0]),
+            msh.copy().translate([X, Y, 0]),
         ]).combine().clip_box([-X, X, -Y, Y, Z1, Z2], invert=False)
 
     # Return VTK mesh
-    return vtk
+    return msh
 
 
 ################################################################################
@@ -302,7 +310,7 @@ if __name__ == "__main__":
     )
 
     # Export as VTK
-    vtk = vtk_mesh(mat, mesh,
+    msh = vtk_mesh(mat, mesh,
                    *u(1).reshape(-1, 2).T,
                    *(f(1) @ C).reshape(-1, 2).T)
-    vtk.plot(scalars="force", cmap=plt.cm.twilight_shifted)
+    msh.plot(scalars="force", cmap=plt.cm.twilight_shifted)

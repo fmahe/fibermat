@@ -19,10 +19,6 @@ Example
 
     # Generate a set of fibers
     mat = Mat(100)
-    # Build the fiber network
-    net = Net(mat)
-    # Create the fiber mesh
-    mesh = Mesh(net)
 
     # Get fiber data
     dimensions = mat[[*"lbh"]]  # size: (n x 3)
@@ -31,7 +27,7 @@ Example
 
     # Check data
     Mat.check(mat)  # or `mat.check()`
-    # -> returns `mat` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',
@@ -49,7 +45,7 @@ Example
         # Set drawing box dimensions
         ax.set_xlim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
         ax.set_ylim(-0.5 * mat.attrs["size"], 0.5 * mat.attrs["size"])
-        plt.show()
+    plt.show()
 
 .. image:: ../../images/mat.png
     :width: 640

@@ -1,4 +1,5 @@
 build
+pytest
 jupyter
 pyqt6
 trame

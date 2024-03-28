@@ -14,7 +14,9 @@ from fibermat import Mat
 
 class Net(pd.DataFrame):
     r"""
-    A class inherited from pandas.DataFrame_ to **build a fiber network**. It describes nodes and connections between fibers within a :class:`Mat` object:
+    A class inherited from pandas.DataFrame_ to **build a fiber network**.
+
+    It describes nodes and connections between fibers within a :class:`Mat` object:
 
         - **nodes** are defined as the nearest points between pairs of fibers.
         - **connections** link pairs of nodes to define relative positions between fibers.
@@ -27,14 +29,15 @@ class Net(pd.DataFrame):
     Other Parameters
     ----------------
     periodic : bool, optional
-        If True, duplicate fibers for periodicity. Default is True.
+        If True, fibers are duplicated for periodicity. Default is True.
     pairs : numpy.ndarray, optional
         Pairs of fiber indices used to find nearest points. Size: (m x 2).
     kwargs :
         Additional keyword arguments ignored by the function.
 
     .. NOTE::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters.
+        Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -101,8 +104,6 @@ class Net(pd.DataFrame):
         Build a fiber network.
     :meth:`check` :
         Check that a :class:`Net` object is defined correctly.
-    :meth:`isNet` :
-        Check that an object can be instantiated as a :class:`Net`.
 
     ----
 
@@ -110,7 +111,7 @@ class Net(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the :class:`Net` object.
+        Initialize the `Net` object.
 
         Parameters
         ----------
@@ -136,7 +137,7 @@ class Net(pd.DataFrame):
             self.__init__(Net.init(*args, **kwargs))
 
         # Check `Net` object
-        Net.check(self)
+        assert Net.check(self)
 
     # ~~~ Constructor ~~~ #
 
@@ -158,7 +159,7 @@ class Net(pd.DataFrame):
         Other Parameters
         ----------------
         periodic : bool, optional
-            If True, duplicate fibers for periodicity. Default is True.
+            If True, fibers are duplicated for periodicity. Default is True.
         pairs : numpy.ndarray, optional
             Pairs of fiber indices used to find nearest points. Size: (m x 2).
         kwargs :
@@ -166,7 +167,10 @@ class Net(pd.DataFrame):
 
         """
         # Optional
-        mat = Mat(mat)
+        if mat is None:
+            mat = Mat()
+
+        assert Mat.check(mat)
 
         # Periodic boundary conditions (optional)
         if periodic:
@@ -289,17 +293,11 @@ class Net(pd.DataFrame):
 
     # ~~~ Public methods ~~~ #
 
-    @staticmethod
-    def check(net=None):
+    def check(self):
         """
         Check that a :class:`Net` object is defined correctly.
 
-        This method is automatically called by functions that use a :class:`Net` object as input.
-
-        Parameters
-        ----------
-        net : pandas.DataFrame, optional
-            Fiber network represented by a :class:`Net` object.
+        This method is called when a :class:`Net` object is initialized.
 
         Raises
         ------
@@ -321,23 +319,24 @@ class Net(pd.DataFrame):
 
         Returns
         -------
-        net : pandas.DataFrame
-            Validated :class:`Net` object.
+        bool
+            Indicates whether the object can be instantiated as :class:`Net`.
 
         .. TIP::
-            - If `net` is None, it returns an empty :class:`Net` object.
+            - If `self` is None, it returns an empty :class:`Net` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
-        if net is None:
+        if self is None:
             net = Net()
+        else:
+            net = self
 
         if "skip_check" in net.attrs.keys() and net.attrs["skip_check"]:
             warnings.warn("{}.attrs['skip_check'] is active."
                           " Delete it or set it to False.".format(net.__class__),
                           UserWarning)
-            # Return the `Net` object
-            return net
+            return True
 
         # Keys
         try:
@@ -376,35 +375,15 @@ class Net(pd.DataFrame):
         if not np.all(net.A <= net.B):
             raise ValueError("Pairs of fiber labels must be ordered: A ≤ B.")
 
-        # Return the `Net` object
-        return net
-
-    @staticmethod
-    def isNet(obj):
-        """
-        Check that an object can be instantiated as a :class:`Net`.
-
-        Parameters
-        ----------
-        obj : Any
-            Object to be tested.
-
-        Returns
-        -------
-        bool
-            Returns the test answer indicating whether the object can be a instantiated as :class:`Net`.
-
-        """
-        try:
-            Net.check(obj)
-            return True
-        except:
-            return False
+        # Return True if the test is correct
+        return True
 
 
 class Stack(Net):
     """
-    A class inherited from :class:`Net` to **stack a set of fibers**. It solves the *linear programming system*:
+    A class inherited from :class:`Net` to **stack a set of fibers**.
+
+    It solves the *linear programming system*:
 
     .. MATH::
         \min_{z} (-\mathbf{f} \cdot \mathbf{z}) \quad s.t. \quad \mathbb{C} \, \mathbf{z} \leq \mathbf{H} \quad and \quad \mathbf{z} \geq \mathbf{h} / 2
@@ -412,13 +391,13 @@ class Stack(Net):
         with \quad \mathbf{f} = -\mathbf{m} \, g \quad and \quad \mathbf{h} > 0
 
     where:
-        - :math:`\mathbf{f}` is the vector of fiber weights (with :math:`\mathbf{m}` fiber masses, :math:`g`: gravity).
-        - :math:`\mathbf{z}` is the unknown vector of fiber vertical positions.
-        - :math:`\mathbf{h}` is the vector of fiber thicknesses.
-        - :math:`\mathbb{C}` is the matrix of inequality constraints that positions must satisfy to prevent the fibers from crossing each other.
-        - :math:`-\mathbf{H}` corresponds to the minimum distances between the pairs of fibers.
+        - 𝐟 is the vector of fiber weights (with 𝐦 : fiber masses, 𝑔 gravity).
+        - 𝐳 is the unknown vector of fiber vertical positions.
+        - 𝐡 is the vector of fiber thicknesses.
+        - ℂ is the matrix of inequality constraints that positions must satisfy to prevent the fibers from crossing each other.
+        - 𝐇 corresponds to the minimum distances between the pairs of fibers.
 
-    *Non-penetration conditions* between two fibers give the expressions of rows of :math:`\mathbb{C}` and :math:`\mathbf{H}`:
+    *Non-penetration conditions* between two fibers give the expressions of rows of ℂ and 𝐇:
 
     .. MATH::
         z_B - z_A \geq (h_A + h_B) \, / \, 2 \quad \Leftrightarrow \quad z_A - z_B \leq - (h_A + h_B) \, / \, 2
@@ -438,7 +417,8 @@ class Stack(Net):
         Additional keyword arguments passed to the solver.
 
     .. NOTE::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters.
+        Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -507,8 +487,6 @@ class Stack(Net):
         Stack fibers by gravity.
     :meth:`check` :
         Check that a :class:`Stack` object is defined correctly.
-    :meth:`isStack` :
-        Check that an object can be instantiated as a :class:`Stack`.
     :meth:`solve` :
         Solve the stacking problem.
     :meth:`constraint` :
@@ -520,7 +498,7 @@ class Stack(Net):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the :class:`Stack` object.
+        Initialize the `Stack` object.
 
         Parameters
         ----------
@@ -535,7 +513,7 @@ class Stack(Net):
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
-                and not Mat.isMat(args[0])):
+                and not isinstance(args[0], Mat)):
             # Initialize the DataFrame from argument
             super().__init__(*args, **kwargs)
             # Copy global attributes from argument
@@ -546,7 +524,7 @@ class Stack(Net):
             self.__init__(Stack.init(*args, **kwargs))
 
         # Check `Stack` object
-        Stack.check(self)
+        assert Stack.check(self)
 
     # ~~~ Constructor ~~~ #
 
@@ -579,8 +557,13 @@ class Stack(Net):
 
         """
         # Optional
-        mat = Mat.check(mat)
-        net = Net.check(net)
+        if mat is None:
+            mat = Mat()
+        if net is None:
+            net = Net()
+
+        assert Mat.check(mat)
+        assert Net.check(net)
 
         # Solve the stacking problem
         linsol = Stack.solve(mat, net, **kwargs)
@@ -629,17 +612,11 @@ class Stack(Net):
 
     # ~~~ Public methods ~~~ #
 
-    @staticmethod
-    def check(stack=None):
+    def check(self):
         """
         Check that a :class:`Stack` object is defined correctly.
 
-        This method is automatically called by functions that use a :class:`Stack` object as input.
-
-        Parameters
-        ----------
-        stack : pandas.DataFrame, optional
-            Fiber stack represented by a :class:`Stack` object.
+        This method is called when a :class:`Stack` object is initialized.
 
         Raises
         ------
@@ -661,37 +638,21 @@ class Stack(Net):
 
         Returns
         -------
-        stack : pandas.DataFrame
-            Validated :class:`Stack` object.
+        bool
+            Indicates whether the object can be instantiated as :class:`Stack`.
 
         .. TIP::
-            - If `stack` is None, it returns an empty :class:`Stack` object.
+            - If `self` is None, it returns an empty :class:`Stack` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
-        if stack is None:
+        if self is None:
             stack = Stack()
+        else:
+            stack = self
 
-        # Return the `Stack` object
+        # Return True if the test is correct
         return Net.check(stack)
-
-    @staticmethod
-    def isStack(obj):
-        """
-        Check that an object can be instantiated as a :class:`Stack`.
-
-        Parameters
-        ----------
-        obj : Any
-            Object to be tested.
-
-        Returns
-        -------
-        bool
-            Returns the test answer indicating whether the object can be a instantiated as :class:`Stack`.
-
-        """
-        return Net.isNet(obj)
 
     @staticmethod
     def solve(mat=None, net=None, **kwargs):
@@ -722,8 +683,13 @@ class Stack(Net):
 
         """
         # Optional
-        mat = Mat.check(mat)
-        net = Net.check(net)
+        if mat is None:
+            mat = Mat()
+        if net is None:
+            net = Net()
+
+        assert Mat.check(mat)
+        assert Net.check(net)
 
         # Assemble the linear programming system
         C, f, H, h = Stack.constraint(mat, net)
@@ -773,8 +739,13 @@ class Stack(Net):
 
         """
         # Optional
-        mat = Mat.check(mat)
-        net = Net.check(net)
+        if mat is None:
+            mat = Mat()
+        if net is None:
+            net = Net()
+
+        assert Mat.check(mat)
+        assert Net.check(net)
 
         # Get network data
         mask = net.A.values < net.B.values
@@ -805,51 +776,6 @@ class Stack(Net):
         return C, f, H, h
 
 
-def _test_stack(n=100):
-    """
-    Test for the stacking algorithm.
-
-    Parameters
-    ----------
-    n : int, optional
-        Number of fibers. Default is 100.
-
-    Raises
-    ------
-    ValueError
-        If results are incorrect.
-
-    Returns
-    -------
-    bool
-        Returns True if the test was successful.
-
-    Example
-    -------
-    >>> _test_stack()
-    True
-
-    """
-    mat = Mat(n, thickness=0.1, psi=0, seed=None)
-    mat.l = np.random.normal(mat.l.mean(), 0.04 * mat.l.mean(), len(mat))
-    mat.h = np.random.normal(mat.h.mean(), 0.1 * mat.h.mean(), len(mat))
-    net = Net(mat)
-    Stack(mat, net)
-
-    # Get material data
-    h = mat.h.values
-    z = 0.5 * h
-
-    # Stack fibers
-    for i, j in net[[*"AB"]][net.A < net.B].values:
-        z[j] = max(z[i] + 0.5 * (h[i] + h[j]), z[j])
-
-    if not np.all(mat.z == z):
-        raise ValueError("Stacking algorithm error.")
-    else:
-        return True
-
-
 ################################################################################
 # Main
 ################################################################################
@@ -861,7 +787,7 @@ if __name__ == "__main__":
     # Generate a set of fibers
     mat = Mat(10)
     # Build the fiber network
-    net = Net(mat, periodic=True)
+    net = Net(mat)
     # Stack fibers
     stack = Stack(mat, net)
 
@@ -875,7 +801,7 @@ if __name__ == "__main__":
 
     # Check data
     Stack.check(stack)  # or `stack.check()`
-    # -> returns `stack` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Normalize by fiber weight
     load /= np.pi / 4 * mat[[*"lbh"]].prod(axis=1).mean()

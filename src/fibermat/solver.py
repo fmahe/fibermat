@@ -13,7 +13,8 @@ from fibermat import Mat, Net, Stack, Mesh, stiffness, constraint, Interpolate
 def solve(mat, mesh, packing=1., itermax=1000,
           solve=sp.sparse.linalg.spsolve, perm=None, tol=1e-6,
           errtol=1e-6, interp_size=None, verbose=True, **kwargs):
-    r"""An iterative mechanical solver for fiber packing problems. It solves the *quadratic programming problem*:
+    r"""An iterative mechanical solver for fiber packing problems.
+    It solves the *quadratic programming problem*:
 
     .. MATH::
         \min_{\mathbf{u}, \mathbf{f}} \left( \frac{1}{2} \, \mathbf{u} \, \mathbb{K} \, \mathbf{u} - \mathbf{F} \, \mathbf{u} - \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) \right)
@@ -24,12 +25,12 @@ def solve(mat, mesh, packing=1., itermax=1000,
         \quad and \quad \mathbf{f} \, (\mathbf{H} - \mathbb{C} \, \mathbf{u}) = 0
 
     where:
-        - :math:`\mathbf{u}` is the vector of generalized displacements (*unknowns of the problem*).
-        - :math:`\mathbf{f}` is the vector of generalized forces (*unknowns Lagrange multipliers*).
-        - :math:`\mathbb{K}` is the stiffness matrix of the fiber set.
-        - :math:`\mathbf{F}` is the vector of external efforts.
-        - :math:`\mathbb{C}` is the matrix of non-penetration constraints.
-        - :math:`\mathbf{H}` is the vector of minimal distances between fibers (minimal distances).
+        - 𝐮 is the vector of generalized displacements (*unknowns of the problem*).
+        - 𝐟 is the vector of generalized forces (*unknown Lagrange multipliers*).
+        - 𝕂 is the stiffness matrix of the fiber set.
+        - 𝐅 is the vector of external efforts.
+        - ℂ is the matrix of non-penetration constraints.
+        - 𝐇 is the vector of minimal distances between fibers (minimal distances).
 
     The *mechanical equilibrium* allows reformulating the problem as a system of inequalities:
 
@@ -44,8 +45,8 @@ def solve(mat, mesh, packing=1., itermax=1000,
 
     .. HINT::
         Models used to build the matrices are implemented in :ref:`🔧 Model`:
-            - 𝕂 and 𝑭 : :func:`~.model.stiffness`.
-            - ℂ and 𝑯 : :func:`~.model.constraint`.
+            - 𝕂 and 𝐅 : :func:`~.model.stiffness`.
+            - ℂ and 𝐇 : :func:`~.model.constraint`.
 
     Parameters
     ----------
@@ -76,7 +77,7 @@ def solve(mat, mesh, packing=1., itermax=1000,
         Z : Interpolate
             Upper-boundary position.
         rlambda : Interpolate
-            Compaction.
+            Compaction stretch factor.
         mask : Interpolate
             Active rows and columns in the system of inequations.
         err : Interpolate
@@ -88,7 +89,7 @@ def solve(mat, mesh, packing=1., itermax=1000,
     Other Parameters
     ----------------
     solve : callable, optional
-        Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝒃 and returns the solution 𝒙 of the linear system: 𝔸 𝒙 = 𝒃. Default is `scipy.sparse.linalg.spsolve`.
+        Sparse solver. It is a callable object that takes as inputs a sparse symmetric matrix 𝔸 and a vector 𝐛 and returns the solution 𝐱 of the linear system: 𝔸 𝐱 = 𝐛. Default is `scipy.sparse.linalg.spsolve`.
     perm : numpy.ndarray, optional
         Permutation of indices.
     tol : float, optional
@@ -98,7 +99,7 @@ def solve(mat, mesh, packing=1., itermax=1000,
     interp_size : int, optional
         Size of array used for interpolation. Default is None.
     verbose : bool, optional
-        If True, displays a progress bar during simulation. Default is True.
+        If True, a progress bar is displayed. Default is True.
     kwargs :
         Additional keyword arguments passed to matrix constructors.
 
@@ -189,7 +190,7 @@ def solve(mat, mesh, packing=1., itermax=1000,
 
     # Interpolate results
     with warnings.catch_warnings():
-        # Ignore warning messages due to infinite values in 𝑯
+        # Ignore warning messages due to infinite values in 𝐇
         warnings.filterwarnings('ignore')
         u = Interpolate(u_, size=interp_size)
         f = Interpolate(f_, size=interp_size)

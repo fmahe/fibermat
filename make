@@ -11,7 +11,7 @@ Help()
    echo "    -h | --help                                Display help."
    echo "    -a | --all                                 Compile sources, run doctest and compile documentation."
    echo "    -b | --build                               Compile sources."
-   echo "    -t | --test | --doctest                    Run doctest."
+   echo "    -t | --test | --doctest                    Run pytest and doctest."
    echo "    -d | --doc                                 Compile documentation."
    echo "    -f | --file | --files  file [file, ...]    Run doctest on given files."
    echo

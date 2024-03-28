@@ -225,5 +225,7 @@ class Settings(dict):
 
 if __name__ == "__main__":
 
+    # from fibermat import *
+
     if "inputs" not in globals():
         inputs = Settings()

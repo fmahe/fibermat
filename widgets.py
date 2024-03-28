@@ -194,7 +194,7 @@ if __name__ == "__main__":
         "scipy",
         **{"scikit-learn": "sklearn"},
         tqdm="tqdm",
-        # option="--upgrade"
+        option="--upgrade"
     )
     pipButton()
 

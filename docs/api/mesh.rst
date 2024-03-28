@@ -26,7 +26,7 @@ Example
 
     # Check data
     Mesh.check(mesh)  # or `mesh.check()`
-    # -> returns `mesh` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',

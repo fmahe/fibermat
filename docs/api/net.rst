@@ -30,7 +30,7 @@ Example
 
     # Check data
     Net.check(net)  # or `net.check()`
-    # -> returns `net` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',
@@ -92,7 +92,7 @@ Example
 
     # Check data
     Stack.check(stack)  # or `stack.check()`
-    # -> returns `stack` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Normalize by fiber weight
     load /= np.pi / 4 * mat[[*"lbh"]].prod(axis=1).mean()

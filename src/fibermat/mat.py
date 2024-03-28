@@ -10,7 +10,9 @@ from tqdm import tqdm
 
 class Mat(pd.DataFrame):
     """
-    A class inherited from pandas.DataFrame_ to **describe a fibrous material** made up of a set of random fibers. It defines:
+    A class inherited from pandas.DataFrame_ to **describe a fibrous material** made up of a set of random fibers.
+
+    It defines:
 
         - the geometry of the straight fibers.
         - the initial configuration (positions and orientations).
@@ -45,7 +47,8 @@ class Mat(pd.DataFrame):
         Additional keyword arguments ignored by the function.
 
     .. NOTE::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters.
+        Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -113,8 +116,6 @@ class Mat(pd.DataFrame):
         Generate a set of random straight fibers.
     :meth:`check` :
         Check that a :class:`Mat` object is defined correctly.
-    :meth:`isMat` :
-        Check that an object can be instantiated as a :class:`Mat`.
 
     ----
 
@@ -122,7 +123,7 @@ class Mat(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the :class:`Mat` object.
+        Initialize the `Mat` object.
 
         Parameters
         ----------
@@ -150,7 +151,7 @@ class Mat(pd.DataFrame):
             self.__init__(Mat.init(*args, **kwargs))
 
         # Check `Mat` object
-        Mat.check(self)
+        assert Mat.check(self)
 
     # ~~~ Constructor ~~~ #
 
@@ -250,17 +251,11 @@ class Mat(pd.DataFrame):
 
     # ~~~ Public methods ~~~ #
 
-    @staticmethod
-    def check(mat=None):
+    def check(self):
         """
         Check that a :class:`Mat` object is defined correctly.
 
-        This method is automatically called by functions that use a :class:`Mat` object as input.
-
-        Parameters
-        ----------
-        mat : pandas.DataFrame, optional
-            Set of fibers represented by a :class:`Mat` object.
+        This method is called when a :class:`Mat` object is initialized.
 
         Raises
         ------
@@ -281,23 +276,24 @@ class Mat(pd.DataFrame):
 
         Returns
         -------
-        mat : pandas.DataFrame
-            Validated :class:`Mat` object.
+        bool
+            Indicates whether the object can be instantiated as :class:`Mat`.
 
         .. TIP::
-            - If `mat` is None, it returns an empty :class:`Mat` object.
+            - If `self` is None, it returns an empty :class:`Mat` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
-        if mat is None:
+        if self is None:
             mat = Mat()
+        else:
+            mat = self
 
         if "skip_check" in mat.attrs.keys() and mat.attrs["skip_check"]:
             warnings.warn("{}.attrs['skip_check'] is active."
                           "Delete it or set it to False.".format(mat.__class__),
                           UserWarning)
-            # Return the `Mat` object
-            return mat
+            return True
 
         # Keys
         try:
@@ -338,30 +334,8 @@ class Mat(pd.DataFrame):
         if not np.all(mat[[*"GE"]] > 0):
             raise ValueError("Material properties must be positive.")
 
-        # Return the `Mat` object
-        return mat
-
-    @staticmethod
-    def isMat(obj):
-        """
-        Check that an object can be instantiated as a :class:`Mat`.
-
-        Parameters
-        ----------
-        obj : Any
-            Object to be tested.
-
-        Returns
-        -------
-        bool
-            Returns the test answer indicating whether the object can be a instantiated as :class:`Mat`.
-
-        """
-        try:
-            Mat.check(obj)
-            return True
-        except:
-            return False
+        # Return True if the test is correct
+        return True
 
 
 ################################################################################
@@ -382,7 +356,7 @@ if __name__ == "__main__":
 
     # Check data
     Mat.check(mat)  # or `mat.check()`
-    # -> returns `mat` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',

@@ -12,7 +12,9 @@ from fibermat import Mat, Net
 
 class Mesh(pd.DataFrame):
     """
-    A class inherited from pandas.DataFrame_ to **represent a mesh structure** for a set of discontinuous fibers. It defines:
+    A class inherited from pandas.DataFrame_ to **represent a mesh structure** for a set of discontinuous fibers.
+
+    It defines:
 
         - the **beam** elements (intra-fiber connections).
         - the **constraint** elements (inter-fiber connections).
@@ -28,7 +30,8 @@ class Mesh(pd.DataFrame):
         Additional keyword arguments ignored by the function.
 
     .. NOTE::
-        The constructor calls :meth:`init` method if the object is instantiated with parameters. Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
+        The constructor calls :meth:`init` method if the object is instantiated with parameters.
+        Otherwise, initialization is performed with the pandas.DataFrame_ constructor.
 
     .. _pandas.DataFrame: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
 
@@ -91,8 +94,6 @@ class Mesh(pd.DataFrame):
         Create a discontinuous fiber mesh.
     :meth:`check` :
         Check that a :class:`Mesh` object is defined correctly.
-    :meth:`isMesh` :
-        Check that an object can be instantiated as a :class:`Mesh`.
 
     ----
 
@@ -100,7 +101,7 @@ class Mesh(pd.DataFrame):
 
     def __init__(self, *args, **kwargs):
         """
-        Initialize the :class:`Mesh` object.
+        Initialize the `Mesh` object.
 
         Parameters
         ----------
@@ -115,7 +116,7 @@ class Mesh(pd.DataFrame):
 
         """
         if (len(args) and isinstance(args[0], pd.DataFrame)
-                and not Net.isNet(args[0])):
+                and not isinstance(args[0], Net)):
             # Initialize the DataFrame from argument
             super().__init__(*args, **kwargs)
             # Copy global attributes from argument
@@ -126,7 +127,7 @@ class Mesh(pd.DataFrame):
             self.__init__(Mesh.init(*args, **kwargs))
 
         # Check `Mesh` object
-        Mesh.check(self)
+        assert Mesh.check(self)
 
     # ~~~ Constructor ~~~ #
 
@@ -152,7 +153,10 @@ class Mesh(pd.DataFrame):
 
         """
         # Optional
-        net = Net(net)
+        if net is None:
+            net = Net()
+
+        assert Net.check(net)
 
         # Get network data
         pairs = net[[*"AB"]].values.ravel()
@@ -216,17 +220,11 @@ class Mesh(pd.DataFrame):
 
     # ~~~ Public methods ~~~ #
 
-    @staticmethod
-    def check(mesh=None):
+    def check(self):
         """
         Check that a :class:`Mesh` object is defined correctly.
 
-        This method is automatically called by functions that use a :class:`Mesh` object as input.
-
-        Parameters
-        ----------
-        mesh : pandas.DataFrame, optional
-            Fiber mesh represented by a :class:`Mesh` object.
+        This method is called when a :class:`Mesh` object is initialized.
 
         Raises
         ------
@@ -245,23 +243,24 @@ class Mesh(pd.DataFrame):
 
         Returns
         -------
-        mesh : pandas.DataFrame
-            Validated :class:`Mesh` object.
+        bool
+            Indicates whether the object can be instantiated as :class:`Mesh`.
 
         .. TIP::
-            - If `mesh` is None, it returns an empty :class:`Mesh` object.
+            - If `self` is None, it returns an empty :class:`Mesh` object.
             - If a "skip_check" flag is True in :attr:`attrs`, the check is passed.
 
         """
-        if mesh is None:
+        if self is None:
             mesh = Mesh()
+        else:
+            mesh = self
 
         if "skip_check" in mesh.attrs.keys() and mesh.attrs["skip_check"]:
             warnings.warn("{}.attrs['skip_check'] is active."
                           " Delete it or set it to False.".format(mesh.__class__),
                           UserWarning)
-            # Return the `Mesh` object
-            return mesh
+            return True
 
         # Keys
         try:
@@ -323,30 +322,8 @@ class Mesh(pd.DataFrame):
                 raise ValueError(
                     "End node constraints must be equal to node labels.")
 
-        # Return the `Mesh` object
-        return mesh
-
-    @staticmethod
-    def isMesh(obj):
-        """
-        Check that an object can be instantiated as a :class:`Mesh`.
-
-        Parameters
-        ----------
-        obj : Any
-            Object to be tested.
-
-        Returns
-        -------
-        bool
-            Returns the test answer indicating whether the object can be a instantiated as :class:`Mesh`.
-
-        """
-        try:
-            Mesh.check(obj)
-            return True
-        except:
-            return False
+        # Return True if the test is correct
+        return True
 
 
 ################################################################################
@@ -360,13 +337,13 @@ if __name__ == "__main__":
     # Generate a set of fibers
     mat = Mat(10)
     # Build the fiber network
-    net = Net(mat, periodic=True)
+    net = Net(mat)
     # Create the fiber mesh
     mesh = Mesh(net)
 
     # Check data
     Mesh.check(mesh)  # or `mesh.check()`
-    # -> returns `mesh` if correct, otherwise it raises an error.
+    # -> returns True if correct, otherwise it raises an error.
 
     # Figure
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d', aspect='equal',

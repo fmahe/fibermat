@@ -32,12 +32,12 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
             \end{matrix}\right)
 
     where:
-        - :math:`l_e` is the *length of the beam* element.
-        - :math:`E` is the tensile modulus.
-        - :math:`G` is the shear modulus.
-        - :math:`b` and :math:`h` are the width and thickness of the fiber.
+        - 𝑙ₑ is the length of the beam element.
+        - 𝐸 is the tensile modulus.
+        - 𝐺 is the shear modulus.
+        - 𝑏 and h are the width and thickness of the fiber.
 
-    The displacement vector :math:`\mathbf{u} = (\dots, u_i, \theta_i, \dots)` (with :math:`u_i` being the vertical displacement and :math:`\theta_i` the rotation of the cross-section of the :math:`i^{th}` node) satisfies **mechanical equilibrium**:
+    The displacement vector :math:`\mathbf{u} = (\dots, u_i, \theta_i, \dots)` (with 𝑢ᵢ being the vertical displacement and θᵢ the rotation of the cross-section of the i-th node) satisfies **mechanical equilibrium**:
 
     .. MATH::
         \mathbb{K} \, \mathbf{u} = \mathbf{F}
@@ -115,8 +115,13 @@ def stiffness(mat, mesh, lmin=None, lmax=None, coupling=1.0, **kwargs):
 
     """
     # Optional
-    mat = Mat.check(mat)
-    mesh = Mesh.check(mesh)
+    if mat is None:
+        mat = Mat()
+    if mesh is None:
+        mesh = Mesh()
+
+    assert Mat.check(mat)
+    assert Mesh.check(mesh)
 
     # Get mesh data
     mask = (mesh.index.values < mesh.beam.values)
@@ -202,7 +207,7 @@ def constraint(mat, mesh, **kwargs):
         - :math:`z_A` and :math:`z_B` are the vertical positions of nodes A and B.
         - :math:`h_A` and :math:`h_B` are the fiber thicknesses at nodes A and B.
 
-    The vector :math:`f` is the vector of Lagrangian multipliers that corresponds to contact forces. It satisfies **KKT conditions**:
+    The vector 𝐟 is the vector of Lagrangian multipliers that corresponds to contact forces. It satisfies **KKT conditions**:
 
     .. MATH::
         \mathbb{C} \, \mathbf{u} \leq \mathbf{H} \, ,
@@ -241,8 +246,13 @@ def constraint(mat, mesh, **kwargs):
 
     """
     # Optional
-    mat = Mat.check(mat)
-    mesh = Mesh.check(mesh)
+    if mat is None:
+        mat = Mat()
+    if mesh is None:
+        mesh = Mesh()
+
+    assert Mat.check(mat)
+    assert Mesh.check(mesh)
 
     # Get mesh data
     mask = (mesh.index.values <= mesh.constraint.values)

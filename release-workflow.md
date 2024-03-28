@@ -36,11 +36,19 @@
 
     ```
 
-6. Commit and Push Changes.
+6. Run tests.
+
+   - Execute `pytest` to run all tests:
+    ```shell
+    pytest
+
+    ```
+
+7. Commit and Push Changes.
 
     - Commit and push the changes to the GitHub repository.
 
-7. Release Package on PyPi.
+8. Release Package on PyPi.
 
     - Use the following command to upload the distribution files (see [PyPi Guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/)):
     ```shell
