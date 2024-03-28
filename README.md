@@ -180,6 +180,12 @@ FiberMat's documentation is created using [Sphinx](https://www.sphinx-doc.org/en
 
     ```
 
+4. Test the library:
+    ```shell
+    pytest
+
+    ```
+
 <a id="note-1"> [1] </a> : Here a tutorial (fr) for Sphinx: [Introduction à Sphinx, un outil de documentation puissant](https://blog.flozz.fr/2020/09/07/introduction-a-sphinx-un-outil-de-documentation-puissant/).
 
 ## Documentation
