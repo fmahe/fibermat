@@ -102,8 +102,8 @@ if __name__ == "__main__":
     # plt.show()
 
     # Export as VTK
-    vtk = vtk_mesh(mat, mesh,
+    msh = vtk_mesh(mat, mesh,
                    *u(1).reshape(-1, 2).T,
                    *(f(1) @ C).reshape(-1, 2).T)
-    vtk.plot(scalars="force", cmap=plt.cm.twilight_shifted)
-    vtk.save("outputs/vtk.vtk")
+    msh.plot(scalars="force", cmap=plt.cm.twilight_shifted)
+    msh.save("outputs/msh.vtk")
