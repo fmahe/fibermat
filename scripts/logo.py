@@ -1,4 +1,7 @@
-from fibermat import *
+import matplotlib.pyplot as plt
+import numpy as np
+
+from fibermat import Mat, Mesh, Net, Stack, Timoshenko, solve, vtk_mesh
 
 mask = np.array(
     [
@@ -38,23 +41,19 @@ net = Net(mat, periodic=False)
 stack = Stack(net)
 # Create the fiber mesh
 mesh = Mesh(stack)
+# Instantiate model
+model = Timoshenko(mesh)
 
 # Solve the mechanical packing problem
-K, C, u, f, F, H, Z, rlambda, mask, err = solve(
-    mesh,
-    stiffness(mesh),
-    constraint(mesh),
-    packing=4,
-    itermax=10000
-)
+solution = solve(model, packing=4, itermax=10000)
 
 # Export as VTK
 msh = vtk_mesh(
     mesh,
-    displacement(u(1)),
-    rotation(u(1)),
-    force(f(1) @ C),
-    torque(f(1) @ C),
+    solution.displacement(1),
+    solution.rotation(1),
+    solution.force(1),
+    solution.torque(1),
 )
 msh.plot(scalars="force", cmap=plt.cm.twilight_shifted)
 # msh.save("outputs/msh.vtk")
